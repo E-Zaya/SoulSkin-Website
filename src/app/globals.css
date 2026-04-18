@@ -11,9 +11,9 @@
   --color-ember: #c8431a;
 
   /* ── Fonts ── */
-  --font-display: var(--font-syne), sans-serif;
-  --font-sans: var(--font-inter), sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), monospace;
+--font-display: var(--font-syne), sans-serif;
+--font-sans: var(--font-inter), sans-serif;
+--font-mono: var(--font-ibm-plex-mono), monospace;
 
   /* ── Tracking Tokens ── */
   --tracking-brand-wide: 0.3em;
