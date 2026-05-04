@@ -9,9 +9,12 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+# zip files
+*.zip
 
 # testing
 /coverage
+
 
 # next.js
 /.next/
