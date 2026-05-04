@@ -1,0 +1,52 @@
+import type { Metadata } from "next";
+import { Bebas_Neue, Inter, Space_Mono } from "next/font/google";
+import "./globals.css";
+
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas-neue",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Soul Skin — Streetwear from Ulaanbaatar",
+  description:
+    "Soul Skin is a streetwear label from Ulaanbaatar, Mongolia. Built for those who carry their identity on their back. Custom orders via Instagram.",
+  openGraph: {
+    title: "Soul Skin — Streetwear from Ulaanbaatar",
+    description:
+      "Soul Skin is a streetwear label from Ulaanbaatar, Mongolia. Built for those who carry their identity on their back.",
+    type: "website",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html
+      lang="en"
+      className={`${bebasNeue.variable} ${inter.variable} ${spaceMono.variable}`}
+    >
+      <body className="bg-void text-bone font-sans overflow-x-hidden">
+        {/* Global ultra-thin noise — the ambient grain across the entire site */}
+        <div className="noise-global" aria-hidden="true" />
+        {children}
+      </body>
+    </html>
+  );
+}
