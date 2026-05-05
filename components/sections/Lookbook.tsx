@@ -5,15 +5,38 @@ import Image from "next/image";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
+import type { LookbookItem } from "@/lib/db";
 
-export default function Lookbook() {
+type Props = {
+  data?: LookbookItem[];
+};
+
+const FALLBACK_IMAGES = ["/lookbook-01.png", "/lookbook-02.png", "/lookbook-03.png"];
+
+export default function Lookbook({ data }: Props) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
-  // Hover state — dim non-hovered images on desktop pointer interaction.
+  // 最初の 3 件を使用（DB or フォールバック）
+  const items = data && data.length > 0
+    ? data.slice(0, 3).map((item, i) => ({
+        id:  item.item_id,
+        src: item.image_url ?? FALLBACK_IMAGES[i] ?? "/lookbook-01.png",
+      }))
+    : siteContent.lookbook.items.map((item, i) => ({
+        id:  item.id,
+        src: FALLBACK_IMAGES[i],
+      }));
+
   const getImageOpacity = (idx: number) => {
     if (hoveredIdx === null) return 1;
     return hoveredIdx === idx ? 1 : 0.35;
   };
+
+  const alts = [
+    "Lookbook — Soul Skin SS25",
+    "Lookbook — Soul Skin SS25 detail",
+    "Lookbook — Soul Skin SS25 editorial",
+  ];
 
   return (
     <section
@@ -34,7 +57,6 @@ export default function Lookbook() {
       </div>
 
       <div className="container-wide">
-        {/* Asymmetric editorial grid */}
         <div
           className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6"
           style={{ gridTemplateRows: "auto auto" }}
@@ -49,14 +71,11 @@ export default function Lookbook() {
               className="relative w-full h-full lookbook-tall-mobile md:min-h-0 md:aspect-[3/4] cursor-pointer"
               onMouseEnter={() => setHoveredIdx(0)}
               onMouseLeave={() => setHoveredIdx(null)}
-              style={{
-                opacity: getImageOpacity(0),
-                transition: "opacity 500ms ease-out",
-              }}
+              style={{ opacity: getImageOpacity(0), transition: "opacity 500ms ease-out" }}
             >
               <Image
-                src="/lookbook-01.png"
-                alt="Lookbook — Soul Skin SS25"
+                src={items[0]?.src ?? FALLBACK_IMAGES[0]}
+                alt={alts[0]}
                 fill
                 className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
               />
@@ -69,7 +88,7 @@ export default function Lookbook() {
                 drift
               />
               <p className="absolute bottom-4 left-4 font-mono text-[11px] text-iron z-10 transition-opacity duration-300 group-hover:text-dust tracking-widest">
-                {siteContent.lookbook.items[0].id}
+                {items[0]?.id}
               </p>
             </div>
           </ScrollReveal>
@@ -84,14 +103,11 @@ export default function Lookbook() {
               className="relative w-full h-full cursor-pointer"
               onMouseEnter={() => setHoveredIdx(1)}
               onMouseLeave={() => setHoveredIdx(null)}
-              style={{
-                opacity: getImageOpacity(1),
-                transition: "opacity 500ms ease-out",
-              }}
+              style={{ opacity: getImageOpacity(1), transition: "opacity 500ms ease-out" }}
             >
               <Image
-                src="/lookbook-02.png"
-                alt="Lookbook — Soul Skin SS25 detail"
+                src={items[1]?.src ?? FALLBACK_IMAGES[1]}
+                alt={alts[1]}
                 fill
                 className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
               />
@@ -103,20 +119,18 @@ export default function Lookbook() {
                 tileSize="190px"
               />
               <p className="absolute bottom-4 right-4 font-mono text-[11px] text-iron z-10 transition-opacity duration-300 group-hover:text-dust tracking-widest">
-                {siteContent.lookbook.items[1].id}
+                {items[1]?.id}
               </p>
             </div>
           </ScrollReveal>
 
-          {/* Season copy — shown earlier on mobile */}
+          {/* Season copy */}
           <ScrollReveal
             className="order-first md:order-none flex flex-col justify-end pb-1 md:pb-6 md:pl-3"
             delay={120}
             variant="fade-left"
           >
-            <p className="text-brand-label mb-3">
-              {siteContent.lookbook.season}
-            </p>
+            <p className="text-brand-label mb-3">{siteContent.lookbook.season}</p>
             <p className="body-copy text-dust max-w-[300px] md:max-w-[260px]">
               {siteContent.lookbook.description}
             </p>
@@ -147,14 +161,11 @@ export default function Lookbook() {
               className="relative w-full h-full cursor-pointer"
               onMouseEnter={() => setHoveredIdx(2)}
               onMouseLeave={() => setHoveredIdx(null)}
-              style={{
-                opacity: getImageOpacity(2),
-                transition: "opacity 500ms ease-out",
-              }}
+              style={{ opacity: getImageOpacity(2), transition: "opacity 500ms ease-out" }}
             >
               <Image
-                src="/lookbook-03.png"
-                alt="Lookbook — Soul Skin SS25 editorial"
+                src={items[2]?.src ?? FALLBACK_IMAGES[2]}
+                alt={alts[2]}
                 fill
                 className="object-cover object-top transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
               />
@@ -166,7 +177,7 @@ export default function Lookbook() {
                 tileSize="175px"
               />
               <p className="absolute bottom-4 left-4 font-mono text-[11px] text-iron z-10 transition-opacity duration-300 group-hover:text-dust tracking-widest">
-                {siteContent.lookbook.items[2].id}
+                {items[2]?.id}
               </p>
             </div>
           </ScrollReveal>

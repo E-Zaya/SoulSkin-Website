@@ -8,8 +8,26 @@ import Products from "@/components/sections/Products";
 import CustomOrder from "@/components/sections/CustomOrder";
 import About from "@/components/sections/About";
 import { siteContent } from "@/data/siteContent";
+import { getActiveDrop, getProducts, getLookbookItems } from "@/lib/db";
 
-export default function Home() {
+// Supabase 未設定時も動くようにエラーを吸収
+async function safeGetActiveDrop() {
+  try { return await getActiveDrop(); } catch { return null; }
+}
+async function safeGetProducts() {
+  try { return await getProducts(); } catch { return []; }
+}
+async function safeGetLookbookItems() {
+  try { return await getLookbookItems(); } catch { return []; }
+}
+
+export default async function Home() {
+  const [drop, products, lookbook] = await Promise.all([
+    safeGetActiveDrop(),
+    safeGetProducts(),
+    safeGetLookbookItems(),
+  ]);
+
   return (
     <>
       <Navbar />
@@ -19,25 +37,19 @@ export default function Home() {
         <Hero />
 
         {/* 2. Marquee 1 — noise on top border */}
-        <Marquee
-          text={siteContent.marquees.top}
-          noiseSide="top"
-        />
+        <Marquee text={siteContent.marquees.top} noiseSide="top" />
 
         {/* 3. Drop — current collection, scarcity */}
-        <Drop />
+        <Drop data={drop} />
 
         {/* 4. Lookbook — image-first editorial grid */}
-        <Lookbook />
+        <Lookbook data={lookbook} />
 
         {/* 5. Products — 3 cards, no cart */}
-        <Products />
+        <Products data={products} />
 
         {/* 6. Marquee 2 — noise on bottom border */}
-        <Marquee
-          text={siteContent.marquees.bottom}
-          noiseSide="bottom"
-        />
+        <Marquee text={siteContent.marquees.bottom} noiseSide="bottom" />
 
         {/* 7. Custom Order — EMBER CTA */}
         <CustomOrder />

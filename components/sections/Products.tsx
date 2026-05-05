@@ -2,8 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
+import type { Product } from "@/lib/db";
 
-export default function Products() {
+type Props = {
+  data?: Product[];
+};
+
+export default function Products({ data }: Props) {
+  // DB データがあればそちらを使い、なければ siteContent にフォールバック
+  const items = data && data.length > 0
+    ? data.map((p) => ({
+        id:       p.sku,
+        name:     p.name,
+        material: p.material,
+        desc:     p.description,
+        price:    p.price,
+        image:    p.image_url ?? "/product-jacket.png",
+        offset:   p.offset_class,
+      }))
+    : siteContent.products.items.map((p) => ({ ...p, image: p.image }));
+
   return (
     <section id="archive" className="bg-void section-pad-tight">
       <div className="container-base">
@@ -14,7 +32,7 @@ export default function Products() {
 
         {/* Piece grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
-          {siteContent.products.items.map((product, index) => (
+          {items.map((product, index) => (
             <ScrollReveal
               key={product.id}
               delay={index * 120}
