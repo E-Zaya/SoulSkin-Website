@@ -9,6 +9,7 @@ const links = [
   { href: "/admin/drop",      label: "Drop" },
   { href: "/admin/products",  label: "Products" },
   { href: "/admin/lookbook",  label: "Lookbook" },
+  { href: "/admin/site",      label: "Site" },
 ];
 
 export default function AdminNav() {

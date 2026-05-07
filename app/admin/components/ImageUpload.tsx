@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { isManagedImageUrl } from "@/lib/images";
 
 type Props = {
   currentUrl?: string | null;
@@ -17,19 +18,31 @@ export default function ImageUpload({
   onUploadComplete,
   folder = "misc",
 }: Props) {
-  const [url,       setUrl]       = useState(currentUrl ?? "");
-  const [preview,   setPreview]   = useState(currentUrl ?? "");
+  const [url, setUrl] = useState(currentUrl ?? "");
+  const [preview, setPreview] = useState(currentUrl ?? "");
   const [uploading, setUploading] = useState(false);
-  const [error,     setError]     = useState("");
+  const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // 親側で別レコードを選択した時、古い画像プレビューが残らないよう同期する
+  useEffect(() => {
+    setUrl(currentUrl ?? "");
+    setPreview(currentUrl ?? "");
+    setError("");
+  }, [currentUrl]);
+
   function handleUrlInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const val = e.target.value;
+    const val = e.target.value.trim();
     setUrl(val);
     setPreview(val);
+
+    if (!isManagedImageUrl(val)) {
+      setError("/public path か Supabase Storage URL のみ使用してください");
+      return;
+    }
+
     onUrlChange(val);
     setError("");
-    // テキスト手入力の場合は onUploadComplete を呼ばない
   }
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -47,23 +60,22 @@ export default function ImageUpload({
       fd.append("folder", folder);
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const data = (await res.json()) as { url?: string; error?: string };
 
-      if (!res.ok) {
-        const data = await res.json();
+      if (!res.ok || !data.url) {
         throw new Error(data.error ?? "Upload failed");
       }
 
-      const { url: uploadedUrl } = await res.json();
-      setUrl(uploadedUrl);
-      setPreview(uploadedUrl);
-      onUrlChange(uploadedUrl);
-      onUploadComplete?.(uploadedUrl); // アップロード完了を親に通知
+      setUrl(data.url);
+      setPreview(data.url);
+      onUrlChange(data.url);
+      onUploadComplete?.(data.url);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
-      // 失敗したら元に戻す
       setPreview(currentUrl ?? "");
       setUrl(currentUrl ?? "");
     } finally {
+      URL.revokeObjectURL(localUrl);
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
     }
@@ -72,7 +84,7 @@ export default function ImageUpload({
   return (
     <div className="space-y-3">
       <div className="flex gap-3 items-start">
-        {/* プレビュー */}
+        {/* Preview */}
         <div className="w-16 h-20 bg-[#0d0d0d] border border-[#282828] shrink-0 overflow-hidden relative">
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -89,13 +101,13 @@ export default function ImageUpload({
           )}
         </div>
 
-        {/* 入力エリア */}
+        {/* Input area */}
         <div className="flex-1 space-y-2 min-w-0">
           <input
             type="text"
             value={url}
             onChange={handleUrlInput}
-            placeholder="/product.png  または  https://..."
+            placeholder="/product.png または Supabase Storage URL"
             className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2 focus:outline-none focus:border-[#505050] font-mono placeholder:text-[#444]"
           />
           <div className="flex items-center gap-3 flex-wrap">
@@ -116,7 +128,7 @@ export default function ImageUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         onChange={handleFileChange}
         className="hidden"
       />

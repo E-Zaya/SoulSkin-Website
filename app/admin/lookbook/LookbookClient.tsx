@@ -137,6 +137,10 @@ export default function LookbookClient({ initialItems }: Props) {
           order_index: state.order_index,
         });
         if (result) {
+          const original = items.find((i) => i.id === id)?.image_url ?? null;
+          if (original && original !== result.image_url) {
+            deleteStorageImageAction(original).catch(console.error);
+          }
           setItems((prev) => prev.map((i) => (i.id === id ? result : i)));
           setEditPendingUploads((prev) => { const n = { ...prev }; delete n[id]; return n; });
           setExpandedId(null);
@@ -187,7 +191,7 @@ export default function LookbookClient({ initialItems }: Props) {
       </div>
 
       <p className="text-[12px] text-[#777] font-mono mb-5">
-        最初の 3 件がサイトに表示されます。▲▼ で順番を変更できます。
+        登録した全件がサイトに表示されます。▲▼ で順番を変更できます。
       </p>
 
       {error && (
@@ -223,7 +227,12 @@ export default function LookbookClient({ initialItems }: Props) {
             <ImageUpload
               currentUrl={null}
               onUrlChange={(url) => setNewItem((f) => ({ ...f, image_url: url }))}
-              onUploadComplete={(url) => setNewPendingUpload(url)}
+              onUploadComplete={(url) => {
+                if (newPendingUpload && newPendingUpload !== url) {
+                  deleteStorageImageAction(newPendingUpload).catch(console.error);
+                }
+                setNewPendingUpload(url);
+              }}
               folder="lookbook"
             />
           </div>
@@ -333,7 +342,13 @@ export default function LookbookClient({ initialItems }: Props) {
                     <ImageUpload
                       currentUrl={state.image_url || null}
                       onUrlChange={(url) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], image_url: url } }))}
-                      onUploadComplete={(url) => setEditPendingUploads((prev) => ({ ...prev, [item.id]: url }))}
+                      onUploadComplete={(url) => {
+                        const pending = editPendingUploads[item.id];
+                        if (pending && pending !== url) {
+                          deleteStorageImageAction(pending).catch(console.error);
+                        }
+                        setEditPendingUploads((prev) => ({ ...prev, [item.id]: url }));
+                      }}
                       folder="lookbook"
                     />
                   </div>

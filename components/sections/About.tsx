@@ -2,8 +2,16 @@ import Image from "next/image";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
+import { DEFAULT_IMAGES } from "@/lib/images";
 
-export default function About() {
+type Props = {
+  imageUrl?: string | null;
+  description?: string | null;
+};
+
+export default function About({ imageUrl, description }: Props) {
+  const aboutImage = imageUrl || siteContent.about.image || DEFAULT_IMAGES.about;
+  const aboutDescription = description || siteContent.about.description;
   return (
     <section id="about" className="relative bg-ash overflow-hidden">
       <div className="container-base flex flex-col md:flex-row !px-0">
@@ -17,7 +25,7 @@ export default function About() {
 
           <ScrollReveal delay={80}>
             <p className="body-copy-md text-bone max-w-[380px] mb-6 md:mb-8">
-              {siteContent.about.description}
+              {aboutDescription}
             </p>
           </ScrollReveal>
 
@@ -29,7 +37,7 @@ export default function About() {
         {/* Image column */}
         <div className="relative md:w-[60%] aspect-[4/5] md:aspect-auto overflow-hidden">
           <Image
-            src="/lookbook-03.png"
+            src={aboutImage}
             alt="Soul Skin — Ulaanbaatar"
             fill
             className="object-cover object-center"

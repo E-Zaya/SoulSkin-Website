@@ -7,6 +7,7 @@ import {
   saveDropAction,
   createDropAction,
   activateDropAction,
+  deleteDropAction,
   deleteStorageImageAction,
 } from "../actions";
 import type { Drop } from "@/lib/db";
@@ -77,11 +78,19 @@ export default function DropClient({ initialDrops }: Props) {
           active:      form.active,
         });
         if (result) {
-          setDrops((prev) =>
-            prev.some((d) => d.id === result.id)
+          const original = selected?.image_url ?? null;
+          if (original && original !== result.image_url) {
+            deleteStorageImageAction(original).catch(console.error);
+          }
+          setDrops((prev) => {
+            const next = prev.some((d) => d.id === result.id)
               ? prev.map((d) => (d.id === result.id ? result : d))
-              : [...prev, result]
-          );
+              : [...prev, result];
+
+            return result.active
+              ? next.map((d) => ({ ...d, active: d.id === result.id }))
+              : next;
+          });
           setSelectedId(result.id);
           setForm({ ...result });
           setPendingUpload(null); // 保存完了 → ゴミ扱い解除
@@ -116,6 +125,32 @@ export default function DropClient({ initialDrops }: Props) {
         }
       } catch (e) {
         setError(e instanceof Error ? e.message : "エラーが発生しました");
+      }
+    });
+  }
+
+  function handleDelete(drop: Drop) {
+    if (!confirm(`「${drop.title_line1} ${drop.title_line2}」を削除しますか？\nこの操作は元に戻せません。`)) return;
+    startTransition(async () => {
+      try {
+        await deleteDropAction(drop.id, drop.image_url);
+        const next = drops.filter((d) => d.id !== drop.id);
+        setDrops(next);
+        // 削除したDropが選択中だった場合、次のDropを選択
+        if (selectedId === drop.id) {
+          const nextDrop = next[0] ?? null;
+          if (nextDrop) {
+            selectDrop(nextDrop);
+          } else {
+            setSelectedId(null);
+            setForm({ ...EMPTY });
+            setImageUrl("");
+          }
+        }
+        flash("削除しました");
+        router.refresh();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "削除に失敗しました");
       }
     });
   }
@@ -162,13 +197,22 @@ export default function DropClient({ initialDrops }: Props) {
               </div>
               <p className="text-[12px] text-[#777] font-mono">残り {drop.pieces_left} 枚</p>
               {!drop.active && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleActivate(drop.id); }}
-                  disabled={isPending}
-                  className="mt-2 text-[11px] tracking-widest uppercase font-mono text-[#666] hover:text-[#5dd49a] transition-colors"
-                >
-                  Set Live →
-                </button>
+                <div className="mt-2 flex items-center gap-3">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleActivate(drop.id); }}
+                    disabled={isPending}
+                    className="text-[11px] tracking-widest uppercase font-mono text-[#666] hover:text-[#5dd49a] transition-colors"
+                  >
+                    Set Live →
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDelete(drop); }}
+                    disabled={isPending}
+                    className="text-[11px] tracking-widest uppercase font-mono text-[#666] hover:text-[#f07070] transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
               )}
             </button>
           ))}
@@ -224,7 +268,12 @@ export default function DropClient({ initialDrops }: Props) {
               <ImageUpload
                 currentUrl={imageUrl || null}
                 onUrlChange={setImageUrl}
-                onUploadComplete={(url) => setPendingUpload(url)}
+                onUploadComplete={(url) => {
+                  if (pendingUpload && pendingUpload !== url) {
+                    deleteStorageImageAction(pendingUpload).catch(console.error);
+                  }
+                  setPendingUpload(url);
+                }}
                 folder="drops"
               />
             </div>

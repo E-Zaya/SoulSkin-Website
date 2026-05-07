@@ -76,6 +76,7 @@ export const siteContent = {
   },
   about: {
     label: "About",
+    image: "/about.png",
     description:
       "Soul Skin is a streetwear label from Ulaanbaatar, Mongolia. Built for those who carry their identity on their back.",
   },

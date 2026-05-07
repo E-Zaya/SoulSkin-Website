@@ -5,7 +5,12 @@ import Image from "next/image";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import { siteContent } from "@/data/siteContent";
 
-export default function Hero() {
+type Props = {
+  imageUrl?: string | null;
+};
+
+export default function Hero({ imageUrl }: Props) {
+  const heroSrc = imageUrl || "/hero.png";
   const [loaded, setLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -47,7 +52,7 @@ export default function Hero() {
         }}
       >
         <Image
-          src="/hero.png"
+          src={heroSrc}
           alt="Soul Skin — Wear Your Soul"
           fill
           priority

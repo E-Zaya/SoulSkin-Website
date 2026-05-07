@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { getActiveDrop, getAllProducts, getLookbookItems } from "@/lib/db";
+import { getActiveDrop, getAllProducts, getLookbookItems, getSiteSettings } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const [drop, products, lookbook] = await Promise.all([
+  const [drop, products, lookbook, siteSettings] = await Promise.all([
     getActiveDrop(),
     getAllProducts(),
     getLookbookItems(),
+    getSiteSettings(),
   ]);
 
   const cards = [
@@ -30,6 +31,13 @@ export default async function DashboardPage() {
       label: "Lookbook",
       value: lookbook.length.toString(),
       sub:   "items",
+      live:  false,
+    },
+    {
+      href:  "/admin/site",
+      label: "Site",
+      value: "設定",
+      sub:   siteSettings ? "Hero / About" : "未設定",
       live:  false,
     },
   ];
@@ -65,6 +73,7 @@ export default async function DashboardPage() {
             { href: "/admin/drop",     label: "Edit Drop" },
             { href: "/admin/products", label: "Add Product" },
             { href: "/admin/lookbook", label: "Edit Lookbook" },
+            { href: "/admin/site",     label: "Edit Site" },
             { href: "/",              label: "View Site ↗", target: "_blank" },
           ].map((a) => (
             <Link key={a.href} href={a.href} target={a.target}
