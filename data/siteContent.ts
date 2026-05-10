@@ -13,6 +13,16 @@ export const siteContent = {
     tag: "SS 25",
     titleLine1: "CHOOSE YOUR",
     titleLine2: "SKIN",
+    subtitle: "Өөрийн skin-ээ сонго.",
+  },
+  drop: {
+    label: "ШИНЭ DROP",
+    cta: "Instagram үзэх",
+  },
+  manifesto: {
+    kicker: "Manifesto",
+    line1: "Not made to fit in.",
+    line2: "Built for the ones who wear their own noise.",
   },
   marquees: {
     top: "SOUL SKIN — UB.MN — SS 25 — LIMITED —",
@@ -28,7 +38,7 @@ export const siteContent = {
   },
   products: {
     label: "Selected Pieces",
-    cta: "View on Instagram",
+    cta: "Instagram үзэх",
   },
   customOrder: {
     titleLine1: "WANT SOMETHING",

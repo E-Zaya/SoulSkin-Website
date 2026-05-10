@@ -21,7 +21,7 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
       {Array.from({ length: filled }).map((_, i) => (
         <span
           key={`f-${i}`}
-          className="block rounded-full bg-ember"
+          className="block rounded-full bg-bone"
           style={{ width: 7, height: 7 }}
         />
       ))}
@@ -44,19 +44,22 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
 export default function Drop({ data }: Props) {
   if (!data) return null;
 
-  const label = data.label;
+  const label = siteContent.drop.label;
   const titleLine1 = data.title_line1;
   const titleLine2 = data.title_line2;
   const description = data.description;
   const piecesLeft = data.pieces_left;
-  const cta = data.cta;
+  const cta = siteContent.drop.cta;
   const imageSrc = data.image_url;
 
   const isSoldOut = piecesLeft === 0;
 
   return (
-    <section id="drop" className="relative bg-ash overflow-hidden">
-      <div className="editorial-split flex flex-col md:flex-row">
+    <section id="drop" className="section-gap-before relative bg-ash overflow-hidden">
+      <div className="drop-bg-type" aria-hidden="true">
+        DROP {titleLine2}
+      </div>
+      <div className="editorial-split relative z-10 flex flex-col md:flex-row">
         {/* Image column */}
         <div className="relative md:w-[64%] aspect-[4/5] md:aspect-[16/13] shrink-0 overflow-hidden">
           {imageSrc && (
@@ -111,7 +114,7 @@ export default function Drop({ data }: Props) {
         {/* Text column */}
         <div className="relative md:w-[36%] flex flex-col justify-center px-6 md:px-12 lg:px-14 section-pad-editorial">
           <ScrollReveal delay={0}>
-            <p className="text-brand-label mb-5 md:mb-6 text-ember">{label}</p>
+            <p className="text-brand-label mb-5 md:mb-6 text-dust/70">{label}</p>
           </ScrollReveal>
 
           <ScrollReveal delay={80}>
@@ -144,7 +147,7 @@ export default function Drop({ data }: Props) {
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-4">
                     <span className="h-px bg-iron/40 w-12" />
-                    <p className="text-brand-label !text-ember !font-bold">
+                    <p className="text-brand-label !text-dust !font-bold">
                       PIECES LEFT:{" "}
                       <span className="tabular-nums">
                         {String(piecesLeft).padStart(2, "0")}

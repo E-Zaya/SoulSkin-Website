@@ -15,7 +15,7 @@ export default function Marquee({
   const items = Array(12).fill(text);
 
   return (
-    <div className="relative border-t border-b border-cinder h-10 overflow-hidden flex items-center">
+    <div className="section-gap-before relative border-t border-b border-cinder h-10 overflow-hidden flex items-center">
       {/* Noise — only on one side, creates a boundary-glitch feel */}
       {noiseSide === "top" && (
         <NoiseAccent

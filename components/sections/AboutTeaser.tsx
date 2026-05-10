@@ -18,7 +18,7 @@ export default function AboutTeaser({ imageUrl, description }: Props) {
   if (!hasContent) return null;
 
   return (
-    <section id="about" className="relative bg-ash overflow-hidden">
+    <section id="about" className="section-gap-before relative bg-ash overflow-hidden">
       <div className="editorial-split flex flex-col md:flex-row">
         {/* Text column */}
         <div className="md:w-[44%] flex flex-col justify-center px-6 md:px-14 section-pad-editorial shrink-0">

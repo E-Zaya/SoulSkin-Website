@@ -56,7 +56,7 @@ export default function Hero({ imageUrl }: Props) {
             src={imageUrl}
             alt="Soul Skin — Wear Your Soul"
             fill
-            priority
+            preload
             className="object-cover object-center"
             onLoad={() => setLoaded(true)}
           />
@@ -105,10 +105,8 @@ export default function Hero({ imageUrl }: Props) {
           {siteContent.hero.tag}
         </p>
 
-        <h1
-          className={`text-brand-display display-hero ${
-            loaded ? "animate-hero-glitch" : ""
-          }`}
+        <div
+          className="hero-title-stack"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
@@ -116,10 +114,38 @@ export default function Hero({ imageUrl }: Props) {
               "opacity 900ms cubic-bezier(0.16,1,0.3,1) 600ms, transform 900ms cubic-bezier(0.16,1,0.3,1) 600ms",
           }}
         >
-          {siteContent.hero.titleLine1}
-          <br />
-          {siteContent.hero.titleLine2}
-        </h1>
+          <h1
+            className={`text-brand-display display-hero ${
+              loaded ? "animate-hero-glitch" : ""
+            }`}
+          >
+            {siteContent.hero.titleLine1}
+            <br />
+            {siteContent.hero.titleLine2}
+          </h1>
+          <span className="hero-title-split hero-title-split-a" aria-hidden="true">
+            {siteContent.hero.titleLine1}
+            <br />
+            {siteContent.hero.titleLine2}
+          </span>
+          <span className="hero-title-split hero-title-split-b" aria-hidden="true">
+            {siteContent.hero.titleLine1}
+            <br />
+            {siteContent.hero.titleLine2}
+          </span>
+        </div>
+
+        <p
+          className="mt-4 max-w-[18rem] font-sans text-[14px] leading-relaxed text-dust/80 md:mt-5 md:max-w-none md:text-[15px]"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(10px)",
+            transition:
+              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 900ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 900ms",
+          }}
+        >
+          {siteContent.hero.subtitle}
+        </p>
 
         {/* Accent line */}
         <div

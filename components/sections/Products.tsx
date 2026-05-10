@@ -230,7 +230,7 @@ function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto p-3 md:items-center md:p-8"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -238,7 +238,7 @@ function Modal({
 
       {/* Panel */}
       <div
-        className="modal-panel relative z-10 w-full max-w-3xl max-h-[90dvh] flex flex-col md:flex-row overflow-hidden"
+        className="modal-panel relative z-10 my-3 flex w-full max-w-3xl flex-col overflow-hidden md:my-0 md:max-h-[90dvh] md:flex-row"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
@@ -254,7 +254,7 @@ function Modal({
 
         {/* 画像カルーセル */}
         <div
-          className="relative w-full md:w-[55%] aspect-[3/4] md:aspect-auto shrink-0 overflow-hidden bg-ash"
+          className="relative h-[62svh] min-h-[420px] w-full shrink-0 overflow-hidden bg-ash md:h-auto md:min-h-0 md:w-[55%]"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
@@ -264,7 +264,13 @@ function Modal({
               className="absolute inset-0 transition-opacity duration-[400ms]"
               style={{ opacity: i === idx ? 1 : 0, zIndex: i === idx ? 1 : 0 }}
             >
-              <Image src={src} alt={`${product.name} ${i + 1}`} fill className="object-cover object-center" />
+              <Image
+                src={src}
+                alt={`${product.name} ${i + 1}`}
+                fill
+                sizes="(min-width: 768px) 55vw, 100vw"
+                className="object-cover object-center"
+              />
             </div>
           ))}
 
@@ -310,27 +316,27 @@ function Modal({
         </div>
 
         {/* 詳細情報 */}
-        <div className="flex flex-col justify-center px-6 py-8 md:py-10 overflow-y-auto">
-          <p className="font-mono text-[10px] text-iron/50 tracking-[0.3em] uppercase mb-4">
+        <div className="flex flex-col px-5 py-8 md:justify-center md:px-6 md:py-10 md:overflow-y-auto">
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-iron/50">
             {product.id}
           </p>
-          <h2 className="font-display text-bone text-[22px] md:text-[26px] leading-none tracking-tight mb-2">
+          <h2 className="mb-3 font-display text-[28px] leading-none tracking-tight text-bone md:mb-2 md:text-[26px]">
             {product.name}
           </h2>
-          <p className="font-mono text-[10px] text-iron uppercase tracking-widest mb-5">
+          <p className="mb-6 font-mono text-[10px] uppercase tracking-widest text-iron md:mb-5">
             {product.material}
           </p>
-          <p className="font-sans text-[13px] text-dust/80 leading-relaxed mb-5">
+          <p className="mb-6 max-w-[34rem] font-sans text-[14px] leading-[1.85] text-dust/82 md:mb-5 md:text-[13px] md:leading-relaxed">
             {product.desc}
           </p>
-          <p className="font-mono text-[11px] text-bone/50 tracking-widest mb-8">
+          <p className="mb-9 font-mono text-[11px] tracking-widest text-bone/55 md:mb-8">
             {product.price}
           </p>
           <Link
             href={siteContent.brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block border border-cinder px-6 py-3 text-center font-mono text-[11px] tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors"
+            className="inline-block w-full border border-cinder px-6 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-dust transition-colors hover:border-iron hover:text-bone md:w-auto md:py-3"
           >
             {siteContent.products.cta}
           </Link>
@@ -364,15 +370,15 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
 
           {/* カード下テキスト */}
           <h3
-            className="product-title mb-1 transition-transform duration-500 ease-out group-hover:-translate-y-0.5 cursor-pointer"
+            className="product-title mb-2 transition-transform duration-500 ease-out group-hover:-translate-y-0.5 cursor-pointer"
             onClick={() => setModalOpen(true)}
           >
             {product.name}
           </h3>
-          <p className="font-mono text-[10px] text-iron uppercase tracking-widest mb-2 transition-colors duration-300 group-hover:text-dust">
+          <p className="font-mono text-[10px] text-iron uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-dust">
             {product.material}
           </p>
-          <p className="font-sans text-[12px] text-dust/70 leading-relaxed mb-3 max-w-[90%]">
+          <p className="font-sans text-[12px] text-dust/65 leading-relaxed mb-4 max-w-[32rem] md:max-w-[90%] line-clamp-2">
             {product.desc}
           </p>
           <p className="font-mono text-[10px] text-bone/50 tracking-widest mb-4">
@@ -419,13 +425,13 @@ export default function Products({ data }: Props) {
   if (items.length === 0) return null;
 
   return (
-    <section id="archive" className="bg-void section-pad-tight">
+    <section id="archive" className="section-gap-before bg-void section-pad">
       <div className="container-base">
-        <ScrollReveal className="mb-8 md:mb-10" variant="fade-left">
+        <ScrollReveal className="mb-10 md:mb-12" variant="fade-left">
           <p className="text-brand-label">{siteContent.products.label}</p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
           {items.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}

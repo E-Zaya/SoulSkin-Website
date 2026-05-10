@@ -24,12 +24,12 @@ export default function LookbookTeaser({ data, limit = 4 }: Props) {
   if (items.length === 0) return null;
 
   return (
-    <section className="relative bg-void section-pad overflow-hidden">
+    <section className="section-gap-before relative bg-void section-pad overflow-hidden">
       <div className="container-base">
         <ScrollReveal variant="fade-up">
           <div className="flex items-end justify-between gap-6 mb-8 md:mb-12">
             <div>
-              <p className="text-brand-label mb-3 text-ember">
+              <p className="text-brand-label mb-3 text-dust/70">
                 {siteContent.lookbook.season}
               </p>
               <h2 className="text-brand-display display-section leading-[0.92]">

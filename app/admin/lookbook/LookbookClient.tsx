@@ -57,7 +57,7 @@ export default function LookbookClient({ initialItems }: Props) {
         );
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "並び替えに失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to reorder items");
       }
     });
   }
@@ -93,11 +93,11 @@ export default function LookbookClient({ initialItems }: Props) {
           setItems((prev) => [...prev, result]);
           setAddingNew(false);
           setNewPendingUpload(null);
-          flash("追加しました");
+          flash("Added");
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -144,11 +144,11 @@ export default function LookbookClient({ initialItems }: Props) {
           setItems((prev) => prev.map((i) => (i.id === id ? result : i)));
           setEditPendingUploads((prev) => { const n = { ...prev }; delete n[id]; return n; });
           setExpandedId(null);
-          flash("保存しました");
+          flash("Saved");
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -167,10 +167,10 @@ export default function LookbookClient({ initialItems }: Props) {
         setItems((prev) => prev.filter((i) => i.id !== id));
         setConfirmDeleteId(null);
         setExpandedId(null);
-        flash("削除しました");
+        flash("Deleted");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "削除に失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to delete");
         setConfirmDeleteId(null);
       }
     });
@@ -191,7 +191,7 @@ export default function LookbookClient({ initialItems }: Props) {
       </div>
 
       <p className="text-[12px] text-[#777] font-mono mb-5">
-        登録した全件がサイトに表示されます。▲▼ で順番を変更できます。
+        All registered items are shown on the site. Use the up and down controls to change the order.
       </p>
 
       {error && (
@@ -294,14 +294,14 @@ export default function LookbookClient({ initialItems }: Props) {
                 {/* アクション */}
                 {isDeleting ? (
                   <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                    <span className="text-[12px] text-[#f07070] font-mono">本当に削除しますか？</span>
+                    <span className="text-[12px] text-[#f07070] font-mono">Delete this item?</span>
                     <button onClick={() => handleDelete(item.id)} disabled={isPending}
                       className="text-[11px] font-mono tracking-widest uppercase text-[#f07070] border border-[#4a1a1a] px-3 py-1 hover:bg-[#4a1a1a] transition-colors disabled:opacity-40">
-                      {isPending ? "..." : "削除する"}
+                      {isPending ? "..." : "Delete"}
                     </button>
                     <button onClick={() => setConfirmDeleteId(null)} disabled={isPending}
                       className="text-[11px] font-mono text-[#888] hover:text-[#ccc] transition-colors">
-                      キャンセル
+                      Cancel
                     </button>
                   </div>
                 ) : (

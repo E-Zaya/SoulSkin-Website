@@ -95,10 +95,10 @@ export default function DropClient({ initialDrops }: Props) {
           setForm({ ...result });
           setPendingUpload(null); // 保存完了 → ゴミ扱い解除
         }
-        flash("保存しました");
+        flash("Saved");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "保存に失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to save");
       }
     });
   }
@@ -110,7 +110,7 @@ export default function DropClient({ initialDrops }: Props) {
         setDrops((prev) => prev.map((d) => ({ ...d, active: d.id === id })));
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -124,13 +124,13 @@ export default function DropClient({ initialDrops }: Props) {
           selectDrop(result);
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
 
   function handleDelete(drop: Drop) {
-    if (!confirm(`「${drop.title_line1} ${drop.title_line2}」を削除しますか？\nこの操作は元に戻せません。`)) return;
+    if (!confirm(`Delete "${drop.title_line1} ${drop.title_line2}"?\nThis action cannot be undone.`)) return;
     startTransition(async () => {
       try {
         await deleteDropAction(drop.id, drop.image_url);
@@ -147,10 +147,10 @@ export default function DropClient({ initialDrops }: Props) {
             setImageUrl("");
           }
         }
-        flash("削除しました");
+        flash("Deleted");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "削除に失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to delete");
       }
     });
   }
@@ -159,7 +159,7 @@ export default function DropClient({ initialDrops }: Props) {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-[13px] tracking-[0.25em] text-[#aaa] uppercase font-mono">Drop 管理</h1>
+        <h1 className="text-[13px] tracking-[0.25em] text-[#aaa] uppercase font-mono">Drop Manager</h1>
         <button onClick={handleNew} disabled={isPending}
           className="text-[12px] tracking-widest uppercase font-mono border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40">
           {isPending ? "..." : "+ New Drop"}
@@ -195,7 +195,7 @@ export default function DropClient({ initialDrops }: Props) {
                   </span>
                 )}
               </div>
-              <p className="text-[12px] text-[#777] font-mono">残り {drop.pieces_left} 枚</p>
+              <p className="text-[12px] text-[#777] font-mono">{drop.pieces_left} left</p>
               {!drop.active && (
                 <div className="mt-2 flex items-center gap-3">
                   <button
@@ -203,7 +203,7 @@ export default function DropClient({ initialDrops }: Props) {
                     disabled={isPending}
                     className="text-[11px] tracking-widest uppercase font-mono text-[#666] hover:text-[#5dd49a] transition-colors"
                   >
-                    Set Live →
+                    Set Live
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); handleDelete(drop); }}

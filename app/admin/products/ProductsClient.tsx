@@ -113,7 +113,7 @@ function ProductImagesEditor({
       <p className="text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-3">
         Product Images
         <span className="text-[#555] ml-2 normal-case tracking-normal">
-          ({images.length}/{MAX_IMAGES}) — 1枚目がメイン表示
+          ({images.length}/{MAX_IMAGES}) - First image is used as the main image
         </span>
       </p>
 
@@ -157,7 +157,7 @@ function ProductImagesEditor({
       {/* 新規追加 */}
       {canAdd && (
         <div className="border border-dashed border-[#282828] p-3 bg-[#090909]">
-          <p className="font-mono text-[11px] text-[#555] mb-2">画像を追加 (残り {MAX_IMAGES - images.length} 枚)</p>
+          <p className="font-mono text-[11px] text-[#555] mb-2">Add image ({MAX_IMAGES - images.length} remaining)</p>
           <ImageUpload
             currentUrl={null}
             onUrlChange={setNewUrl}
@@ -178,14 +178,14 @@ function ProductImagesEditor({
               disabled={uploading}
               className="mt-2 font-mono text-[11px] tracking-widest uppercase border border-[#333] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
             >
-              {uploading ? "追加中..." : "+ Add"}
+              {uploading ? "Adding..." : "+ Add"}
             </button>
           )}
         </div>
       )}
 
       {!canAdd && (
-        <p className="font-mono text-[10px] text-[#555] mt-1">最大 {MAX_IMAGES} 枚に達しました</p>
+        <p className="font-mono text-[10px] text-[#555] mt-1">Maximum of {MAX_IMAGES} images reached</p>
       )}
     </div>
   );
@@ -237,7 +237,7 @@ export default function ProductsClient({ initialProducts }: Props) {
         await reorderProductsAction(reordered.map((p) => ({ id: p.id, order_index: p.order_index })));
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "並び替えに失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to reorder products");
       }
     });
   }
@@ -261,7 +261,7 @@ export default function ProductsClient({ initialProducts }: Props) {
 
   function handleSaveNew() {
     if (!newForm.name.trim() || !newForm.sku.trim()) {
-      setError("Name と SKU は必須です");
+      setError("Name and SKU are required");
       return;
     }
     setError("");
@@ -274,11 +274,11 @@ export default function ProductsClient({ initialProducts }: Props) {
           setProducts((prev) => [...prev, { ...result, images: [] }]);
           setAddingNew(false);
           setNewPendingUpload(null);
-          flash("追加しました。Edit から画像を追加してください。");
+          flash("Added. Add images from Edit.");
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -311,7 +311,7 @@ export default function ProductsClient({ initialProducts }: Props) {
   function handleSaveEdit(id: string) {
     const form = editForms[id];
     if (!form) return;
-    if (!id) { setError("Product ID が見つかりません"); return; }
+    if (!id) { setError("Product ID was not found"); return; }
     setError("");
     startTransition(async () => {
       try {
@@ -336,11 +336,11 @@ export default function ProductsClient({ initialProducts }: Props) {
           );
           setEditPendingUploads((prev) => { const n = { ...prev }; delete n[id]; return n; });
           setExpandedId(null);
-          flash("保存しました");
+          flash("Saved");
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -358,10 +358,10 @@ export default function ProductsClient({ initialProducts }: Props) {
         setProducts((prev) => prev.filter((p) => p.id !== id));
         setConfirmDeleteId(null);
         setExpandedId(null);
-        flash("削除しました");
+        flash("Deleted");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "削除に失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to delete");
         setConfirmDeleteId(null);
       }
     });
@@ -378,7 +378,7 @@ export default function ProductsClient({ initialProducts }: Props) {
           router.refresh();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "エラーが発生しました");
+        setError(e instanceof Error ? e.message : "An error occurred");
       }
     });
   }
@@ -417,13 +417,13 @@ export default function ProductsClient({ initialProducts }: Props) {
           <div>
             <label className="block text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">Description</label>
             <textarea value={newForm.description} onChange={(e) => setNewForm((f) => ({ ...f, description: e.target.value }))}
-              rows={2} placeholder="詳細説明..."
+              rows={2} placeholder="Product description..."
               className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none font-mono placeholder:text-[#444]" />
           </div>
           <F label="Price" value={newForm.price} onChange={(v) => setNewForm((f) => ({ ...f, price: v }))} />
           <div>
             <p className="text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">
-              1枚目の画像 <span className="text-[#555] normal-case tracking-normal font-mono">(保存後に追加画像を設定できます)</span>
+              First image <span className="text-[#555] normal-case tracking-normal font-mono">(You can add more images after saving)</span>
             </p>
             <ImageUpload
               currentUrl={null}
@@ -451,7 +451,7 @@ export default function ProductsClient({ initialProducts }: Props) {
       {/* ── 商品リスト ── */}
       {products.length === 0 && !addingNew ? (
         <p className="text-[13px] text-[#666] font-mono py-10 text-center">
-          商品がまだありません。「+ Add Product」から追加してください。
+          No products yet. Use "+ Add Product" to create one.
         </p>
       ) : (
         <div className="space-y-2">
@@ -500,14 +500,14 @@ export default function ProductsClient({ initialProducts }: Props) {
                   {/* アクション */}
                   {isDeleting ? (
                     <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                      <span className="text-[12px] text-[#f07070] font-mono">本当に削除しますか？</span>
+                      <span className="text-[12px] text-[#f07070] font-mono">Delete this product?</span>
                       <button onClick={() => handleDelete(product.id)} disabled={isPending}
                         className="text-[11px] font-mono tracking-widest uppercase text-[#f07070] border border-[#4a1a1a] px-3 py-1 hover:bg-[#4a1a1a] transition-colors disabled:opacity-40">
-                        {isPending ? "..." : "削除する"}
+                        {isPending ? "..." : "Delete"}
                       </button>
                       <button onClick={() => setConfirmDeleteId(null)}
                         className="text-[11px] font-mono text-[#888] hover:text-[#ccc] transition-colors">
-                        キャンセル
+                        Cancel
                       </button>
                     </div>
                   ) : (

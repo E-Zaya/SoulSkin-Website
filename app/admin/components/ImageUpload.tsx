@@ -37,7 +37,7 @@ export default function ImageUpload({
     setPreview(val);
 
     if (!isManagedImageUrl(val)) {
-      setError("/public path か Supabase Storage URL のみ使用してください");
+      setError("Use only a /public path or a Supabase Storage URL");
       return;
     }
 
@@ -107,7 +107,7 @@ export default function ImageUpload({
             type="text"
             value={url}
             onChange={handleUrlInput}
-            placeholder="/product.png または Supabase Storage URL"
+            placeholder="/product.png or Supabase Storage URL"
             className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2 focus:outline-none focus:border-[#505050] font-mono placeholder:text-[#444]"
           />
           <div className="flex items-center gap-3 flex-wrap">
@@ -117,7 +117,7 @@ export default function ImageUpload({
               disabled={uploading}
               className="text-[11px] tracking-widest uppercase font-mono border border-[#282828] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#505050] transition-colors disabled:opacity-40 whitespace-nowrap"
             >
-              {uploading ? "Uploading..." : "↑ Upload Image"}
+              {uploading ? "Uploading..." : "Upload Image"}
             </button>
             <span className="text-[10px] text-[#555] font-mono">JPG / PNG / WEBP · Max 5MB</span>
           </div>

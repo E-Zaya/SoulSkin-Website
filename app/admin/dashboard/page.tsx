@@ -16,7 +16,7 @@ export default async function DashboardPage() {
       href:  "/admin/drop",
       label: "Current Drop",
       value: drop ? `${drop.title_line1} ${drop.title_line2}` : "—",
-      sub:   drop ? `残り ${drop.pieces_left} 枚` : "未設定",
+      sub:   drop ? `${drop.pieces_left} left` : "Not set",
       live:  !!drop,
     },
     {
@@ -36,8 +36,8 @@ export default async function DashboardPage() {
     {
       href:  "/admin/site",
       label: "Site",
-      value: "設定",
-      sub:   siteSettings ? "Hero / About" : "未設定",
+      value: "Settings",
+      sub:   siteSettings ? "Hero / About" : "Not set",
       live:  false,
     },
   ];
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
             { href: "/admin/products", label: "Add Product" },
             { href: "/admin/lookbook", label: "Edit Lookbook" },
             { href: "/admin/site",     label: "Edit Site" },
-            { href: "/",              label: "View Site ↗", target: "_blank" },
+            { href: "/",              label: "View Site", target: "_blank" },
           ].map((a) => (
             <Link key={a.href} href={a.href} target={a.target}
               className="text-[12px] tracking-widest uppercase font-mono border border-[#2a2a2a] px-4 py-2 text-[#888] hover:text-[#f0f0f0] hover:border-[#444] transition-colors">

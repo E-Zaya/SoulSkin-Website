@@ -52,10 +52,10 @@ export default function SiteClient({ initialSettings }: Props) {
 
         setPendingHero(null);
         setPendingAbout(null);
-        flash("保存しました");
+        flash("Saved");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "保存に失敗しました");
+        setError(e instanceof Error ? e.message : "Failed to save");
       }
     });
   }
@@ -64,7 +64,7 @@ export default function SiteClient({ initialSettings }: Props) {
     <div>
       {/* Header */}
       <h1 className="text-[13px] tracking-[0.25em] text-[#aaa] uppercase font-mono mb-8">
-        Site 設定
+        Site Settings
       </h1>
 
       {error && (
@@ -86,7 +86,7 @@ export default function SiteClient({ initialSettings }: Props) {
             Hero
           </p>
           <p className="text-[12px] text-[#555] font-mono mb-4">
-            トップページの全画面背景画像
+            Full-screen background image for the home page
           </p>
           <ImageUpload
             currentUrl={heroUrl || null}
@@ -106,10 +106,10 @@ export default function SiteClient({ initialSettings }: Props) {
         {/* About 画像 */}
         <section>
           <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-1">
-            About — 画像
+            About - Image
           </p>
           <p className="text-[12px] text-[#555] font-mono mb-4">
-            About セクションの右カラムに表示される画像
+            Image shown in the right column of the About section
           </p>
           <ImageUpload
             currentUrl={aboutUrl || null}
@@ -129,17 +129,17 @@ export default function SiteClient({ initialSettings }: Props) {
         {/* About テキスト */}
         <section>
           <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-1">
-            About — テキスト
+            About - Text
           </p>
           <p className="text-[12px] text-[#555] font-mono mb-4">
-            About セクションに表示される紹介文
+            Intro text shown in the About section
           </p>
           <textarea
             value={aboutDesc}
             onChange={(e) => setAboutDesc(e.target.value)}
             rows={4}
             className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none font-mono leading-relaxed placeholder:text-[#444]"
-            placeholder="About テキストを入力..."
+            placeholder="Enter About text..."
           />
         </section>
 

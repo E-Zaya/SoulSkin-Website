@@ -36,12 +36,12 @@ export async function saveDropAction(data: {
     shouldActivate ? { ...data, active: false } : data
   );
 
-  assertNoError(error, "Drop の保存に失敗しました");
-  if (!result) throw new Error("Drop の保存結果が取得できませんでした");
+  assertNoError(error, "Failed to save drop");
+  if (!result) throw new Error("Could not retrieve the saved drop");
 
   if (shouldActivate) {
     const { data: activatedDrop, error: activationError } = await db.setActiveDrop(result.id);
-    assertNoError(activationError, "Active Drop の切り替えに失敗しました");
+    assertNoError(activationError, "Failed to switch active drop");
     revalidate();
     return activatedDrop ?? { ...result, active: true };
   }
@@ -60,13 +60,13 @@ export async function createDropAction() {
     cta: "",
     active: false,
   });
-  assertNoError(error, "Drop の作成に失敗しました");
+  assertNoError(error, "Failed to create drop");
   return result;
 }
 
 export async function activateDropAction(id: string) {
   const { error } = await db.setActiveDrop(id);
-  assertNoError(error, "Active Drop の切り替えに失敗しました");
+  assertNoError(error, "Failed to switch active drop");
   revalidate();
 }
 
@@ -76,7 +76,7 @@ export async function deleteDropAction(id: string, imageUrl: string | null) {
     await deleteStorageImageAction(imageUrl).catch(console.error);
   }
   const { error } = await db.deleteDrop(id);
-  assertNoError(error, "Drop の削除に失敗しました");
+  assertNoError(error, "Failed to delete drop");
   revalidate();
 }
 
@@ -95,14 +95,14 @@ export async function saveProductAction(data: {
   active: boolean;
 }) {
   const { data: result, error } = await db.upsertProduct(data);
-  assertNoError(error, "Product の保存に失敗しました");
+  assertNoError(error, "Failed to save product");
   revalidate();
   return result;
 }
 
 export async function deleteProductAction(id: string) {
   const { error } = await db.deleteProduct(id);
-  assertNoError(error, "Product の削除に失敗しました");
+  assertNoError(error, "Failed to delete product");
   revalidate();
 }
 
@@ -117,7 +117,7 @@ export async function reorderProductsAction(
     )
   );
   const failed = results.find((result) => result.error);
-  assertNoError(failed?.error ?? null, "Products の並び替えに失敗しました");
+  assertNoError(failed?.error ?? null, "Failed to reorder products");
   revalidate();
 }
 
@@ -130,14 +130,14 @@ export async function saveLookbookItemAction(data: {
   order_index: number;
 }) {
   const { data: result, error } = await db.upsertLookbookItem(data);
-  assertNoError(error, "Lookbook item の保存に失敗しました");
+  assertNoError(error, "Failed to save lookbook item");
   revalidate();
   return result;
 }
 
 export async function deleteLookbookItemAction(id: string) {
   const { error } = await db.deleteLookbookItem(id);
-  assertNoError(error, "Lookbook item の削除に失敗しました");
+  assertNoError(error, "Failed to delete lookbook item");
   revalidate();
 }
 
@@ -152,7 +152,7 @@ export async function reorderLookbookAction(
     )
   );
   const failed = results.find((result) => result.error);
-  assertNoError(failed?.error ?? null, "Lookbook の並び替えに失敗しました");
+  assertNoError(failed?.error ?? null, "Failed to reorder lookbook items");
   revalidate();
 }
 
@@ -166,7 +166,7 @@ export async function saveProductImageAction(data: {
 }) {
   // revalidate しない — 呼び出し元の saveProductAction でまとめて行う
   const { data: result, error } = await db.upsertProductImage(data);
-  assertNoError(error, "Product image の保存に失敗しました");
+  assertNoError(error, "Failed to save product image");
   return result;
 }
 
@@ -175,7 +175,7 @@ export async function deleteProductImageAction(id: string, imageUrl: string | nu
     await deleteStorageImageAction(imageUrl).catch(console.error);
   }
   const { error } = await db.deleteProductImage(id);
-  assertNoError(error, "Product image の削除に失敗しました");
+  assertNoError(error, "Failed to delete product image");
   // revalidate しない — 呼び出し元の saveProductAction でまとめて行う
 }
 
@@ -189,7 +189,7 @@ export async function reorderProductImagesAction(
     )
   );
   const failed = results.find((r) => r.error);
-  assertNoError(failed?.error ?? null, "Product images の並び替えに失敗しました");
+  assertNoError(failed?.error ?? null, "Failed to reorder product images");
   // revalidate しない — 呼び出し元でまとめて行う
 }
 
@@ -201,7 +201,7 @@ export async function saveSiteSettingsAction(data: {
   about_description: string;
 }) {
   const { data: result, error } = await db.upsertSiteSettings(data);
-  assertNoError(error, "Site 設定の保存に失敗しました");
+  assertNoError(error, "Failed to save site settings");
   revalidate();
   return result;
 }
@@ -222,5 +222,5 @@ export async function deleteStorageImageAction(url: string | null | undefined) {
   const path = decodeURIComponent(url.slice(idx + marker.length));
   const supabase = createServerClient();
   const { error } = await supabase.storage.from(BUCKET).remove([path]);
-  assertNoError(error, "Storage 画像の削除に失敗しました");
+  assertNoError(error, "Failed to delete storage image");
 }

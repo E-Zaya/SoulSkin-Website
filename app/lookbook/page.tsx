@@ -7,11 +7,11 @@ import { getLookbookItems } from "@/lib/db";
 export const metadata: Metadata = {
   title: "Lookbook — Soul Skin",
   description:
-    "Shot in Ulaanbaatar. Each image is a document, not a pose. The Soul Skin SS25 lookbook.",
+    "Shot in Ulaanbaatar. Each image is a document, not a pose. The Soul Skin lookbook.",
   openGraph: {
     title: "Lookbook — Soul Skin",
     description:
-      "Shot in Ulaanbaatar. Each image is a document, not a pose. The Soul Skin SS25 lookbook.",
+      "Shot in Ulaanbaatar. Each image is a document, not a pose. The Soul Skin lookbook.",
     type: "article",
   },
 };

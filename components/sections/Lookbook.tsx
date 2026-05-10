@@ -22,6 +22,7 @@ export default function Lookbook({ data }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const items: ViewItem[] = (data ?? [])
     .filter((item): item is LookbookItem & { image_url: string } =>
@@ -43,6 +44,19 @@ export default function Lookbook({ data }: Props) {
 
   const goPrev = useCallback(() => goTo(activeIdx - 1), [activeIdx, goTo]);
   const goNext = useCallback(() => goTo(activeIdx + 1), [activeIdx, goTo]);
+
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(diff) < 42) return;
+    if (diff < 0) goNext();
+    else goPrev();
+  }
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -74,24 +88,32 @@ export default function Lookbook({ data }: Props) {
     if (!scroller) return;
     const frame = inner.children[activeIdx] as HTMLElement | undefined;
     if (!frame) return;
+    if (isDesktop) {
+      const targetTop =
+        frame.offsetTop - scroller.clientHeight / 2 + frame.clientHeight / 2;
+      scroller.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+      return;
+    }
     const targetLeft =
       frame.offsetLeft - scroller.clientWidth / 2 + frame.clientWidth / 2;
     scroller.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
-  }, [activeIdx, items.length]);
+  }, [activeIdx, isDesktop, items.length]);
 
   if (items.length === 0) return null;
 
   const activeItem = items[activeIdx];
+  const frameNumber = String(activeIdx + 1).padStart(3, "0");
+  const frameMeta = `${siteContent.hero.tag.replace(/\s+/g, "")} / FRAME ${frameNumber}`;
 
   // ════════════════════════════════════════
   // PC: Option A (フルワイド＋フィルムストリップ下)
   // ════════════════════════════════════════
   if (isDesktop) {
     return (
-      <section id="lookbook" className="relative overflow-hidden bg-void">
+      <section id="lookbook" className="lookbook-desktop-layout relative overflow-hidden bg-void section-gap-before">
         {/* フルワイド画像エリア */}
         <div
-          className="relative w-full overflow-hidden bg-ash"
+          className="lookbook-desktop-main relative w-full overflow-hidden bg-ash"
           style={{ height: "80vh", maxHeight: "850px" }}
         >
           {/* 画像スタック（フェードトランジション） */}
@@ -109,8 +131,8 @@ export default function Lookbook({ data }: Props) {
                 src={item.src}
                 alt={`Lookbook — ${item.label} — Soul Skin`}
                 fill
-                priority={i === 0}
-                sizes="100vw"
+                preload={i === 0}
+                sizes="calc(100vw - 280px)"
                 className="object-contain object-center"
               />
             </div>
@@ -145,8 +167,8 @@ export default function Lookbook({ data }: Props) {
 
           {/* 左下キャプション */}
           <div className="lookbook-caption absolute z-20">
-            <p className="mb-3 text-brand-label text-ember">
-              {siteContent.lookbook.season}
+            <p className="mb-3 text-brand-label text-dust/70">
+              {frameMeta}
             </p>
             <h2 className="lookbook-title mb-4 text-brand-display">
               {siteContent.lookbook.titleLine1}
@@ -162,15 +184,26 @@ export default function Lookbook({ data }: Props) {
         </div>
 
         {/* カウンター＋ナビゲーションバー */}
-        <div className="flex items-center justify-between border-b border-cinder/60 bg-void px-6 py-3">
-          <span className="font-mono text-[11px] tracking-widest text-dust/50">
+        <div className="lookbook-desktop-rail-header relative flex items-start justify-between border-b border-cinder/60 bg-void px-6 py-5">
+          <div>
+            <p className="text-brand-label text-iron">
+              {siteContent.lookbook.label}
+            </p>
+            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.28em] text-dust/60">
+              {frameMeta}
+            </p>
+          </div>
+          <span
+            key={activeIdx}
+            className="lookbook-counter-pop font-mono text-[11px] tracking-widest text-dust/50"
+          >
             {String(activeIdx + 1).padStart(2, "0")}
             <span className="text-iron/50">
               {" / "}
               {String(items.length).padStart(2, "0")}
             </span>
           </span>
-          <div className="flex items-center gap-2">
+          <div className="absolute bottom-5 left-6 flex items-center gap-2">
             <button
               type="button"
               onClick={goPrev}
@@ -191,14 +224,14 @@ export default function Lookbook({ data }: Props) {
         </div>
 
         {/* フィルムストリップ（水平・全幅） */}
-        <div className="relative bg-void">
+        <div className="lookbook-desktop-film relative bg-void">
           <Sprockets />
           <div
-            className="bg-ash"
+            className="lookbook-desktop-film-scroll bg-ash"
             style={{
-              overflowX: "auto",
-              overflowY: "hidden",
-              height: "200px",
+              overflowX: "hidden",
+              overflowY: "auto",
+              height: "100%",
               scrollbarWidth: "none",
             }}
           >
@@ -206,10 +239,10 @@ export default function Lookbook({ data }: Props) {
               ref={stripRef}
               style={{
                 display: "flex",
-                flexDirection: "row",
-                alignItems: "flex-end",
+                flexDirection: "column",
+                alignItems: "center",
                 gap: "3px",
-                minWidth: "max-content",
+                minHeight: "max-content",
                 padding: "0.75rem 1rem",
               }}
             >
@@ -239,11 +272,16 @@ export default function Lookbook({ data }: Props) {
       <div className="lookbook-inner">
         <div className="lookbook-grid">
           {/* メイン画像 */}
-          <div className="lookbook-main">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div
+            className="lookbook-main"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <Image
               src={activeItem.src}
               alt={`Lookbook — ${activeItem.label} — Soul Skin`}
+              fill
+              sizes="100vw"
               className="lookbook-mobile-image"
             />
 
@@ -263,10 +301,10 @@ export default function Lookbook({ data }: Props) {
 
             {/* 左下キャプション */}
             <div className="lookbook-caption absolute z-20">
-              <p className="mb-3 text-brand-label text-ember">
-                {siteContent.lookbook.season}
+              <p className="mb-2 text-brand-label text-dust/70">
+                {frameMeta}
               </p>
-              <h2 className="lookbook-title mb-4 text-brand-display">
+              <h2 className="lookbook-title mb-3 text-brand-display">
                 {siteContent.lookbook.titleLine1}
                 <br />
                 {siteContent.lookbook.titleLine2}
@@ -297,7 +335,10 @@ export default function Lookbook({ data }: Props) {
           {/* フィルムストリップエリア */}
           <aside className="lookbook-aside relative flex flex-col bg-void">
             <div className="flex items-center justify-between border-b border-cinder/60 pb-4">
-              <span className="font-mono text-[11px] tracking-widest text-dust/50">
+              <span
+                key={activeIdx}
+                className="lookbook-counter-pop font-mono text-[11px] tracking-widest text-dust/50"
+              >
                 {String(activeIdx + 1).padStart(2, "0")}
                 <span className="text-iron/50">
                   {" / "}
@@ -384,7 +425,9 @@ function FilmFrame({
       <div
         className="relative h-full w-full overflow-hidden"
         style={{
-          outline: isActive ? "1.5px solid #442fbd" : "1.5px solid transparent",
+          outline: isActive
+            ? "1.5px solid var(--color-ember)"
+            : "1.5px solid transparent",
         }}
       >
         <Image
@@ -403,7 +446,7 @@ function FilmFrame({
           className="pointer-events-none absolute bottom-1.5 left-2 font-mono text-[8px] tracking-widest"
           style={{
             color: isActive
-              ? "#442fbd"
+              ? "var(--color-ember)"
               : hovered
                 ? "rgba(255,255,255,0.6)"
                 : "rgba(255,255,255,0.22)",

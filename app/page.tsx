@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
+import ManifestoStrip from "@/components/sections/ManifestoStrip";
 import Marquee from "@/components/sections/Marquee";
 import Drop from "@/components/sections/Drop";
 import LookbookTeaser from "@/components/sections/LookbookTeaser";
@@ -53,11 +54,14 @@ export default async function Home() {
         {/* 1. Hero */}
         <Hero imageUrl={siteSettings?.hero_image_url} />
 
+        {/* 2. Brand manifesto */}
+        <ManifestoStrip />
+
         {/* 3. Drop — current release. Past drops are at /drops. */}
         <Drop data={drop} />
 
         {/* 3b. Drop link strip — replaces the inline archive on the landing page */}
-        <section className="bg-void section-pad-tight border-t border-cinder/40">
+        <section className="section-gap-before bg-void section-link-strip">
           <div className="container-base flex items-center justify-between gap-4">
             <span className="text-brand-label !text-iron">Releases</span>
             <Link
@@ -75,7 +79,7 @@ export default async function Home() {
 
         {/* 5. Pieces preview — first 3 only. Rest at /pieces. */}
         <Products data={featuredProducts} />
-        <section className="bg-void section-pad-tight">
+        <section className="section-gap-before bg-void section-link-strip">
           <div className="container-base flex items-center justify-between gap-4">
             <span className="text-brand-label !text-iron">Pieces</span>
             <Link

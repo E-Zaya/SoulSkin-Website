@@ -32,7 +32,7 @@ export default function CustomOrder() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden section-pad transition-colors duration-700"
+      className="section-gap-before relative overflow-hidden section-pad transition-colors duration-700"
       style={{ backgroundColor: "var(--cta-bg)" }}
     >
       {/* Noise accents */}

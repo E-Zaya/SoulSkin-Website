@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteContent } from "@/data/siteContent";
@@ -22,11 +22,22 @@ function isActive(pathname: string, href: string): boolean {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname() || "/";
 
   // Scroll-aware blur — only on first scroll past the threshold
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const diff = currentY - lastScrollY.current;
+
+      setScrolled(currentY > 20);
+      if (Math.abs(diff) > 8) {
+        setHidden(currentY > 96 && diff > 0);
+        lastScrollY.current = currentY;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -55,7 +66,9 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 nav-shell flex items-center justify-between ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out nav-shell flex items-center justify-between ${
+          hidden && !menuOpen ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+        } ${
           scrolled || menuOpen
             ? "bg-void/85 backdrop-blur-lg border-b border-white/[0.04]"
             : "bg-transparent"

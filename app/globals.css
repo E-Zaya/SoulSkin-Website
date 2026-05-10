@@ -8,7 +8,7 @@
   --color-iron: #5c5650;
   --color-bone: #ede8e1;
   --color-dust: #c8c0b6; /* slightly brighter for better hierarchy */
-  --color-ember: #442fbd; /* primary accent purple */
+  --color-ember: #5a48d6; /* primary accent, reserved for active and high-intent moments */
   --color-rust: #a8453e;  /* secondary accent — used for state tags (LIVE / SOLD OUT) */
 
   /* ── Fonts: must match app/layout.tsx font variables ── */
@@ -31,16 +31,18 @@
   --container-wide-x-md: 4rem;
 
   /* ── Section Spacing Tokens ── */
-  --section-y-tight: 1.75rem;
-  --section-y: 2.25rem;
-  --section-y-feature: 2.75rem;
+  --section-y-tight: 1.25rem;
+  --section-y: 3.25rem;
+  --section-y-feature: 4rem;
   --section-y-compact: 2.25rem;
-  --section-y-editorial: 2.5rem;
-  --section-y-tight-md: 3rem;
-  --section-y-md: 4.25rem;
-  --section-y-feature-md: 5rem;
-  --section-y-compact-md: 4rem;
-  --section-y-editorial-md: 4.5rem;
+  --section-y-editorial: 3rem;
+  --section-boundary-y: 2.25rem;
+  --section-y-tight-md: 2rem;
+  --section-y-md: 5rem;
+  --section-y-feature-md: 6.5rem;
+  --section-y-compact-md: 3.5rem;
+  --section-y-editorial-md: 5rem;
+  --section-boundary-y-md: 4.5rem;
 
   /* ── Component Spacing Tokens ── */
   --nav-h: 3.5rem;
@@ -99,8 +101,8 @@
   --cta-bg: var(--color-void);
   --cta-bg-soft: #100e12;
   --cta-accent: var(--color-ember);
-  --cta-accent-soft: rgba(68, 47, 189, 0.34);
-  --cta-accent-faint: rgba(68, 47, 189, 0.16);
+  --cta-accent-soft: rgba(90, 72, 214, 0.3);
+  --cta-accent-faint: rgba(90, 72, 214, 0.12);
   --shadow-hero-title: 0 2px 30px rgba(10, 9, 8, 0.38);
 }
 
@@ -210,6 +212,30 @@ body::-webkit-scrollbar {
   }
 }
 
+@keyframes hero-split-drift {
+  0%,
+  100% {
+    clip-path: inset(0 0 58% 0);
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.32;
+  }
+  16% {
+    clip-path: inset(8% 0 48% 0);
+    transform: translate(8px, -1px);
+  }
+  20% {
+    clip-path: inset(54% 0 18% 0);
+    transform: translate(-6px, 2px);
+    opacity: 0.18;
+  }
+  24% {
+    opacity: 0;
+  }
+}
+
 @keyframes clip-reveal-up {
   from {
     clip-path: inset(100% 0 0 0);
@@ -234,6 +260,22 @@ body::-webkit-scrollbar {
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+@keyframes lookbook-counter-pop {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+    color: var(--color-ember);
+  }
+  45% {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -318,6 +360,22 @@ body::-webkit-scrollbar {
     padding-block: var(--section-y-editorial);
   }
 
+  .section-pad-boundary {
+    padding-block: var(--section-boundary-y);
+  }
+
+  .section-gap-before {
+    margin-top: var(--section-boundary-y);
+  }
+
+  .section-link-strip {
+    padding-block: 1rem;
+    border-block: 1px solid rgba(46, 43, 40, 0.38);
+    background:
+      linear-gradient(to right, rgba(237, 232, 225, 0.02), transparent 32%),
+      var(--color-void);
+  }
+
   .text-measure-sm {
     max-width: 320px;
   }
@@ -336,12 +394,41 @@ body::-webkit-scrollbar {
   }
 
   .hero-shell {
-    min-height: 86svh;
+    min-height: 100svh;
+    height: 100svh;
   }
 
   .hero-content-position {
     left: var(--hero-content-x);
     bottom: var(--hero-content-bottom);
+  }
+
+  .hero-title-stack {
+    position: relative;
+    width: fit-content;
+  }
+
+  .hero-title-split {
+    position: absolute;
+    inset: 0;
+    font-family: var(--font-display);
+    font-size: var(--display-hero);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-brand-tight);
+    pointer-events: none;
+    text-shadow: var(--shadow-hero-title);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  .hero-title-split-a {
+    color: rgba(90, 72, 214, 0.72);
+    animation: hero-split-drift 4.6s steps(2, end) 1.7s infinite;
+  }
+
+  .hero-title-split-b {
+    color: rgba(237, 232, 225, 0.34);
+    animation: hero-split-drift 5.4s steps(2, end) 2.1s infinite reverse;
   }
 
   /* Typography Utilities */
@@ -408,6 +495,21 @@ body::-webkit-scrollbar {
     color: var(--color-bone);
   }
 
+  .drop-bg-type {
+    position: absolute;
+    right: -0.08em;
+    bottom: -0.18em;
+    z-index: 0;
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 31vw, 28rem);
+    line-height: 0.78;
+    letter-spacing: -0.03em;
+    color: rgba(237, 232, 225, 0.045);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
   /* Image Ratio Utilities */
   .lookbook-tall-mobile {
     min-height: 340px;
@@ -472,6 +574,14 @@ body::-webkit-scrollbar {
     text-transform: uppercase;
   }
 
+  .cta-link > span:last-child {
+    transition: transform 200ms ease, opacity 200ms ease;
+  }
+
+  .cta-link:hover > span:last-child {
+    transform: translateX(0.2rem);
+  }
+
   .cta-link-sm {
     font-size: 0.6875rem;
     letter-spacing: 0.2em;
@@ -484,7 +594,7 @@ body::-webkit-scrollbar {
 
   /* ── Lookbook ── */
   .lookbook-section {
-    padding-block: var(--section-y-tight);
+    padding-block: var(--section-y);
   }
 
   .lookbook-inner {
@@ -505,13 +615,15 @@ body::-webkit-scrollbar {
     justify-content: center;
     overflow: hidden;
     background-color: var(--color-ash);
-    aspect-ratio: 4 / 5;
+    height: clamp(460px, 72svh, 620px);
+    width: 100%;
   }
 
   .lookbook-mobile-image {
-    display: block;
-    width: 100%;
-    height: 100%;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
     object-fit: contain;
     object-position: center center;
   }
@@ -524,39 +636,48 @@ body::-webkit-scrollbar {
     background: var(--overlay-lookbook-bottom);
   }
 
+  .lookbook-counter-pop {
+    display: inline-block;
+    animation: lookbook-counter-pop 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   .lookbook-mobile-fade {
-    height: 42%;
+    height: 38%;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.72),
-      rgba(0, 0, 0, 0.18) 62%,
+      rgba(0, 0, 0, 0.58),
+      rgba(0, 0, 0, 0.14) 62%,
       transparent
     );
   }
 
   .lookbook-caption {
-    left: 1.25rem;
-    bottom: 2rem;
-    max-width: 300px;
+    left: 1rem;
+    right: 1rem;
+    bottom: 3.75rem;
+    max-width: 280px;
   }
 
   .lookbook-title {
-    font-size: clamp(2.3rem, 8vw, 5rem);
-    line-height: 0.88;
+    font-size: clamp(2rem, 10vw, 3.7rem);
+    line-height: 0.9;
   }
 
   .lookbook-aside {
     min-height: 420px;
+    min-width: 0;
   }
 
   .lookbook-copy-block {
     padding-block: 1.25rem;
+    display: none;
   }
 
   .lookbook-strip-scroller {
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
+    max-width: 100%;
   }
 
   .lookbook-strip-scroller::-webkit-scrollbar {
@@ -588,6 +709,42 @@ body::-webkit-scrollbar {
     color: rgba(237, 232, 225, 1);
   }
 
+  .lookbook-desktop-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-rows: minmax(220px, 1fr) minmax(0, 1.7fr);
+    height: min(82vh, 860px);
+    max-height: 860px;
+  }
+
+  .lookbook-desktop-main {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    height: 100% !important;
+    max-height: none !important;
+  }
+
+  .lookbook-desktop-rail-header {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 220px;
+  }
+
+  .lookbook-desktop-film {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .lookbook-desktop-film-scroll {
+    max-height: calc(100% - 36px);
+  }
+
+  .lookbook-desktop-film-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
   .cta-button {
     display: inline-flex;
     align-items: center;
@@ -600,6 +757,7 @@ body::-webkit-scrollbar {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 1rem 2rem;
+    min-height: 3.25rem;
   }
 
   /* Editorial Image Utilities */
@@ -650,12 +808,23 @@ body::-webkit-scrollbar {
     }
   }
 
+  @media (min-width: 768px) {
+    .lookbook-copy-block {
+      display: block;
+    }
+  }
+
   /* PC レイアウトはコンポーネント側で isDesktop により完全制御 */
   @media (min-width: 1024px) {
     .lookbook-caption {
       left: 2.5rem;
       bottom: 2.5rem;
       max-width: 340px;
+    }
+
+    .lookbook-title {
+      font-size: clamp(2.3rem, 8vw, 5rem);
+      line-height: 0.88;
     }
   }
 
@@ -690,6 +859,18 @@ body::-webkit-scrollbar {
       padding-block: var(--section-y-editorial-md);
     }
 
+    .section-pad-boundary {
+      padding-block: var(--section-boundary-y-md);
+    }
+
+    .section-gap-before {
+      margin-top: var(--section-boundary-y-md);
+    }
+
+    .section-link-strip {
+      padding-block: 1.375rem;
+    }
+
     .nav-shell {
       height: var(--nav-h-md);
       padding-inline: var(--container-x-md);
@@ -706,6 +887,10 @@ body::-webkit-scrollbar {
     }
 
     .display-hero {
+      font-size: var(--display-hero-md);
+    }
+
+    .hero-title-split {
       font-size: var(--display-hero-md);
     }
 
