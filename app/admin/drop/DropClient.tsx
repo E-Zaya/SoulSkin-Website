@@ -15,8 +15,8 @@ import type { Drop } from "@/lib/db";
 type Props = { initialDrops: Drop[] };
 
 const EMPTY: Omit<Drop, "id" | "created_at"> = {
-  label: "Current Drop", title_line1: "", title_line2: "",
-  description: "", pieces_left: 0, cta: "Order via Instagram",
+  label: "", title_line1: "", title_line2: "",
+  description: "", pieces_left: 0, cta: "",
   image_url: null, active: false,
 };
 

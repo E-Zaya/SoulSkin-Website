@@ -24,9 +24,9 @@ export default function DropArchive({ drops }: Props) {
         </ScrollReveal>
 
         {/* Grid of past drops */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-6">
           {drops.map((drop, i) => {
-            const imageSrc = drop.image_url ?? "/lookbook-01.png";
+            const imageSrc = drop.image_url;
             const title = `${drop.title_line1} ${drop.title_line2}`;
             const year = new Date(drop.created_at).getFullYear();
 
@@ -35,23 +35,31 @@ export default function DropArchive({ drops }: Props) {
                 <div className="group relative">
                   {/* Image container */}
                   <div className="relative aspect-[3/4] overflow-hidden bg-ash">
-                    <Image
-                      src={imageSrc}
-                      alt={`${title} — Soul Skin`}
-                      fill
-                      className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] grayscale"
-                    />
+                    {imageSrc && (
+                      <Image
+                        src={imageSrc}
+                        alt={`${title} — Soul Skin`}
+                        fill
+                        className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.04] grayscale"
+                      />
+                    )}
 
-                    {/* SOLD OUT stamp */}
+                    {/* SOLD OUT stamp — rust accent */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div
-                        className="border border-iron/60 px-3 py-1.5 rotate-[-8deg]"
+                        className="px-3 py-1.5 rotate-[-8deg]"
                         style={{
                           backdropFilter: "blur(2px)",
                           backgroundColor: "rgba(10,9,8,0.45)",
+                          borderWidth: 1,
+                          borderStyle: "solid",
+                          borderColor: "rgba(168, 69, 62, 0.55)",
                         }}
                       >
-                        <span className="font-mono text-[10px] md:text-[11px] text-iron/80 tracking-[0.3em] uppercase">
+                        <span
+                          className="font-mono text-[10px] md:text-[11px] tracking-[0.3em] uppercase"
+                          style={{ color: "rgba(216, 158, 152, 0.85)" }}
+                        >
                           SOLD OUT
                         </span>
                       </div>

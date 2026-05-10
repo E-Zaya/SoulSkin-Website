@@ -5,19 +5,29 @@
 
 create extension if not exists pgcrypto;
 
+create table if not exists site_settings (
+  id                 integer primary key default 1,
+  hero_image_url     text,
+  about_image_url    text,
+  about_description  text not null default '',
+  updated_at         timestamptz not null default now(),
+  constraint site_settings_singleton check (id = 1)
+);
+
 create table if not exists drops (
   id           uuid primary key default gen_random_uuid(),
-  label        text not null default 'Current Drop',
-  title_line1  text not null default 'VOID SERIES',
-  title_line2  text not null default '001',
+  label        text not null default '',
+  title_line1  text not null default '',
+  title_line2  text not null default '',
   description  text not null default '',
   pieces_left  integer not null default 0 check (pieces_left >= 0),
-  cta          text not null default 'Order via Instagram',
+  cta          text not null default '',
   image_url    text,
   active       boolean not null default false,
   created_at   timestamptz not null default now()
 );
 
+-- 既存データに active=true が複数ある場合、最新1件だけ残してから unique index を作る。
 update drops
 set active = false
 where active = true
@@ -35,7 +45,7 @@ create table if not exists products (
   name         text not null,
   material     text not null default '',
   description  text not null default '',
-  price        text not null default 'AVAILABLE BY DM',
+  price        text not null default '',
   image_url    text,
   offset_class text not null default 'md:mt-0',
   order_index  integer not null default 0,
@@ -44,6 +54,17 @@ create table if not exists products (
 );
 
 create unique index if not exists products_sku_unique on products (sku);
+
+create table if not exists product_images (
+  id           uuid primary key default gen_random_uuid(),
+  product_id   uuid not null references products(id) on delete cascade,
+  image_url    text not null,
+  order_index  integer not null default 0,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists product_images_product_id_order_index_idx
+  on product_images (product_id, order_index);
 
 create table if not exists lookbook_items (
   id           uuid primary key default gen_random_uuid(),
@@ -55,51 +76,23 @@ create table if not exists lookbook_items (
 
 create unique index if not exists lookbook_item_id_unique on lookbook_items (item_id);
 
-insert into drops (label, title_line1, title_line2, description, pieces_left, cta, active)
-select
-  'Current Drop',
-  'VOID SERIES',
-  '001',
-  'Constructed from 380gsm heavy cotton. Raw hem edges. Designed in Ulaanbaatar for those who need no explanation.',
-  3,
-  'Order via Instagram',
-  true
-where not exists (
-  select 1 from drops where title_line1 = 'VOID SERIES' and title_line2 = '001'
-);
-
-insert into products (sku, name, material, description, price, image_url, offset_class, order_index)
-values
-  ('SK-001', 'VOID JACKET',  'HEAVY COTTON / 380GSM',     'Hand-distressed raw hems. Boxy fit.',         'AVAILABLE BY DM', '/product-jacket.png', 'md:mt-0',  0),
-  ('SK-002', 'ASH HOODIE',   'FRENCH TERRY / 320GSM',     'Overdyed finish with custom drop shoulders.', 'AVAILABLE BY DM', '/product-hoodie.png', 'md:mt-10', 1),
-  ('SK-003', 'BONE LAYER',   'RIPSTOP NYLON / OVERSIZED', 'Wind-resistant light outerwear piece.',       'AVAILABLE BY DM', '/lookbook-02.png',    'md:-mt-4', 2)
-on conflict (sku) do update set
-  name = excluded.name,
-  material = excluded.material,
-  description = excluded.description,
-  price = excluded.price,
-  image_url = excluded.image_url,
-  offset_class = excluded.offset_class,
-  order_index = excluded.order_index;
-
-insert into lookbook_items (item_id, image_url, order_index)
-values
-  ('SS25 — 001', '/lookbook-01.png', 0),
-  ('SS25 — 002', '/lookbook-02.png', 1),
-  ('SS25 — 003', '/lookbook-03.png', 2)
-on conflict (item_id) do update set
-  image_url = excluded.image_url,
-  order_index = excluded.order_index;
-
+alter table site_settings enable row level security;
 alter table drops enable row level security;
 alter table products enable row level security;
+alter table product_images enable row level security;
 alter table lookbook_items enable row level security;
+
+drop policy if exists "Public read site_settings" on site_settings;
+create policy "Public read site_settings" on site_settings for select using (true);
 
 drop policy if exists "Public read drops" on drops;
 create policy "Public read drops" on drops for select using (true);
 
 drop policy if exists "Public read products" on products;
 create policy "Public read products" on products for select using (true);
+
+drop policy if exists "Public read product_images" on product_images;
+create policy "Public read product_images" on product_images for select using (true);
 
 drop policy if exists "Public read lookbook_items" on lookbook_items;
 create policy "Public read lookbook_items" on lookbook_items for select using (true);

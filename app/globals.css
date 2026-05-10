@@ -7,12 +7,14 @@
   --color-cinder: #2e2b28;
   --color-iron: #5c5650;
   --color-bone: #ede8e1;
-  --color-dust: #b8b0a6; 
-  --color-ember: #442fbd; /* for custom orders */
+  --color-dust: #c8c0b6; /* slightly brighter for better hierarchy */
+  --color-ember: #442fbd; /* primary accent purple */
+  --color-rust: #a8453e;  /* secondary accent — used for state tags (LIVE / SOLD OUT) */
 
   /* ── Fonts: must match app/layout.tsx font variables ── */
   --font-display: var(--font-bebas-neue), sans-serif;
   --font-sans: var(--font-inter), sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
   --font-mono: var(--font-space-mono), monospace;
 
   /* ── Tracking Tokens ── */
@@ -29,12 +31,16 @@
   --container-wide-x-md: 4rem;
 
   /* ── Section Spacing Tokens ── */
-  --section-y-tight: 2rem;
-  --section-y: 2.5rem;
-  --section-y-feature: 3rem;
-  --section-y-tight-md: 3.5rem;
-  --section-y-md: 5rem;
-  --section-y-feature-md: 6rem;
+  --section-y-tight: 1.75rem;
+  --section-y: 2.25rem;
+  --section-y-feature: 2.75rem;
+  --section-y-compact: 2.25rem;
+  --section-y-editorial: 2.5rem;
+  --section-y-tight-md: 3rem;
+  --section-y-md: 4.25rem;
+  --section-y-feature-md: 5rem;
+  --section-y-compact-md: 4rem;
+  --section-y-editorial-md: 4.5rem;
 
   /* ── Component Spacing Tokens ── */
   --nav-h: 3.5rem;
@@ -46,6 +52,7 @@
 
   /* ── Typography Tokens ── */
   --text-label: 0.6875rem;
+  --text-nav: 0.75rem;
   --text-body-sm: 0.8125rem;
   --text-body: 0.9375rem;
   --text-body-md: 1rem;
@@ -62,13 +69,39 @@
   /* ── Effect Tokens ── */
   --noise-global-opacity: 0.035;
   --overlay-hero: linear-gradient(
-    to bottom,
-    rgba(10, 9, 8, 0.3) 0%,
-    transparent 30%,
-    transparent 40%,
-    var(--color-void) 100%
+    90deg,
+    rgba(10, 9, 8, 0.72) 0%,
+    rgba(10, 9, 8, 0.42) 34%,
+    rgba(10, 9, 8, 0.16) 64%,
+    rgba(10, 9, 8, 0.04) 100%
   );
-  --shadow-hero-title: 0 2px 30px rgba(10, 9, 8, 0.4);
+  --overlay-hero-bottom: linear-gradient(
+    to bottom,
+    rgba(10, 9, 8, 0.16) 0%,
+    transparent 44%,
+    rgba(10, 9, 8, 0.7) 100%
+  );
+  --overlay-lookbook-side: linear-gradient(
+    to right,
+    rgba(10, 9, 8, 0.55) 0%,
+    rgba(10, 9, 8, 0.18) 42%,
+    transparent 72%
+  );
+  --overlay-lookbook-bottom: linear-gradient(
+    to bottom,
+    rgba(10, 9, 8, 0.12) 0%,
+    transparent 28%,
+    transparent 66%,
+    rgba(10, 9, 8, 0.55) 100%
+  );
+  --modal-bg: #0e0e0e;
+  --modal-border: #222222;
+  --cta-bg: var(--color-void);
+  --cta-bg-soft: #100e12;
+  --cta-accent: var(--color-ember);
+  --cta-accent-soft: rgba(68, 47, 189, 0.34);
+  --cta-accent-faint: rgba(68, 47, 189, 0.16);
+  --shadow-hero-title: 0 2px 30px rgba(10, 9, 8, 0.38);
 }
 
 /* ── Reset ── */
@@ -271,6 +304,32 @@ body::-webkit-scrollbar {
     padding-block: var(--section-y-feature);
   }
 
+  .editorial-split {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-pad-compact {
+    padding-block: var(--section-y-compact);
+  }
+
+  .section-pad-editorial {
+    padding-block: var(--section-y-editorial);
+  }
+
+  .text-measure-sm {
+    max-width: 320px;
+  }
+
+  .text-measure {
+    max-width: 360px;
+  }
+
+  .text-measure-lg {
+    max-width: 420px;
+  }
+
   .nav-shell {
     height: var(--nav-h);
     padding-inline: var(--container-x);
@@ -298,6 +357,15 @@ body::-webkit-scrollbar {
     font-family: var(--font-display);
     color: var(--color-bone);
     line-height: 0.9;
+  }
+
+  /* Editorial italic — Playfair, used sparingly for tags / pull quotes / season labels */
+  .text-brand-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-bone);
+    letter-spacing: 0;
   }
 
   .display-hero {
@@ -391,6 +459,135 @@ body::-webkit-scrollbar {
     z-index: 10;
   }
 
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .cta-link-sm {
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+  }
+
+  .modal-panel {
+    background-color: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+  }
+
+  /* ── Lookbook ── */
+  .lookbook-section {
+    padding-block: var(--section-y-tight);
+  }
+
+  .lookbook-inner {
+    padding-inline: 1rem;
+  }
+
+  .lookbook-grid {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 1440px;
+    margin-inline: auto;
+  }
+
+  .lookbook-main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--color-ash);
+    aspect-ratio: 4 / 5;
+  }
+
+  .lookbook-mobile-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  .lookbook-desktop-side-overlay {
+    background: var(--overlay-lookbook-side);
+  }
+
+  .lookbook-desktop-bottom-overlay {
+    background: var(--overlay-lookbook-bottom);
+  }
+
+  .lookbook-mobile-fade {
+    height: 42%;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.72),
+      rgba(0, 0, 0, 0.18) 62%,
+      transparent
+    );
+  }
+
+  .lookbook-caption {
+    left: 1.25rem;
+    bottom: 2rem;
+    max-width: 300px;
+  }
+
+  .lookbook-title {
+    font-size: clamp(2.3rem, 8vw, 5rem);
+    line-height: 0.88;
+  }
+
+  .lookbook-aside {
+    min-height: 420px;
+  }
+
+  .lookbook-copy-block {
+    padding-block: 1.25rem;
+  }
+
+  .lookbook-strip-scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .lookbook-strip-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lookbook-strip-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 3px;
+    min-width: max-content;
+    padding: 0.75rem 1rem;
+  }
+
+  .lookbook-nav-button {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(92, 86, 80, 0.35);
+    color: rgba(184, 176, 166, 0.6);
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+
+  .lookbook-nav-button:hover {
+    border-color: rgba(237, 232, 225, 0.6);
+    color: rgba(237, 232, 225, 1);
+  }
+
   .cta-button {
     display: inline-flex;
     align-items: center;
@@ -403,6 +600,17 @@ body::-webkit-scrollbar {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 1rem 2rem;
+  }
+
+  /* Editorial Image Utilities */
+  .image-frame-product {
+    aspect-ratio: 4 / 5;
+  }
+
+  .image-frame-product img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Noise Utilities */
@@ -442,6 +650,15 @@ body::-webkit-scrollbar {
     }
   }
 
+  /* PC レイアウトはコンポーネント側で isDesktop により完全制御 */
+  @media (min-width: 1024px) {
+    .lookbook-caption {
+      left: 2.5rem;
+      bottom: 2.5rem;
+      max-width: 340px;
+    }
+  }
+
   @media (min-width: 768px) {
     .container-base {
       padding-left: var(--container-x-md);
@@ -463,6 +680,14 @@ body::-webkit-scrollbar {
 
     .section-pad-feature {
       padding-block: var(--section-y-feature-md);
+    }
+
+    .section-pad-compact {
+      padding-block: var(--section-y-compact-md);
+    }
+
+    .section-pad-editorial {
+      padding-block: var(--section-y-editorial-md);
     }
 
     .nav-shell {

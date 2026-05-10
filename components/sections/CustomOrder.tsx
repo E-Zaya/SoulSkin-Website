@@ -33,17 +33,30 @@ export default function CustomOrder() {
     <section
       ref={sectionRef}
       className="relative overflow-hidden section-pad transition-colors duration-700"
-      style={{
-        backgroundColor: visible ? "var(--color-ember)" : "var(--color-void)",
-      }}
+      style={{ backgroundColor: "var(--cta-bg)" }}
     >
       {/* Noise accents */}
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ backgroundColor: "var(--cta-accent-soft)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-px"
+        style={{ backgroundColor: "var(--cta-accent-faint)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 opacity-70"
+        style={{ backgroundColor: "var(--cta-accent-faint)" }}
+        aria-hidden="true"
+      />
       <NoiseAccent
         inset="0 0 0 0"
         width="100%"
         height="100%"
-        opacity={0.09}
-        blendMode="multiply"
+        opacity={0.045}
+        blendMode="overlay"
         tileSize="180px"
         pulse
       />
@@ -51,17 +64,18 @@ export default function CustomOrder() {
         inset="0 0 auto auto"
         width="50%"
         height="50%"
-        opacity={0.06}
-        blendMode="multiply"
+        opacity={0.035}
+        blendMode="overlay"
         tileSize="140px"
       />
 
       <div className="relative z-10 container-base text-center">
         {/* Accent line */}
         <div
-          className="mx-auto mb-8 md:mb-10 h-px bg-void/30 origin-center"
+          className="mx-auto mb-7 md:mb-8 h-px origin-center"
           style={{
-            width: visible ? "80px" : "0px",
+            width: visible ? "84px" : "0px",
+            backgroundColor: "var(--cta-accent)",
             transition: "width 800ms cubic-bezier(0.16,1,0.3,1) 200ms",
           }}
           aria-hidden="true"
@@ -69,7 +83,7 @@ export default function CustomOrder() {
 
         {/* CTA title */}
         <ScrollReveal variant="fade-up">
-          <h2 className="text-brand-display display-cta text-void mb-6 md:mb-8">
+          <h2 className="text-brand-display display-cta text-bone mb-5 md:mb-6">
             {siteContent.customOrder.titleLine1}
             <br />
             {siteContent.customOrder.titleLine2}
@@ -78,21 +92,19 @@ export default function CustomOrder() {
 
         {/* CTA copy */}
         <ScrollReveal delay={120} variant="fade-only">
-          <p className="body-copy md:body-copy-md mb-10 md:mb-14 max-w-[420px] mx-auto text-void/65">
+          <p className="body-copy md:body-copy-md mb-8 md:mb-10 max-w-[420px] mx-auto text-dust/70">
             {siteContent.customOrder.description}
           </p>
         </ScrollReveal>
 
-        {/* CTA button */}
+        {/* CTA button — leads to /custom which holds Instagram + email actions */}
         <ScrollReveal delay={200} variant="fade-up">
           <Link
-            href={siteContent.brand.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group btn-hover-fill cta-button"
+            href="/custom"
+            className="group btn-hover-fill cta-button border border-[color:var(--cta-accent-soft)]"
           >
             <span className="transition-colors duration-300 group-hover:text-void">
-              {siteContent.customOrder.cta}
+              Start a custom order
             </span>
             <span className="text-[16px] transition-all duration-300 group-hover:text-void group-hover:translate-x-1">
               →

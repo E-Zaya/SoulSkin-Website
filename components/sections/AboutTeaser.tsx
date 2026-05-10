@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
@@ -8,7 +9,11 @@ type Props = {
   description?: string | null;
 };
 
-export default function About({ imageUrl, description }: Props) {
+/**
+ * Compact about block used on the landing page.
+ * Shows the brand image, a short summary and a link to /about.
+ */
+export default function AboutTeaser({ imageUrl, description }: Props) {
   const hasContent = Boolean(imageUrl || description);
   if (!hasContent) return null;
 
@@ -25,14 +30,25 @@ export default function About({ imageUrl, description }: Props) {
 
           {description && (
             <ScrollReveal delay={80}>
-              <p className="body-copy-md text-bone text-measure-lg mb-6 md:mb-8">
+              <p className="body-copy-md text-bone text-measure-lg mb-6 md:mb-8 line-clamp-4">
                 {description}
               </p>
             </ScrollReveal>
           )}
 
           <ScrollReveal delay={140}>
-            <p className="text-brand-label">{siteContent.brand.taglineShort}</p>
+            <div className="flex flex-col gap-3">
+              <Link
+                href="/about"
+                className="cta-link cta-link-sm text-dust hover:text-bone transition-colors w-fit"
+              >
+                <span className="link-underline-grow">Read more</span>
+                <span>→</span>
+              </Link>
+              <p className="text-brand-label">
+                {siteContent.brand.taglineShort}
+              </p>
+            </div>
           </ScrollReveal>
         </div>
 
@@ -43,6 +59,7 @@ export default function About({ imageUrl, description }: Props) {
               src={imageUrl}
               alt="Soul Skin — Ulaanbaatar"
               fill
+              sizes="(min-width: 768px) 56vw, 100vw"
               className="object-cover object-center"
             />
             <NoiseAccent

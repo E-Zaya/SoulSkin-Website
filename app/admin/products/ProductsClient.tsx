@@ -24,7 +24,7 @@ const OFFSET_OPTIONS = [
 
 const BLANK_FORM = {
   sku: "", name: "", material: "", description: "",
-  price: "AVAILABLE BY DM", image_url: null as string | null,
+  price: "", image_url: null as string | null,
   offset_class: "md:mt-0", order_index: 0, active: true,
 };
 
@@ -411,7 +411,7 @@ export default function ProductsClient({ initialProducts }: Props) {
           <p className="text-[12px] tracking-[0.2em] text-[#aaa] uppercase font-mono">New Product</p>
           <div className="grid grid-cols-2 gap-3">
             <F label="SKU *"  value={newForm.sku}  onChange={(v) => setNewForm((f) => ({ ...f, sku: v }))}  placeholder="SK-004" />
-            <F label="Name *" value={newForm.name} onChange={(v) => setNewForm((f) => ({ ...f, name: v }))} placeholder="VOID JACKET" />
+            <F label="Name *" value={newForm.name} onChange={(v) => setNewForm((f) => ({ ...f, name: v }))} placeholder="Item name" />
           </div>
           <F label="Material" value={newForm.material} onChange={(v) => setNewForm((f) => ({ ...f, material: v }))} placeholder="HEAVY COTTON / 380GSM" />
           <div>

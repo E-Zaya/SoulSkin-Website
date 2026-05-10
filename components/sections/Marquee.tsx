@@ -15,7 +15,7 @@ export default function Marquee({
   const items = Array(12).fill(text);
 
   return (
-    <div className="relative border-t border-b border-cinder h-12 overflow-hidden flex items-center">
+    <div className="relative border-t border-b border-cinder h-10 overflow-hidden flex items-center">
       {/* Noise — only on one side, creates a boundary-glitch feel */}
       {noiseSide === "top" && (
         <NoiseAccent
@@ -44,7 +44,7 @@ export default function Marquee({
         {items.map((t, i) => (
           <span
             key={i}
-            className="font-display text-[14px] text-iron tracking-normal mr-8 shrink-0"
+            className="font-display text-[12px] text-iron/70 tracking-normal mr-8 shrink-0"
           >
             {t}
           </span>

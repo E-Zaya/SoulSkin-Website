@@ -10,25 +10,12 @@ type Props = {
   initialSettings: SiteSettings | null;
 };
 
-const DEFAULTS = {
-  hero_image_url: "/hero.png",
-  about_image_url: "/about.png",
-  about_description:
-    "Soul Skin is a streetwear label from Ulaanbaatar, Mongolia. Built for those who carry their identity on their back.",
-};
-
 export default function SiteClient({ initialSettings }: Props) {
   const router = useRouter();
 
-  const [heroUrl, setHeroUrl] = useState(
-    initialSettings?.hero_image_url ?? DEFAULTS.hero_image_url
-  );
-  const [aboutUrl, setAboutUrl] = useState(
-    initialSettings?.about_image_url ?? DEFAULTS.about_image_url
-  );
-  const [aboutDesc, setAboutDesc] = useState(
-    initialSettings?.about_description ?? DEFAULTS.about_description
-  );
+  const [heroUrl, setHeroUrl] = useState(initialSettings?.hero_image_url ?? "");
+  const [aboutUrl, setAboutUrl] = useState(initialSettings?.about_image_url ?? "");
+  const [aboutDesc, setAboutDesc] = useState(initialSettings?.about_description ?? "");
 
   // アップロード済み・未保存の画像URL（キャンセル時に削除するため）
   const [pendingHero, setPendingHero] = useState<string | null>(null);

@@ -1,4 +1,5 @@
 import { createServerClient } from "./supabase";
+import { toSlug } from "./slug";
 
 // ============================================================
 // 型定義
@@ -110,6 +111,30 @@ export async function getPastDrops(): Promise<Drop[]> {
   return data ?? [];
 }
 
+/**
+ * 公開用に active / past 全件をまとめて取得（active を先頭に）。
+ * /drops 一覧ページで使用。
+ */
+export async function getAllPublicDrops(): Promise<Drop[]> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("drops")
+    .select("*")
+    .order("active", { ascending: false })
+    .order("created_at", { ascending: false });
+  if (error) console.error("[db] getAllPublicDrops:", error.message);
+  return data ?? [];
+}
+
+/**
+ * Drop.label をスラグ化したものから個別 Drop を取得。
+ * 一致する複数件があれば created_at の新しい方を返す（実装上は client 側でフィルタ）。
+ */
+export async function getDropBySlug(slug: string): Promise<Drop | null> {
+  const drops = await getAllPublicDrops();
+  return drops.find((d) => toSlug(d.label) === slug) ?? null;
+}
+
 export async function getProducts(): Promise<Product[]> {
   const supabase = createServerClient();
   const { data, error } = await supabase
@@ -136,6 +161,16 @@ export async function getProductsWithImages(): Promise<ProductWithImages[]> {
       (a, b) => a.order_index - b.order_index
     ),
   }));
+}
+
+/**
+ * Product.sku をスラグ化したものから個別 Product を画像付きで取得。
+ */
+export async function getProductBySlugWithImages(
+  slug: string
+): Promise<ProductWithImages | null> {
+  const products = await getProductsWithImages();
+  return products.find((p) => toSlug(p.sku) === slug) ?? null;
 }
 
 export async function getProductImagesById(productId: string): Promise<ProductImage[]> {

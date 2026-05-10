@@ -4,7 +4,6 @@ import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import type { Drop as DropData } from "@/lib/db";
-import { DEFAULT_IMAGES } from "@/lib/images";
 
 type Props = {
   data?: DropData | null;
@@ -43,37 +42,48 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
 }
 
 export default function Drop({ data }: Props) {
-  // DB データがあればそちらを使い、なければ siteContent にフォールバック
-  const label       = data?.label       ?? siteContent.drop.label;
-  const titleLine1  = data?.title_line1 ?? siteContent.drop.titleLine1;
-  const titleLine2  = data?.title_line2 ?? siteContent.drop.titleLine2;
-  const description = data?.description ?? siteContent.drop.description;
-  const piecesLeft  = data?.pieces_left ?? 3; // フォールバック時は 3
-  const cta         = data?.cta         ?? siteContent.drop.cta;
-  const imageSrc    = data?.image_url   ?? DEFAULT_IMAGES.drop;
+  if (!data) return null;
+
+  const label = data.label;
+  const titleLine1 = data.title_line1;
+  const titleLine2 = data.title_line2;
+  const description = data.description;
+  const piecesLeft = data.pieces_left;
+  const cta = data.cta;
+  const imageSrc = data.image_url;
 
   const isSoldOut = piecesLeft === 0;
 
   return (
     <section id="drop" className="relative bg-ash overflow-hidden">
-      <div className="container-base flex flex-col md:flex-row !px-0">
+      <div className="editorial-split flex flex-col md:flex-row">
         {/* Image column */}
-        <div className="relative md:w-[60%] aspect-[3/4] shrink-0 overflow-hidden">
-          <Image
-            src={imageSrc}
-            alt={`${titleLine1} ${titleLine2} — Soul Skin Drop`}
-            fill
-            className={`object-cover object-center transition-all duration-700 ${isSoldOut ? "grayscale" : ""}`}
-          />
+        <div className="relative md:w-[64%] aspect-[4/5] md:aspect-[16/13] shrink-0 overflow-hidden">
+          {imageSrc && (
+            <Image
+              src={imageSrc}
+              alt={`${titleLine1} ${titleLine2} — Soul Skin Drop`}
+              fill
+              className={`object-cover object-center transition-all duration-700 ${isSoldOut ? "grayscale" : ""}`}
+            />
+          )}
 
-          {/* SOLD OUT オーバーレイ */}
+          {/* SOLD OUT オーバーレイ — rust accent */}
           {isSoldOut && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div
-                className="border border-bone/50 px-6 py-3 rotate-[-6deg]"
-                style={{ backgroundColor: "rgba(10,9,8,0.5)" }}
+                className="px-6 py-3 rotate-[-6deg]"
+                style={{
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "rgba(168, 69, 62, 0.65)",
+                  backgroundColor: "rgba(10,9,8,0.5)",
+                }}
               >
-                <span className="font-mono text-[13px] md:text-[15px] text-bone/90 tracking-[0.4em] uppercase">
+                <span
+                  className="font-mono text-[13px] md:text-[15px] tracking-[0.4em] uppercase"
+                  style={{ color: "rgba(232, 168, 162, 0.95)" }}
+                >
                   SOLD OUT
                 </span>
               </div>
@@ -99,7 +109,7 @@ export default function Drop({ data }: Props) {
         </div>
 
         {/* Text column */}
-        <div className="relative md:w-[40%] flex flex-col justify-center px-6 md:px-16 py-10 md:py-24">
+        <div className="relative md:w-[36%] flex flex-col justify-center px-6 md:px-12 lg:px-14 section-pad-editorial">
           <ScrollReveal delay={0}>
             <p className="text-brand-label mb-5 md:mb-6 text-ember">{label}</p>
           </ScrollReveal>
@@ -113,14 +123,14 @@ export default function Drop({ data }: Props) {
           </ScrollReveal>
 
           <ScrollReveal delay={160}>
-            <p className="body-copy text-dust mb-7 md:mb-8 max-w-[320px]">
+            <p className="body-copy text-dust mb-6 md:mb-7 text-measure-sm">
               {description}
             </p>
           </ScrollReveal>
 
           {/* Scarcity 視覚化 */}
           <ScrollReveal delay={200}>
-            <div className="mb-8 md:mb-10">
+            <div className="mb-7 md:mb-8">
               {isSoldOut ? (
                 /* SOLD OUT 状態 */
                 <div className="flex items-center gap-4">
@@ -161,7 +171,7 @@ export default function Drop({ data }: Props) {
                 href={siteContent.brand.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-sans text-[13px] font-medium text-bone uppercase tracking-widest inline-flex items-center gap-2 group"
+                className="cta-link group"
               >
                 <span className="link-underline-grow">{cta}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>

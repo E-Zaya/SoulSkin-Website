@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter, Space_Mono } from "next/font/google";
+import {
+  Bebas_Neue,
+  Inter,
+  Playfair_Display,
+  Space_Mono,
+} from "next/font/google";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -11,6 +16,15 @@ const bebasNeue = Bebas_Neue({
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Editorial italic accent — used sparingly for tags, captions, pull quotes.
+const playfair = Playfair_Display({
+  weight: ["400", "500"],
+  style: ["italic"],
+  variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
 });
@@ -40,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${inter.variable} ${spaceMono.variable}`}
+      className={`${bebasNeue.variable} ${inter.variable} ${playfair.variable} ${spaceMono.variable}`}
     >
       <body className="bg-void text-bone font-sans overflow-x-hidden">
         {/* Global ultra-thin noise — the ambient grain across the entire site */}

@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function Hero({ imageUrl }: Props) {
-  const heroSrc = imageUrl || "/hero.png";
   const [loaded, setLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -47,24 +46,31 @@ export default function Hero({ imageUrl }: Props) {
         className="absolute inset-0 transition-opacity duration-[1200ms] ease-out"
         style={{
           opacity: loaded ? 1 : 0,
-          transform: `translateY(${scrollY * 0.15}px) scale(1.08)`,
+          // Subtle parallax — toned down from 0.15 to 0.08 so the image stays calm.
+          transform: `translateY(${scrollY * 0.08}px) scale(1.06)`,
           willChange: "transform",
         }}
       >
-        <Image
-          src={heroSrc}
-          alt="Soul Skin — Wear Your Soul"
-          fill
-          priority
-          className="object-cover object-center"
-          onLoad={() => setLoaded(true)}
-        />
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt="Soul Skin — Wear Your Soul"
+            fill
+            priority
+            className="object-cover object-center"
+            onLoad={() => setLoaded(true)}
+          />
+        )}
       </div>
 
-      {/* Gradient overlay */}
+      {/* Gradient overlays — keep the image visible, darken only text/bottom areas */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "var(--overlay-hero)" }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "var(--overlay-hero-bottom)" }}
       />
 
       {/* Noise accents */}

@@ -53,11 +53,11 @@ export async function saveDropAction(data: {
 export async function createDropAction() {
   const { data: result, error } = await db.upsertDrop({
     label: "New Drop",
-    title_line1: "NEW SERIES",
-    title_line2: "001",
+    title_line1: "",
+    title_line2: "",
     description: "",
     pieces_left: 0,
-    cta: "Order via Instagram",
+    cta: "",
     active: false,
   });
   assertNoError(error, "Drop の作成に失敗しました");

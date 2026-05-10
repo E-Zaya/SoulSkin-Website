@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
-import { DEFAULT_IMAGES } from "@/lib/images";
 import type { ProductWithImages } from "@/lib/db";
 
 // ─── 型 ──────────────────────────────────────────────────────
@@ -86,7 +85,7 @@ function CarouselWithOverlay({
   }
 
   return (
-    <div className="relative aspect-[3/4] overflow-hidden select-none group/carousel cursor-grab active:cursor-grabbing">
+    <div className="relative image-frame-product overflow-hidden select-none group/carousel cursor-grab active:cursor-grabbing">
       {/* 画像スライド */}
       {images.map((src, i) => (
         <div
@@ -239,7 +238,7 @@ function Modal({
 
       {/* Panel */}
       <div
-        className="relative z-10 w-full max-w-3xl max-h-[90dvh] bg-[#0e0e0e] border border-[#222] flex flex-col md:flex-row overflow-hidden"
+        className="modal-panel relative z-10 w-full max-w-3xl max-h-[90dvh] flex flex-col md:flex-row overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 閉じるボタン */}
@@ -331,7 +330,7 @@ function Modal({
             href={siteContent.brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block border border-[#333] px-6 py-3 text-center font-mono text-[11px] tracking-widest uppercase text-dust hover:text-bone hover:border-[#555] transition-colors"
+            className="inline-block border border-cinder px-6 py-3 text-center font-mono text-[11px] tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors"
           >
             {siteContent.products.cta}
           </Link>
@@ -354,7 +353,7 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
       >
         <div className={`group ${product.offset}`}>
           {/* カルーセル */}
-          <div className="relative overflow-hidden mb-5 md:mb-6">
+          <div className="relative overflow-hidden mb-4 md:mb-5">
             <CarouselWithOverlay
               images={product.images}
               name={product.name}
@@ -383,7 +382,7 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
             href={siteContent.brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline-grow font-sans text-[11px] font-medium text-dust tracking-[0.2em] uppercase group-hover:text-bone transition-colors duration-200"
+            className="cta-link cta-link-sm text-dust group-hover:text-bone transition-colors duration-200"
           >
             {siteContent.products.cta}
           </Link>
@@ -400,23 +399,24 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
 // ─── メインコンポーネント ──────────────────────────────────────
 
 export default function Products({ data }: Props) {
-  const items: NormalizedProduct[] =
-    data && data.length > 0
-      ? data.map((p) => ({
-          id:       p.sku,
-          name:     p.name,
-          material: p.material,
-          desc:     p.description,
-          price:    p.price,
-          images:   p.images && p.images.length > 0
-                      ? p.images.map((img) => img.image_url)
-                      : [p.image_url ?? DEFAULT_IMAGES.product],
-          offset:   p.offset_class,
-        }))
-      : siteContent.products.items.map((p) => ({
-          ...p,
-          images: [p.image],
-        }));
+  const items: NormalizedProduct[] = (data ?? [])
+    .map((p) => ({
+      id: p.sku,
+      name: p.name,
+      material: p.material,
+      desc: p.description,
+      price: p.price,
+      images:
+        p.images && p.images.length > 0
+          ? p.images.map((img) => img.image_url)
+          : p.image_url
+            ? [p.image_url]
+            : [],
+      offset: p.offset_class,
+    }))
+    .filter((p) => p.images.length > 0);
+
+  if (items.length === 0) return null;
 
   return (
     <section id="archive" className="bg-void section-pad-tight">
@@ -425,7 +425,7 @@ export default function Products({ data }: Props) {
           <p className="text-brand-label">{siteContent.products.label}</p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5">
           {items.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
