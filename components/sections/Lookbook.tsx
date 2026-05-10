@@ -183,46 +183,6 @@ export default function Lookbook({ data }: Props) {
           </div>
         </div>
 
-        {/* カウンター＋ナビゲーションバー */}
-        <div className="lookbook-desktop-rail-header relative flex items-start justify-between border-b border-cinder/60 bg-void px-6 py-5">
-          <div>
-            <p className="text-brand-label text-iron">
-              {siteContent.lookbook.label}
-            </p>
-            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.28em] text-dust/60">
-              {frameMeta}
-            </p>
-          </div>
-          <span
-            key={activeIdx}
-            className="lookbook-counter-pop font-mono text-[11px] tracking-widest text-dust/50"
-          >
-            {String(activeIdx + 1).padStart(2, "0")}
-            <span className="text-iron/50">
-              {" / "}
-              {String(items.length).padStart(2, "0")}
-            </span>
-          </span>
-          <div className="absolute bottom-5 left-6 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={goPrev}
-              aria-label="前の画像"
-              className="lookbook-nav-button"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label="次の画像"
-              className="lookbook-nav-button"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
         {/* フィルムストリップ（水平・全幅） */}
         <div className="lookbook-desktop-film relative bg-void">
           <Sprockets />

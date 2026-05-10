@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Camera as InstagramIcon } from "lucide-react";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
@@ -9,12 +10,11 @@ type Props = {
   data?: DropData | null;
 };
 
-// ドット表示の最大枚数（ドロップの最大ロット想定）
 const DOT_MAX = 10;
 
 function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
   const filled = Math.min(piecesLeft, DOT_MAX);
-  const empty  = DOT_MAX - filled;
+  const empty = DOT_MAX - filled;
 
   return (
     <div className="flex items-center gap-[5px]">
@@ -33,7 +33,7 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
         />
       ))}
       {piecesLeft > DOT_MAX && (
-        <span className="font-mono text-[10px] text-iron/60 tracking-widest ml-1">
+        <span className="ml-1 font-mono text-[10px] tracking-widest text-iron/60">
           +{piecesLeft - DOT_MAX}
         </span>
       )}
@@ -51,31 +51,30 @@ export default function Drop({ data }: Props) {
   const piecesLeft = data.pieces_left;
   const cta = siteContent.drop.cta;
   const imageSrc = data.image_url;
-
   const isSoldOut = piecesLeft === 0;
 
   return (
-    <section id="drop" className="section-gap-before relative bg-ash overflow-hidden">
+    <section id="drop" className="section-gap-before relative overflow-hidden bg-ash">
       <div className="drop-bg-type" aria-hidden="true">
         DROP {titleLine2}
       </div>
       <div className="editorial-split relative z-10 flex flex-col md:flex-row">
-        {/* Image column */}
-        <div className="relative md:w-[64%] aspect-[4/5] md:aspect-[16/13] shrink-0 overflow-hidden">
+        <div className="relative aspect-[4/5] shrink-0 overflow-hidden md:aspect-[16/13] md:w-[64%]">
           {imageSrc && (
             <Image
               src={imageSrc}
-              alt={`${titleLine1} ${titleLine2} — Soul Skin Drop`}
+              alt={`${titleLine1} ${titleLine2} - Soul Skin Drop`}
               fill
-              className={`object-cover object-center transition-all duration-700 ${isSoldOut ? "grayscale" : ""}`}
+              className={`object-cover object-center transition-all duration-700 ${
+                isSoldOut ? "grayscale" : ""
+              }`}
             />
           )}
 
-          {/* SOLD OUT オーバーレイ — rust accent */}
           {isSoldOut && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div
-                className="px-6 py-3 rotate-[-6deg]"
+                className="rotate-[-6deg] px-6 py-3"
                 style={{
                   borderWidth: 1,
                   borderStyle: "solid",
@@ -84,7 +83,7 @@ export default function Drop({ data }: Props) {
                 }}
               >
                 <span
-                  className="font-mono text-[13px] md:text-[15px] tracking-[0.4em] uppercase"
+                  className="font-mono text-[13px] uppercase tracking-[0.4em] md:text-[15px]"
                   style={{ color: "rgba(232, 168, 162, 0.95)" }}
                 >
                   SOLD OUT
@@ -93,7 +92,6 @@ export default function Drop({ data }: Props) {
             </div>
           )}
 
-          {/* Noise accents */}
           <NoiseAccent
             inset="0 0 0 auto"
             width="30%"
@@ -111,10 +109,9 @@ export default function Drop({ data }: Props) {
           />
         </div>
 
-        {/* Text column */}
-        <div className="relative md:w-[36%] flex flex-col justify-center px-6 md:px-12 lg:px-14 section-pad-editorial">
+        <div className="section-pad-editorial relative flex flex-col justify-center px-6 md:w-[36%] md:px-12 lg:px-14">
           <ScrollReveal delay={0}>
-            <p className="text-brand-label mb-5 md:mb-6 text-dust/70">{label}</p>
+            <p className="text-brand-label mb-5 text-dust/70 md:mb-6">{label}</p>
           </ScrollReveal>
 
           <ScrollReveal delay={80}>
@@ -126,28 +123,25 @@ export default function Drop({ data }: Props) {
           </ScrollReveal>
 
           <ScrollReveal delay={160}>
-            <p className="body-copy text-dust mb-6 md:mb-7 text-measure-sm">
+            <p className="body-copy text-measure-sm mb-6 text-dust md:mb-7">
               {description}
             </p>
           </ScrollReveal>
 
-          {/* Scarcity 視覚化 */}
           <ScrollReveal delay={200}>
             <div className="mb-7 md:mb-8">
               {isSoldOut ? (
-                /* SOLD OUT 状態 */
                 <div className="flex items-center gap-4">
-                  <span className="h-px bg-iron/40 w-12" />
-                  <p className="font-mono text-[11px] text-iron/60 tracking-[0.3em] uppercase line-through">
+                  <span className="h-px w-12 bg-iron/40" />
+                  <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-iron/60 line-through">
                     SOLD OUT
                   </p>
                 </div>
               ) : (
-                /* 残り枚数 + ドット */
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-4">
-                    <span className="h-px bg-iron/40 w-12" />
-                    <p className="text-brand-label !text-dust !font-bold">
+                    <span className="h-px w-12 bg-iron/40" />
+                    <p className="text-brand-label !font-bold !text-dust">
                       PIECES LEFT:{" "}
                       <span className="tabular-nums">
                         {String(piecesLeft).padStart(2, "0")}
@@ -164,10 +158,9 @@ export default function Drop({ data }: Props) {
 
           <ScrollReveal delay={240}>
             {isSoldOut ? (
-              /* SOLD OUT 時は CTA を非活性に */
-              <span className="font-sans text-[13px] font-medium text-iron/40 uppercase tracking-widest inline-flex items-center gap-2 cursor-not-allowed select-none">
+              <span className="inline-flex cursor-not-allowed select-none items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-widest text-iron/40">
                 <span>{cta}</span>
-                <span>—</span>
+                <span aria-hidden="true">-</span>
               </span>
             ) : (
               <Link
@@ -177,7 +170,12 @@ export default function Drop({ data }: Props) {
                 className="cta-link group"
               >
                 <span className="link-underline-grow">{cta}</span>
-                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                <InstagramIcon
+                  size={14}
+                  strokeWidth={1.6}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
               </Link>
             )}
           </ScrollReveal>

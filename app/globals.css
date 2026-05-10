@@ -712,7 +712,7 @@ body::-webkit-scrollbar {
   .lookbook-desktop-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 280px;
-    grid-template-rows: minmax(220px, 1fr) minmax(0, 1.7fr);
+    grid-template-rows: minmax(0, 1fr);
     height: min(82vh, 860px);
     max-height: 860px;
   }
@@ -724,15 +724,9 @@ body::-webkit-scrollbar {
     max-height: none !important;
   }
 
-  .lookbook-desktop-rail-header {
-    grid-column: 2;
-    grid-row: 1;
-    min-height: 220px;
-  }
-
   .lookbook-desktop-film {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 1;
     min-height: 0;
     overflow: hidden;
   }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Camera as InstagramIcon } from "lucide-react";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import type { ProductWithImages } from "@/lib/db";
@@ -336,9 +337,10 @@ function Modal({
             href={siteContent.brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block w-full border border-cinder px-6 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-dust transition-colors hover:border-iron hover:text-bone md:w-auto md:py-3"
+            className="inline-flex w-full items-center justify-center gap-2 border border-cinder px-6 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-dust transition-colors hover:border-iron hover:text-bone md:w-auto md:py-3"
           >
-            {siteContent.products.cta}
+            <span>{siteContent.products.cta}</span>
+            <InstagramIcon size={14} strokeWidth={1.6} aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -388,9 +390,10 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
             href={siteContent.brand.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-link cta-link-sm text-dust group-hover:text-bone transition-colors duration-200"
+            className="cta-link cta-link-sm text-dust transition-colors duration-200 group-hover:text-bone"
           >
-            {siteContent.products.cta}
+            <span>{siteContent.products.cta}</span>
+            <InstagramIcon size={13} strokeWidth={1.6} aria-hidden="true" />
           </Link>
         </div>
       </ScrollReveal>

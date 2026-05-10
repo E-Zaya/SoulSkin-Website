@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Camera as InstagramIcon } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import NoiseAccent from "@/components/ui/NoiseAccent";
@@ -7,13 +8,13 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 
 export const metadata: Metadata = {
-  title: "Custom Order — Soul Skin",
+  title: "Custom Order - Soul Skin",
   description:
-    "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
+    "Bring us your idea. Every Soul Skin piece can be made one-of-one - sketch, fit, and finish, all from Ulaanbaatar.",
   openGraph: {
-    title: "Custom Order — Soul Skin",
+    title: "Custom Order - Soul Skin",
     description:
-      "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
+      "Bring us your idea. Every Soul Skin piece can be made one-of-one - sketch, fit, and finish, all from Ulaanbaatar.",
     type: "article",
   },
 };
@@ -22,7 +23,7 @@ const PROCESS_STEPS: Array<{ no: string; title: string; body: string }> = [
   {
     no: "01",
     title: "Reach out",
-    body: "DM us on Instagram or send an email. Tell us what you have in mind — references, sketches, anything.",
+    body: "DM us on Instagram or send an email. Tell us what you have in mind - references, sketches, anything.",
   },
   {
     no: "02",
@@ -32,7 +33,7 @@ const PROCESS_STEPS: Array<{ no: string; title: string; body: string }> = [
   {
     no: "03",
     title: "Build",
-    body: "We build it in our Ulaanbaatar studio. 3–4 weeks typical lead time. Ships worldwide.",
+    body: "We build it in our Ulaanbaatar studio. 3-4 weeks typical lead time. Ships worldwide.",
   },
 ];
 
@@ -43,7 +44,6 @@ export default function CustomOrderPage() {
     <>
       <Navbar />
       <main style={{ paddingTop: "var(--nav-h)" }}>
-        {/* Hero */}
         <section
           className="relative overflow-hidden section-pad-feature"
           style={{ backgroundColor: "var(--cta-bg)" }}
@@ -57,7 +57,7 @@ export default function CustomOrderPage() {
             tileSize="180px"
             pulse
           />
-          <div className="relative z-10 container-base text-center">
+          <div className="container-base relative z-10 text-center">
             <ScrollReveal variant="fade-up">
               <p className="text-brand-label mb-6">Custom Order</p>
             </ScrollReveal>
@@ -69,34 +69,33 @@ export default function CustomOrderPage() {
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={160} variant="fade-only">
-              <p className="body-copy md:body-copy-md mt-7 max-w-[460px] mx-auto text-dust/75">
+              <p className="body-copy mx-auto mt-7 max-w-[460px] text-dust/75 md:body-copy-md">
                 Every Soul Skin piece can be made one-of-one. Tell us what you
-                want — fabric, fit, story — and we build it with you.
+                want - fabric, fit, story - and we build it with you.
               </p>
             </ScrollReveal>
           </div>
         </section>
 
-        {/* Process */}
-        <section className="bg-void section-pad border-t border-cinder/40">
+        <section className="section-pad border-t border-cinder/40 bg-void">
           <div className="container-base">
             <ScrollReveal variant="fade-up">
-              <div className="flex items-center gap-5 mb-10 md:mb-14">
+              <div className="mb-10 flex items-center gap-5 md:mb-14">
                 <span className="text-brand-label !text-iron">Process</span>
-                <span className="h-px bg-iron/30 flex-1" />
-                <span className="font-mono text-[11px] text-iron/50 tracking-widest">
+                <span className="h-px flex-1 bg-iron/30" />
+                <span className="font-mono text-[11px] tracking-widest text-iron/50">
                   3 STEPS
                 </span>
               </div>
             </ScrollReveal>
-            <ol className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <ol className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
               {PROCESS_STEPS.map((step, i) => (
                 <ScrollReveal key={step.no} delay={i * 120} variant="fade-up">
-                  <li className="flex flex-col gap-3 md:gap-4 border-t border-cinder/60 pt-5 md:pt-6">
-                    <span className="font-mono text-[11px] text-ember tracking-widest">
+                  <li className="flex flex-col gap-3 border-t border-cinder/60 pt-5 md:gap-4 md:pt-6">
+                    <span className="font-mono text-[11px] tracking-widest text-ember">
                       {step.no}
                     </span>
-                    <h2 className="font-display text-bone text-[24px] md:text-[28px] leading-none tracking-tight">
+                    <h2 className="font-display text-[24px] leading-none tracking-tight text-bone md:text-[28px]">
                       {step.title}
                     </h2>
                     <p className="body-copy text-dust/80">{step.body}</p>
@@ -107,24 +106,22 @@ export default function CustomOrderPage() {
           </div>
         </section>
 
-        {/* Lead time strip */}
-        <section className="bg-ash border-t border-b border-cinder/60">
-          <div className="container-base py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <section className="border-y border-cinder/60 bg-ash">
+          <div className="container-base flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <span className="text-brand-label !text-iron">Lead time</span>
-              <span className="font-mono text-[12px] text-bone tracking-widest uppercase">
-                3–4 weeks · Ships worldwide
+              <span className="font-mono text-[12px] uppercase tracking-widest text-bone">
+                3-4 weeks / Ships worldwide
               </span>
             </div>
-            <span className="font-mono text-[10px] text-iron/60 tracking-widest uppercase">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-iron/60">
               Reply within 48h
             </span>
           </div>
         </section>
 
-        {/* CTA */}
         <section
-          className="relative overflow-hidden section-pad"
+          className="section-pad relative overflow-hidden"
           style={{ backgroundColor: "var(--cta-bg)" }}
         >
           <NoiseAccent
@@ -135,40 +132,43 @@ export default function CustomOrderPage() {
             blendMode="overlay"
             tileSize="180px"
           />
-          <div className="relative z-10 container-base text-center">
+          <div className="container-base relative z-10 text-center">
             <ScrollReveal variant="fade-up">
               <p className="text-brand-label mb-5">Start</p>
             </ScrollReveal>
             <ScrollReveal delay={80} variant="fade-up">
-              <h2 className="text-brand-display display-section text-bone mb-8">
+              <h2 className="text-brand-display display-section mb-8 text-bone">
                 READY WHEN YOU ARE.
               </h2>
             </ScrollReveal>
             <ScrollReveal
               delay={160}
               variant="fade-only"
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
             >
               <Link
                 href={brand.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group btn-hover-fill cta-button border border-[color:var(--cta-accent-soft)] w-full sm:w-auto justify-center"
+                className="group btn-hover-fill cta-button w-full justify-center border border-[color:var(--cta-accent-soft)] sm:w-auto"
               >
                 <span className="transition-colors duration-300 group-hover:text-void">
                   Start on Instagram
                 </span>
-                <span className="text-[16px] transition-all duration-300 group-hover:text-void group-hover:translate-x-1">
-                  →
-                </span>
+                <InstagramIcon
+                  size={16}
+                  strokeWidth={1.6}
+                  className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-void"
+                  aria-hidden="true"
+                />
               </Link>
               {brand.email && (
                 <Link
                   href={`mailto:${brand.email}?subject=Soul%20Skin%20Custom%20Order`}
-                  className="inline-flex items-center justify-center gap-2 border border-cinder px-6 py-4 font-mono text-[11px] tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors w-full sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 border border-cinder px-6 py-4 font-mono text-[11px] uppercase tracking-widest text-dust transition-colors hover:border-iron hover:text-bone sm:w-auto"
                 >
                   <span>Email us</span>
-                  <span>→</span>
+                  <span aria-hidden="true">-&gt;</span>
                 </Link>
               )}
             </ScrollReveal>
