@@ -1,23 +1,25 @@
 import Link from "next/link";
-import { getActiveDrop, getAllProducts, getLookbookItems, getSiteSettings } from "@/lib/db";
+import { getActiveDrops, getAllProducts, getLookbookItems, getSiteSettings, MAX_ACTIVE_DROPS } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const [drop, products, lookbook, siteSettings] = await Promise.all([
-    getActiveDrop(),
+  const [drops, products, lookbook, siteSettings] = await Promise.all([
+    getActiveDrops(MAX_ACTIVE_DROPS),
     getAllProducts(),
     getLookbookItems(),
     getSiteSettings(),
   ]);
 
+  const drop = drops[0] ?? null;
+
   const cards = [
     {
       href:  "/admin/drop",
-      label: "Current Drop",
-      value: drop ? `${drop.title_line1} ${drop.title_line2}` : "—",
-      sub:   drop ? `${drop.pieces_left} left` : "Not set",
-      live:  !!drop,
+      label: "Active Drops",
+      value: drops.length > 0 ? `${drops.length} / ${MAX_ACTIVE_DROPS}` : "—",
+      sub:   drop ? `${drop.title_line1} ${drop.title_line2} (+${Math.max(drops.length - 1, 0)})` : "Not set",
+      live:  drops.length > 0,
     },
     {
       href:  "/admin/products",

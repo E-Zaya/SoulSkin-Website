@@ -10,14 +10,21 @@ type Props = {
 };
 
 export default function Hero({ imageUrl }: Props) {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [entranceKey, setEntranceKey] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Loading state — gives the hero image and title a clean first entrance.
   useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 80);
-    return () => clearTimeout(timer);
+    const replayEntrance = () => {
+      setLoaded(false);
+      setEntranceKey((key) => key + 1);
+      window.setTimeout(() => setLoaded(true), 80);
+    };
+
+    window.addEventListener("soulskin:brand-home", replayEntrance);
+    return () => window.removeEventListener("soulskin:brand-home", replayEntrance);
   }, []);
 
   // Parallax — image moves slower than scroll, disabled for reduced motion users.
@@ -92,7 +99,7 @@ export default function Hero({ imageUrl }: Props) {
       />
 
       {/* Hero copy */}
-      <div className="absolute hero-content-position z-10">
+      <div key={entranceKey} className="absolute hero-content-position z-10">
         <p
           className="text-brand-label mb-4 md:mb-5"
           style={{

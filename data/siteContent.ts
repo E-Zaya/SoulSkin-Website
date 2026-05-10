@@ -10,7 +10,7 @@ export const siteContent = {
     taglineShort: "UB.MN / EST. 2021",
   },
   hero: {
-    tag: "SS 25",
+    tag: "",
     titleLine1: "CHOOSE YOUR",
     titleLine2: "SKIN",
     subtitle: "Өөрийн skin-ээ сонго.",
@@ -25,16 +25,16 @@ export const siteContent = {
     line2: "Built for the ones who wear their own noise.",
   },
   marquees: {
-    top: "SOUL SKIN — UB.MN — SS 25 — LIMITED —",
+    top: "SOUL SKIN — UB.MN — LIMITED —",
     bottom: "MADE IN ULAANBAATAR — WEAR YOUR SOUL — CUSTOM ORDER —",
   },
   lookbook: {
     label: "Lookbook",
-    season: "S / S 2025",
+    season: "",
     description: "Shot in Ulaanbaatar. Each image is a document, not a pose.",
-    titleLine1: "WEAR",
-    titleLine2: "THE",
-    titleLine3: "QUIET",
+    titleLine1: "",
+    titleLine2: "",
+    titleLine3: "",
   },
   products: {
     label: "Selected Pieces",

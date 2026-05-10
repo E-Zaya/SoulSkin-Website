@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
 import Image from "next/image";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import { siteContent } from "@/data/siteContent";
@@ -20,6 +20,7 @@ const STRIP_HEIGHTS = [158, 128, 172, 118, 148, 164, 124, 152, 140, 130];
 
 export default function Lookbook({ data }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [transitionDirection, setTransitionDirection] = useState(1);
   const [isDesktop, setIsDesktop] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
@@ -37,9 +38,16 @@ export default function Lookbook({ data }: Props) {
   const goTo = useCallback(
     (idx: number) => {
       if (items.length === 0) return;
-      setActiveIdx((idx + items.length) % items.length);
+      const nextIdx = (idx + items.length) % items.length;
+      if (nextIdx === activeIdx) return;
+      setTransitionDirection(
+        nextIdx > activeIdx || (activeIdx === items.length - 1 && nextIdx === 0)
+          ? 1
+          : -1
+      );
+      setActiveIdx(nextIdx);
     },
-    [items.length]
+    [activeIdx, items.length]
   );
 
   const goPrev = useCallback(() => goTo(activeIdx - 1), [activeIdx, goTo]);
@@ -120,9 +128,13 @@ export default function Lookbook({ data }: Props) {
           {items.map((item, i) => (
             <div
               key={item.key}
-              className="absolute inset-0 transition-opacity duration-700 ease-out"
+              className="absolute inset-0 transition-all duration-700 ease-out"
               style={{
                 opacity: i === activeIdx ? 1 : 0,
+                transform:
+                  i === activeIdx
+                    ? "translateX(0) scale(1)"
+                    : `translateX(${transitionDirection * 18}px) scale(1.012)`,
                 zIndex: i === activeIdx ? 1 : 0,
                 pointerEvents: i === activeIdx ? "auto" : "none",
               }}
@@ -237,13 +249,23 @@ export default function Lookbook({ data }: Props) {
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            <Image
+            <div
+              key={activeItem.key}
+              className="absolute inset-0 animate-lookbook-slide"
+              style={
+                {
+                  "--lookbook-slide-x": `${transitionDirection * 18}px`,
+                } as CSSProperties
+              }
+            >
+              <Image
               src={activeItem.src}
               alt={`Lookbook — ${activeItem.label} — Soul Skin`}
               fill
               sizes="100vw"
               className="lookbook-mobile-image"
-            />
+              />
+            </div>
 
             {/* スマホ用グラデーション */}
             <div className="lookbook-mobile-fade pointer-events-none absolute inset-x-0 bottom-0 z-10" />

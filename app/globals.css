@@ -279,6 +279,43 @@ body::-webkit-scrollbar {
   }
 }
 
+@keyframes lookbook-slide {
+  from {
+    opacity: 0;
+    transform: translateX(var(--lookbook-slide-x, 18px)) scale(1.018);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes drop-sheen {
+  from {
+    transform: translateX(-125%) skewX(-16deg);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.28;
+  }
+  to {
+    transform: translateX(125%) skewX(-16deg);
+    opacity: 0;
+  }
+}
+
+@keyframes page-transition-pulse {
+  0% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ── Utilities ── */
 @layer utilities {
   /* Animation Utilities */
@@ -315,6 +352,10 @@ body::-webkit-scrollbar {
   .animate-line-expand {
     animation: line-expand 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
     transform-origin: left center;
+  }
+
+  .animate-lookbook-slide {
+    animation: lookbook-slide 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   /* Layout Utilities */
@@ -508,6 +549,26 @@ body::-webkit-scrollbar {
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
+  }
+
+  .drop-release-sheen {
+    position: absolute;
+    inset: -10% auto -10% -35%;
+    z-index: 8;
+    width: 34%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(237, 232, 225, 0.18),
+      transparent
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .drop-release-sheen.is-visible {
+    animation: drop-sheen 1100ms cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
   }
 
   /* Image Ratio Utilities */
@@ -776,6 +837,35 @@ body::-webkit-scrollbar {
     pointer-events: none;
     mix-blend-mode: overlay;
     z-index: 9998;
+  }
+
+  .noise-global::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(237, 232, 225, 0.018) 0,
+      rgba(237, 232, 225, 0.018) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    opacity: 0.32;
+  }
+
+  .page-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+    background:
+      linear-gradient(to bottom, rgba(10, 9, 8, 0.55), rgba(10, 9, 8, 0)),
+      var(--color-void);
+    opacity: 0;
+  }
+
+  .page-transition.is-active {
+    animation: page-transition-pulse 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   .noise-layer {

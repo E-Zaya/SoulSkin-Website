@@ -24,20 +24,31 @@ create table if not exists drops (
   cta          text not null default '',
   image_url    text,
   active       boolean not null default false,
+  order_index  integer not null default 0,
   created_at   timestamptz not null default now()
 );
 
--- 既存データに active=true が複数ある場合、最新1件だけ残してから unique index を作る。
-update drops
-set active = false
-where active = true
-  and id not in (
-    select id from drops where active = true order by created_at desc limit 1
-  );
+-- 既存スキーマからのマイグレーション:
+--   1. かつての「Active 1件のみ」unique index を撤廃 (Active を複数持てるよう)。
+--   2. order_index 列を追加 (Admin で並び順を制御するため)。
+drop index if exists only_one_active_drop;
 
-create unique index if not exists only_one_active_drop
-  on drops (active)
-  where active = true;
+alter table drops
+  add column if not exists order_index integer not null default 0;
+
+create index if not exists drops_active_order_idx
+  on drops (active, order_index, created_at desc);
+
+create table if not exists drop_images (
+  id           uuid primary key default gen_random_uuid(),
+  drop_id      uuid not null references drops(id) on delete cascade,
+  image_url    text not null,
+  order_index  integer not null default 0,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists drop_images_drop_id_order_index_idx
+  on drop_images (drop_id, order_index);
 
 create table if not exists products (
   id           uuid primary key default gen_random_uuid(),
@@ -78,6 +89,7 @@ create unique index if not exists lookbook_item_id_unique on lookbook_items (ite
 
 alter table site_settings enable row level security;
 alter table drops enable row level security;
+alter table drop_images enable row level security;
 alter table products enable row level security;
 alter table product_images enable row level security;
 alter table lookbook_items enable row level security;
@@ -87,6 +99,9 @@ create policy "Public read site_settings" on site_settings for select using (tru
 
 drop policy if exists "Public read drops" on drops;
 create policy "Public read drops" on drops for select using (true);
+
+drop policy if exists "Public read drop_images" on drop_images;
+create policy "Public read drop_images" on drop_images for select using (true);
 
 drop policy if exists "Public read products" on products;
 create policy "Public read products" on products for select using (true);

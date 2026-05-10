@@ -11,16 +11,16 @@ import CustomOrder from "@/components/sections/CustomOrder";
 import AboutTeaser from "@/components/sections/AboutTeaser";
 import { siteContent } from "@/data/siteContent";
 import {
-  getActiveDrop,
+  getActiveDrops,
   getProductsWithImages,
   getLookbookItems,
   getSiteSettings,
 } from "@/lib/db";
 
 // Supabase 未設定時も動くようにエラーを吸収
-async function safeGetActiveDrop() {
-  try { return await getActiveDrop(); }
-  catch (error) { console.error("[page] safeGetActiveDrop", error); return null; }
+async function safeGetActiveDrops() {
+  try { return await getActiveDrops(); }
+  catch (error) { console.error("[page] safeGetActiveDrops", error); return []; }
 }
 async function safeGetProducts() {
   try { return await getProductsWithImages(); }
@@ -36,15 +36,15 @@ async function safeGetSiteSettings() {
 }
 
 export default async function Home() {
-  const [drop, products, lookbook, siteSettings] = await Promise.all([
-    safeGetActiveDrop(),
+  const [drops, products, lookbook, siteSettings] = await Promise.all([
+    safeGetActiveDrops(),
     safeGetProducts(),
     safeGetLookbookItems(),
     safeGetSiteSettings(),
   ]);
 
-  // トップでは最大 3 点だけ。残りは /pieces で見せる。
-  const featuredProducts = products.slice(0, 3);
+  // トップでは最大 6 点（モバイル 2列×3行 / PC 3列×2行）。残りは /pieces で見せる。
+  const featuredProducts = products.slice(0, 6);
 
   return (
     <>
@@ -57,8 +57,8 @@ export default async function Home() {
         {/* 2. Brand manifesto */}
         <ManifestoStrip />
 
-        {/* 3. Drop — current release. Past drops are at /drops. */}
-        <Drop data={drop} />
+        {/* 3. Drop — current releases (carousel up to 5). Past drops are at /drops. */}
+        <Drop drops={drops} />
 
         {/* 3b. Drop link strip — replaces the inline archive on the landing page */}
         <section className="section-gap-before bg-void section-link-strip">

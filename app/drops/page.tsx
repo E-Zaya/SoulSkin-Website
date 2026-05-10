@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import ActiveDropsCarousel from "@/components/sections/ActiveDropsCarousel";
 import { getAllPublicDrops } from "@/lib/db";
 import { toSlug } from "@/lib/slug";
 
@@ -30,7 +31,7 @@ async function safeGetAllPublicDrops() {
 
 export default async function DropsPage() {
   const drops = await safeGetAllPublicDrops();
-  const active = drops.find((d) => d.active) ?? null;
+  const actives = drops.filter((d) => d.active);
   const past = drops.filter((d) => !d.active);
 
   return (
@@ -51,65 +52,8 @@ export default async function DropsPage() {
           </div>
         </section>
 
-        {/* Active drop — feature card */}
-        {active && (
-          <section className="relative bg-ash overflow-hidden">
-            <div className="editorial-split flex flex-col md:flex-row">
-              <Link
-                href={`/drops/${toSlug(active.label)}`}
-                className="relative md:w-[64%] aspect-[4/5] md:aspect-[16/13] shrink-0 overflow-hidden block group"
-              >
-                {active.image_url && (
-                  <Image
-                    src={active.image_url}
-                    alt={`${active.title_line1} ${active.title_line2} — Soul Skin Drop`}
-                    fill
-                    priority
-                    sizes="(min-width: 768px) 64vw, 100vw"
-                    className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.03]"
-                  />
-                )}
-              </Link>
-
-              <div className="relative md:w-[36%] flex flex-col justify-center px-6 md:px-12 lg:px-14 section-pad-editorial">
-                <ScrollReveal delay={0}>
-                  <p className="text-brand-label mb-5 flex items-center gap-2.5">
-                    <span className="text-ember">{active.label}</span>
-                    <span
-                      className="inline-block w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: "var(--color-rust)" }}
-                      aria-hidden="true"
-                    />
-                    <span style={{ color: "var(--color-rust)" }}>LIVE</span>
-                  </p>
-                </ScrollReveal>
-                <ScrollReveal delay={80}>
-                  <h2 className="text-brand-display display-section mb-5">
-                    {active.title_line1}
-                    <br />
-                    {active.title_line2}
-                  </h2>
-                </ScrollReveal>
-                <ScrollReveal delay={160}>
-                  <p className="body-copy text-dust mb-7 text-measure-sm">
-                    {active.description}
-                  </p>
-                </ScrollReveal>
-                <ScrollReveal delay={240}>
-                  <Link
-                    href={`/drops/${toSlug(active.label)}`}
-                    className="cta-link group"
-                  >
-                    <span className="link-underline-grow">View this drop</span>
-                    <span className="transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                </ScrollReveal>
-              </div>
-            </div>
-          </section>
-        )}
+        {/* Active drops — feature carousel (最大 5 件、5秒で自動切替) */}
+        {actives.length > 0 && <ActiveDropsCarousel drops={actives} />}
 
         {/* Past drops grid */}
         {past.length > 0 && (

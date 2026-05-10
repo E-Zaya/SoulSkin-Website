@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
-import { getAllPublicDrops, getDropBySlug } from "@/lib/db";
+import { getAllPublicDrops, getDropBySlugWithImages } from "@/lib/db";
 import { toSlug } from "@/lib/slug";
 
 const DOT_MAX = 10;
@@ -61,7 +61,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   try {
-    const drop = await getDropBySlug(slug);
+    const drop = await getDropBySlugWithImages(slug);
     if (!drop) return { title: "Drop not found — Soul Skin" };
     const title = `${drop.title_line1} ${drop.title_line2} — ${drop.label}`;
     return {
@@ -79,18 +79,35 @@ export async function generateMetadata(
   }
 }
 
+/**
+ * 「メイン画像 + 詳細サブ画像」を全部含めたギャラリー配列を返す。
+ * 詳細ページの大小交互エディトリアルで使う。
+ */
+function buildGallery(
+  mainUrl: string | null,
+  images: { id: string; image_url: string }[]
+): { key: string; url: string }[] {
+  const gallery: { key: string; url: string }[] = [];
+  if (mainUrl) gallery.push({ key: "main", url: mainUrl });
+  for (const img of images) {
+    gallery.push({ key: img.id, url: img.image_url });
+  }
+  return gallery;
+}
+
 export default async function DropDetailPage(props: DropDetailProps) {
   const { slug } = await props.params;
 
   let drop = null;
   try {
-    drop = await getDropBySlug(slug);
+    drop = await getDropBySlugWithImages(slug);
   } catch (error) {
-    console.error("[drops/[slug]] getDropBySlug", error);
+    console.error("[drops/[slug]] getDropBySlugWithImages", error);
   }
   if (!drop) notFound();
 
   const isSoldOut = drop.pieces_left === 0;
+  const gallery = buildGallery(drop.image_url, drop.images);
 
   return (
     <>
@@ -240,6 +257,83 @@ export default async function DropDetailPage(props: DropDetailProps) {
             </div>
           </div>
         </section>
+
+        {/* Editorial gallery — main + detail images, 大小交互パターン */}
+        {gallery.length > 0 && (
+          <section className="relative bg-void section-pad overflow-hidden">
+            <div className="container-base">
+              <ScrollReveal variant="fade-up">
+                <div className="flex items-center gap-5 mb-10 md:mb-14">
+                  <span className="text-brand-label !text-iron">Detail</span>
+                  <span className="h-px bg-iron/30 flex-1" />
+                  <span className="font-mono text-[11px] text-iron/50 tracking-widest">
+                    {String(gallery.length).padStart(2, "0")} IMAGE
+                    {gallery.length !== 1 ? "S" : ""}
+                  </span>
+                </div>
+              </ScrollReveal>
+
+              {/* Saint Laurent 風: cycle of 3
+                    i % 3 === 0 → full width
+                    i % 3 === 1 → 60% 右寄せ
+                    i % 3 === 2 → 60% 左寄せ
+                  モバイルでは全部フルワイド単縦並び (overflow しないように)。
+              */}
+              <div className="space-y-6 md:space-y-12">
+                {gallery.map((img, i) => {
+                  const mod = i % 3;
+                  const isFull = mod === 0;
+                  const alignRight = mod === 1;
+                  // mod 2 → 左寄せ
+                  const wrapperClass = isFull
+                    ? "w-full"
+                    : alignRight
+                    ? "w-full md:w-[62%] md:ml-auto"
+                    : "w-full md:w-[62%] md:mr-auto";
+                  // 大は 4:5、小は 3:4 (より縦長) で雰囲気を変える
+                  const aspectClass = isFull
+                    ? "aspect-[4/5] md:aspect-[16/10]"
+                    : "aspect-[3/4]";
+
+                  return (
+                    <ScrollReveal
+                      key={img.key}
+                      delay={i * 60}
+                      variant={isFull ? "fade-up" : alignRight ? "fade-left" : "fade-up"}
+                    >
+                      <figure className={wrapperClass}>
+                        <div
+                          className={`relative ${aspectClass} overflow-hidden bg-ash`}
+                        >
+                          <Image
+                            src={img.url}
+                            alt={`${drop.title_line1} ${drop.title_line2} — image ${i + 1}`}
+                            fill
+                            sizes={
+                              isFull
+                                ? "(min-width: 1024px) 1200px, 100vw"
+                                : "(min-width: 768px) 62vw, 100vw"
+                            }
+                            className={`object-cover object-center ${
+                              isSoldOut ? "grayscale" : ""
+                            }`}
+                          />
+                        </div>
+                        <figcaption className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest text-iron/50 uppercase">
+                          <span>
+                            {drop.label} · {String(i + 1).padStart(2, "0")} /{" "}
+                            {String(gallery.length).padStart(2, "0")}
+                          </span>
+                          {i === 0 && <span>Cover</span>}
+                        </figcaption>
+                      </figure>
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Back to all drops */}
         <section className="bg-void section-pad-tight border-t border-cinder/40">

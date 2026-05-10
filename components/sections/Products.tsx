@@ -40,6 +40,7 @@ function CarouselWithOverlay({
   const [idx, setIdx] = useState(0);
   const total = images.length;
   const THRESHOLD = 40;
+  const TAP_MOVE_LIMIT = 10;
 
   // マウスドラッグ
   const dragStartX = useRef<number | null>(null);
@@ -69,18 +70,23 @@ function CarouselWithOverlay({
 
   // タッチスワイプ
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
   function onTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   }
   function onTouchEnd(e: React.TouchEvent) {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || touchStartY.current === null) return;
     const diff = e.changedTouches[0].clientX - touchStartX.current;
+    const verticalDiff = e.changedTouches[0].clientY - touchStartY.current;
     touchStartX.current = null;
-    if (Math.abs(diff) >= THRESHOLD) {
+    touchStartY.current = null;
+
+    if (Math.abs(diff) >= THRESHOLD && Math.abs(diff) > Math.abs(verticalDiff)) {
       diff < 0
         ? setIdx((i) => (i + 1) % total)
         : setIdx((i) => (i - 1 + total) % total);
-    } else {
+    } else if (Math.abs(diff) <= TAP_MOVE_LIMIT && Math.abs(verticalDiff) <= TAP_MOVE_LIMIT) {
       onOpen();
     }
   }
@@ -98,13 +104,15 @@ function CarouselWithOverlay({
             src={src}
             alt={`${name} — ${i + 1}`}
             fill
-            className="object-cover object-center"
+            className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover/carousel:scale-[1.045]"
             draggable={false}
           />
         </div>
       ))}
 
       {/* ドラッグ / スワイプ レイヤー */}
+      <div className="pointer-events-none absolute inset-0 z-[9] bg-void/0 transition-colors duration-500 md:group-hover/carousel:bg-void/18" />
+
       <div
         className="absolute inset-0 z-10"
         onMouseDown={onMouseDown}
@@ -113,6 +121,7 @@ function CarouselWithOverlay({
         onMouseLeave={() => { dragStartX.current = null; isDragging.current = false; }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        onTouchCancel={() => { touchStartX.current = null; touchStartY.current = null; }}
       />
 
       {/* 矢印（2枚以上・hover時に出現） */}
@@ -140,10 +149,10 @@ function CarouselWithOverlay({
       )}
 
       {/* グラデーション（下部） */}
-      <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-void/80 via-void/25 to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[58%] bg-gradient-to-t from-void/90 via-void/40 to-transparent z-10 pointer-events-none md:h-[45%] md:from-void/80 md:via-void/25" />
 
       {/* 情報オーバーレイ（名前 + マテリアル）+ ドット — 常時表示 */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 px-3 pb-3 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 z-20 px-3 pb-3 pointer-events-none md:px-3 md:pb-3">
         {/* ドット（2枚以上） */}
         {total > 1 && (
           <div className="flex gap-1.5 mb-2 pointer-events-auto">
@@ -162,11 +171,11 @@ function CarouselWithOverlay({
           </div>
         )}
         {/* 名前 */}
-        <p className="font-display text-bone text-[12px] md:text-[13px] leading-tight tracking-wide line-clamp-1 drop-shadow-sm">
+        <p className="font-display text-bone text-[13px] leading-tight tracking-wide line-clamp-1 drop-shadow-sm md:text-[13px]">
           {name}
         </p>
         {/* マテリアル */}
-        <p className="font-mono text-bone/55 text-[9px] tracking-[0.18em] uppercase mt-0.5 line-clamp-1">
+        <p className="font-mono text-bone/55 text-[9px] tracking-[0.18em] uppercase mt-0.5 line-clamp-1 md:text-[9px]">
           {material}
         </p>
       </div>
@@ -255,7 +264,7 @@ function Modal({
 
         {/* 画像カルーセル */}
         <div
-          className="relative h-[62svh] min-h-[420px] w-full shrink-0 overflow-hidden bg-ash md:h-auto md:min-h-0 md:w-[55%]"
+          className="relative h-[56svh] min-h-[340px] w-full shrink-0 overflow-hidden bg-ash md:h-auto md:min-h-0 md:w-[55%]"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
@@ -276,6 +285,16 @@ function Modal({
           ))}
 
           {/* 矢印 */}
+          <div className="absolute inset-x-0 bottom-0 z-10 h-[42%] bg-gradient-to-t from-void/85 via-void/28 to-transparent pointer-events-none md:hidden" />
+          <div className="absolute bottom-5 left-5 right-14 z-20 md:hidden">
+            <p className="font-display text-[26px] leading-none text-bone line-clamp-2">
+              {product.name}
+            </p>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-bone/62 line-clamp-1">
+              {product.material}
+            </p>
+          </div>
+
           {total > 1 && (
             <>
               <button
@@ -350,13 +369,19 @@ function Modal({
 
 // ─── ProductCard ──────────────────────────────────────────────
 
-function ProductCard({ product, index }: { product: NormalizedProduct; index: number }) {
+function ProductCard({
+  product,
+  index,
+}: {
+  product: NormalizedProduct;
+  index: number;
+}) {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <>
       <ScrollReveal
-        delay={index * 120}
+        delay={Math.min(index, 2) * 120}
         variant={index === 1 ? "fade-up" : "fade-only"}
       >
         <div className={`group ${product.offset}`}>
@@ -371,19 +396,8 @@ function ProductCard({ product, index }: { product: NormalizedProduct; index: nu
           </div>
 
           {/* カード下テキスト */}
-          <h3
-            className="product-title mb-2 transition-transform duration-500 ease-out group-hover:-translate-y-0.5 cursor-pointer"
-            onClick={() => setModalOpen(true)}
-          >
-            {product.name}
-          </h3>
-          <p className="font-mono text-[10px] text-iron uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-dust">
-            {product.material}
-          </p>
-          <p className="font-sans text-[12px] text-dust/65 leading-relaxed mb-4 max-w-[32rem] md:max-w-[90%] line-clamp-2">
-            {product.desc}
-          </p>
-          <p className="font-mono text-[10px] text-bone/50 tracking-widest mb-4">
+          <p className="mb-4 flex items-center gap-2 font-mono text-[10px] text-bone/55 tracking-widest">
+            <span className="h-1.5 w-1.5 rounded-full bg-bone/55 shadow-[0_0_10px_rgba(237,232,225,0.28)]" aria-hidden="true" />
             {product.price}
           </p>
           <Link
@@ -430,11 +444,11 @@ export default function Products({ data }: Props) {
   return (
     <section id="archive" className="section-gap-before bg-void section-pad">
       <div className="container-base">
-        <ScrollReveal className="mb-10 md:mb-12" variant="fade-left">
+        <ScrollReveal className="mb-6 md:mb-12" variant="fade-left">
           <p className="text-brand-label">{siteContent.products.label}</p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
           {items.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}

@@ -5,6 +5,7 @@ import {
   Playfair_Display,
   Space_Mono,
 } from "next/font/google";
+import PageTransition from "@/components/layout/PageTransition";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -59,6 +60,7 @@ export default function RootLayout({
       <body className="bg-void text-bone font-sans overflow-x-hidden">
         {/* Global ultra-thin noise — the ambient grain across the entire site */}
         <div className="noise-global" aria-hidden="true" />
+        <PageTransition />
         {children}
       </body>
     </html>

@@ -26,6 +26,19 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
   const pathname = usePathname() || "/";
+  const activeLink = navLinks.find((link) => isActive(pathname, link.href)) ?? navLinks[0];
+
+  const handleBrandClick = () => {
+    setMenuOpen(false);
+    setHidden(false);
+
+    if (pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.setTimeout(() => {
+        window.dispatchEvent(new Event("soulskin:brand-home"));
+      }, 180);
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -98,7 +111,7 @@ export default function Navbar() {
 
         <Link
           href="/"
-          onClick={() => setMenuOpen(false)}
+          onClick={handleBrandClick}
           className="select-none font-display text-[1.75rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity duration-300 hover:opacity-75 md:text-[2.25rem]"
           aria-label={siteContent.brand.name}
         >
@@ -133,7 +146,25 @@ export default function Navbar() {
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="mb-10 font-display text-[3.5rem] uppercase leading-none tracking-[0.08em] text-bone md:mb-14 md:text-[5.5rem]"
+            className="pointer-events-none absolute right-[-0.08em] top-[calc(var(--nav-h)+1rem)] z-0 text-right font-display text-[8.75rem] uppercase leading-[0.78] tracking-[-0.03em] text-bone/[0.035] md:top-[calc(var(--nav-h-md)+1rem)] md:text-[16rem]"
+            style={{
+              transform: menuOpen ? "translateX(0)" : "translateX(24px)",
+              opacity: menuOpen ? 1 : 0,
+              transition:
+                "transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 700ms ease",
+              transitionDelay: menuOpen ? "120ms" : "0ms",
+            }}
+            aria-hidden="true"
+          >
+            {activeLink.index}
+            <br />
+            {activeLink.name}
+          </div>
+
+          <Link
+            href="/"
+            onClick={handleBrandClick}
+            className="relative z-10 mb-10 block w-fit font-display text-[3.5rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-14 md:text-[5.5rem]"
             style={{
               transform: menuOpen ? "translateY(0)" : "translateY(14px)",
               opacity: menuOpen ? 1 : 0,
@@ -141,11 +172,12 @@ export default function Navbar() {
                 "transform 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease",
               transitionDelay: menuOpen ? "80ms" : "0ms",
             }}
+            aria-label={siteContent.brand.name}
           >
             {siteContent.brand.name}
-          </div>
+          </Link>
 
-          <ul className="flex flex-col border-y border-bone/12">
+          <ul className="relative z-10 flex flex-col border-y border-bone/12">
             {navLinks.map((link, i) => {
               const active = isActive(pathname, link.href);
 
@@ -182,7 +214,7 @@ export default function Navbar() {
             })}
           </ul>
 
-          <div className="mt-8 flex flex-col gap-3 md:mt-10">
+          <div className="relative z-10 mt-8 flex flex-col gap-3 md:mt-10">
             <Link
               href={siteContent.brand.url}
               target="_blank"

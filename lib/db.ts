@@ -23,8 +23,25 @@ export type Drop = {
   cta: string;
   image_url: string | null;
   active: boolean;
+  order_index: number;
   created_at: string;
 };
+
+export type DropImage = {
+  id: string;
+  drop_id: string;
+  image_url: string;
+  order_index: number;
+  created_at: string;
+};
+
+// Drop に images を付与した拡張型 (フロントエンド用)
+export type DropWithImages = Drop & {
+  images: DropImage[];
+};
+
+/** ホームのカルーセルに出す Active Drop の最大件数 */
+export const MAX_ACTIVE_DROPS = 5;
 
 export type Product = {
   id: string;
@@ -87,17 +104,55 @@ export async function upsertSiteSettings(
     .single();
 }
 
+/**
+ * 後方互換用: 最新の Active Drop 1件を返す。新規コードは getActiveDrops を使うこと。
+ */
 export async function getActiveDrop(): Promise<Drop | null> {
+  const drops = await getActiveDrops(1);
+  return drops[0] ?? null;
+}
+
+/**
+ * Active な Drops を order_index 昇順で複数件取得 (デフォルト最大 MAX_ACTIVE_DROPS = 5)。
+ * ホーム / /drops のカルーセルで使用。
+ */
+export async function getActiveDrops(
+  limit: number = MAX_ACTIVE_DROPS
+): Promise<Drop[]> {
   const supabase = createServerClient();
   const { data, error } = await supabase
     .from("drops")
     .select("*")
     .eq("active", true)
+    .order("order_index", { ascending: true })
     .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error) console.error("[db] getActiveDrop:", error.message);
-  return data;
+    .limit(limit);
+  if (error) console.error("[db] getActiveDrops:", error.message);
+  return data ?? [];
+}
+
+/**
+ * Active な Drops を images 付きで取得 (詳細ページのカルーセルが画像も使う場合用)。
+ */
+export async function getActiveDropsWithImages(
+  limit: number = MAX_ACTIVE_DROPS
+): Promise<DropWithImages[]> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("drops")
+    .select("*, drop_images(id, drop_id, image_url, order_index, created_at)")
+    .eq("active", true)
+    .order("order_index", { ascending: true })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) console.error("[db] getActiveDropsWithImages:", error.message);
+  if (!data) return [];
+  return data.map((d) => ({
+    ...d,
+    images: ((d.drop_images as DropImage[]) ?? []).sort(
+      (a, b) => a.order_index - b.order_index
+    ),
+  }));
 }
 
 export async function getPastDrops(): Promise<Drop[]> {
@@ -121,6 +176,7 @@ export async function getAllPublicDrops(): Promise<Drop[]> {
     .from("drops")
     .select("*")
     .order("active", { ascending: false })
+    .order("order_index", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) console.error("[db] getAllPublicDrops:", error.message);
   return data ?? [];
@@ -133,6 +189,29 @@ export async function getAllPublicDrops(): Promise<Drop[]> {
 export async function getDropBySlug(slug: string): Promise<Drop | null> {
   const drops = await getAllPublicDrops();
   return drops.find((d) => toSlug(d.label) === slug) ?? null;
+}
+
+/**
+ * Drop.label をスラグ化したものから個別 Drop を images 付きで取得。
+ */
+export async function getDropBySlugWithImages(
+  slug: string
+): Promise<DropWithImages | null> {
+  const drop = await getDropBySlug(slug);
+  if (!drop) return null;
+  const images = await getDropImagesById(drop.id);
+  return { ...drop, images };
+}
+
+export async function getDropImagesById(dropId: string): Promise<DropImage[]> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("drop_images")
+    .select("*")
+    .eq("drop_id", dropId)
+    .order("order_index", { ascending: true });
+  if (error) console.error("[db] getDropImagesById:", error.message);
+  return data ?? [];
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -203,8 +282,37 @@ export async function getAllDrops(): Promise<Drop[]> {
   const { data } = await supabase
     .from("drops")
     .select("*")
+    .order("active", { ascending: false })
+    .order("order_index", { ascending: true })
     .order("created_at", { ascending: false });
   return data ?? [];
+}
+
+export async function getAllDropsWithImages(): Promise<DropWithImages[]> {
+  const supabase = createServerClient();
+  const { data } = await supabase
+    .from("drops")
+    .select("*, drop_images(id, drop_id, image_url, order_index, created_at)")
+    .order("active", { ascending: false })
+    .order("order_index", { ascending: true })
+    .order("created_at", { ascending: false });
+  if (!data) return [];
+  return data.map((d) => ({
+    ...d,
+    images: ((d.drop_images as DropImage[]) ?? []).sort(
+      (a, b) => a.order_index - b.order_index
+    ),
+  }));
+}
+
+export async function countActiveDrops(): Promise<number> {
+  const supabase = createServerClient();
+  const { count, error } = await supabase
+    .from("drops")
+    .select("id", { count: "exact", head: true })
+    .eq("active", true);
+  if (error) console.error("[db] countActiveDrops:", error.message);
+  return count ?? 0;
 }
 
 export async function getAllProducts(): Promise<Product[]> {
@@ -301,27 +409,39 @@ export async function deleteLookbookItem(id: string) {
   return supabase.from("lookbook_items").delete().eq("id", id);
 }
 
-export async function setActiveDrop(
-  id: string
+/**
+ * 指定 Drop の active フラグだけをトグルする (他は触らない)。
+ * 複数 Active 許可後の標準動作。
+ *
+ * 上限チェック (MAX_ACTIVE_DROPS) は呼び出し元 (actions.ts) で行うこと。
+ */
+export async function setDropActive(
+  id: string,
+  active: boolean
 ): Promise<{ data: Drop | null; error: { message: string } | null }> {
   const supabase = createServerClient();
-
-  // uuid 列に空文字を比較しない。現在 active なものだけ落としてから指定IDを有効化する。
-  const deactivate = await supabase
-    .from("drops")
-    .update({ active: false })
-    .eq("active", true);
-
-  if (deactivate.error) {
-    return { data: null, error: { message: deactivate.error.message } };
-  }
-
   const { data, error } = await supabase
     .from("drops")
-    .update({ active: true })
+    .update({ active })
     .eq("id", id)
     .select()
     .single();
-
   return { data, error: error ? { message: error.message } : null };
+}
+
+/** 後方互換用: setDropActive(id, true) のラッパー */
+export async function setActiveDrop(id: string) {
+  return setDropActive(id, true);
+}
+
+export async function upsertDropImage(
+  item: Partial<DropImage> & { drop_id: string; image_url: string }
+) {
+  const supabase = createServerClient();
+  return supabase.from("drop_images").upsert(item).select().single();
+}
+
+export async function deleteDropImage(id: string) {
+  const supabase = createServerClient();
+  return supabase.from("drop_images").delete().eq("id", id);
 }
