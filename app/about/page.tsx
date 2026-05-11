@@ -55,9 +55,9 @@ export default async function AboutPage() {
                 {siteContent.about.label}
               </p>
               <h1 className="text-brand-display display-section">
-                WEAR YOUR
+                CHOOSE YOUR
                 <br />
-                SOUL.
+                SKIN.
               </h1>
             </ScrollReveal>
           </div>

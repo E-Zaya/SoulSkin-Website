@@ -10,19 +10,21 @@ export const siteContent = {
     taglineShort: "UB.MN / EST. 2021",
   },
   hero: {
-    tag: "",
+    tag: "Streetwear from Ulaanbaatar",
     titleLine1: "CHOOSE YOUR",
     titleLine2: "SKIN",
-    subtitle: "Өөрийн skin-ээ сонго.",
+    subtitle:
+      "",
   },
   drop: {
     label: "ШИНЭ DROP",
-    cta: "Instagram үзэх",
+    cta: "Instagram-р захиалах",
   },
   manifesto: {
     kicker: "Manifesto",
     line1: "Not made to fit in.",
-    line2: "Built for the ones who wear their own noise.",
+    line2:
+      "Built in Ulaanbaatar for people who want their clothes to carry weight, texture, and identity.",
   },
   marquees: {
     top: "SOUL SKIN — UB.MN — LIMITED —",
@@ -30,15 +32,15 @@ export const siteContent = {
   },
   lookbook: {
     label: "Lookbook",
-    season: "",
+    season: "Field notes",
     description: "Shot in Ulaanbaatar. Each image is a document, not a pose.",
-    titleLine1: "",
-    titleLine2: "",
-    titleLine3: "",
+    titleLine1: "UB",
+    titleLine2: "NIGHT",
+    titleLine3: "FILES",
   },
   products: {
     label: "Selected Pieces",
-    cta: "Instagram үзэх",
+    cta: "Instagram-р захиалах",
   },
   customOrder: {
     titleLine1: "WANT SOMETHING",

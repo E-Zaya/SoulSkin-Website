@@ -14,8 +14,10 @@ type Props = {
  * Shows the brand image, a short summary and a link to /about.
  */
 export default function AboutTeaser({ imageUrl, description }: Props) {
-  const hasContent = Boolean(imageUrl || description);
-  if (!hasContent) return null;
+  const displayImage = imageUrl || "/about.png";
+  const displayDescription =
+    description ||
+    "Soul Skin is a Ulaanbaatar streetwear label focused on limited silhouettes, rough texture, and custom details that make each piece feel owned from day one.";
 
   return (
     <section id="about" className="section-gap-before relative bg-ash overflow-hidden">
@@ -28,13 +30,11 @@ export default function AboutTeaser({ imageUrl, description }: Props) {
             </p>
           </ScrollReveal>
 
-          {description && (
-            <ScrollReveal delay={80}>
-              <p className="body-copy-md text-bone text-measure-lg mb-6 md:mb-8 line-clamp-4">
-                {description}
-              </p>
-            </ScrollReveal>
-          )}
+          <ScrollReveal delay={80}>
+            <p className="body-copy-md text-bone text-measure-lg mb-6 md:mb-8 line-clamp-4">
+              {displayDescription}
+            </p>
+          </ScrollReveal>
 
           <ScrollReveal delay={140}>
             <div className="flex flex-col gap-3">
@@ -53,31 +53,29 @@ export default function AboutTeaser({ imageUrl, description }: Props) {
         </div>
 
         {/* Image column */}
-        {imageUrl && (
-          <div className="relative md:w-[56%] aspect-[5/4] md:aspect-[16/10] overflow-hidden">
-            <Image
-              src={imageUrl}
-              alt="Soul Skin — Ulaanbaatar"
-              fill
-              sizes="(min-width: 768px) 56vw, 100vw"
-              className="object-cover object-center"
-            />
-            <NoiseAccent
-              inset="0 auto 0 0"
-              width="30%"
-              height="100%"
-              opacity={0.06}
-              tileSize="190px"
-            />
-            <NoiseAccent
-              inset="auto 0 0 auto"
-              width="40%"
-              height="35%"
-              opacity={0.04}
-              tileSize="210px"
-            />
-          </div>
-        )}
+        <div className="relative md:w-[56%] aspect-[5/4] md:aspect-[16/10] overflow-hidden">
+          <Image
+            src={displayImage}
+            alt="Soul Skin — Ulaanbaatar"
+            fill
+            sizes="(min-width: 768px) 56vw, 100vw"
+            className="object-cover object-center"
+          />
+          <NoiseAccent
+            inset="0 auto 0 0"
+            width="30%"
+            height="100%"
+            opacity={0.06}
+            tileSize="190px"
+          />
+          <NoiseAccent
+            inset="auto 0 0 auto"
+            width="40%"
+            height="35%"
+            opacity={0.04}
+            tileSize="210px"
+          />
+        </div>
       </div>
     </section>
   );

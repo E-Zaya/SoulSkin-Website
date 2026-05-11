@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import { siteContent } from "@/data/siteContent";
 
@@ -14,6 +15,7 @@ export default function Hero({ imageUrl }: Props) {
   const [scrollY, setScrollY] = useState(0);
   const [entranceKey, setEntranceKey] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const heroImage = imageUrl || "/hero2.png";
 
   // Loading state — gives the hero image and title a clean first entrance.
   useEffect(() => {
@@ -58,16 +60,14 @@ export default function Hero({ imageUrl }: Props) {
           willChange: "transform",
         }}
       >
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt="Soul Skin — Wear Your Soul"
-            fill
-            preload
-            className="object-cover object-center"
-            onLoad={() => setLoaded(true)}
-          />
-        )}
+        <Image
+          src={heroImage}
+          alt="Soul Skin — Wear Your Soul"
+          fill
+          preload
+          className="object-cover object-center"
+          onLoad={() => setLoaded(true)}
+        />
       </div>
 
       {/* Gradient overlays — keep the image visible, darken only text/bottom areas */}
@@ -143,7 +143,7 @@ export default function Hero({ imageUrl }: Props) {
         </div>
 
         <p
-          className="mt-4 max-w-[18rem] font-sans text-[14px] leading-relaxed text-dust/80 md:mt-5 md:max-w-none md:text-[15px]"
+          className="mt-4 max-w-[19.5rem] font-sans text-[14px] leading-relaxed text-dust/82 md:mt-5 md:max-w-[31rem] md:text-[15px]"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(10px)",
@@ -153,6 +153,49 @@ export default function Hero({ imageUrl }: Props) {
         >
           {siteContent.hero.subtitle}
         </p>
+
+        <div
+          className="mt-6 flex flex-wrap items-center gap-3 md:mt-7"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(10px)",
+            transition:
+              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 1050ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 1050ms",
+          }}
+        >
+          <Link
+            href="/drops"
+            className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-void transition-colors hover:bg-transparent hover:text-bone"
+          >
+            Shop drops
+          </Link>
+          <Link
+            href="/lookbook"
+            className="inline-flex min-h-11 items-center border border-bone/25 px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-bone transition-colors hover:border-bone/60"
+          >
+            View lookbook
+          </Link>
+        </div>
+
+        <div
+          className="mt-5 grid max-w-[22rem] grid-cols-3 border-y border-bone/16 py-3 md:mt-7 md:max-w-[30rem]"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(8px)",
+            transition:
+              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 1200ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 1200ms",
+          }}
+          aria-label="Soul Skin highlights"
+        >
+          {["Limited drops", "Custom orders", "UB made"].map((item) => (
+            <span
+              key={item}
+              className="border-r border-bone/12 px-2 first:pl-0 last:border-r-0 font-mono text-[9px] uppercase tracking-[0.18em] text-dust/72 md:text-[10px]"
+            >
+              {item}
+            </span>
+          ))}
+        </div>
 
         {/* Accent line */}
         <div

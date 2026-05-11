@@ -15,7 +15,100 @@ import {
   getProductsWithImages,
   getLookbookItems,
   getSiteSettings,
+  type Drop as DropData,
+  type LookbookItem,
+  type ProductWithImages,
 } from "@/lib/db";
+
+const fallbackDrops: DropData[] = [
+  {
+    id: "fallback-drop-01",
+    label: "Soul Skin 01",
+    title_line1: "RAW",
+    title_line2: "HOOD",
+    description:
+      "Heavy streetwear layers built for cold nights, concrete light, and a silhouette that reads from across the street.",
+    pieces_left: 7,
+    cta: siteContent.drop.cta,
+    image_url: "/hero2.png",
+    active: true,
+    order_index: 1,
+    created_at: "2026-01-01T00:00:00.000Z",
+  },
+];
+
+const fallbackProducts: ProductWithImages[] = [
+  {
+    id: "fallback-product-hoodie",
+    sku: "SS-HOOD-01",
+    name: "Heavy Raw Hoodie",
+    material: "Washed cotton fleece",
+    description:
+      "Oversized hood, raw hem, and a quiet front profile made for layering.",
+    price: "DM FOR PRICE",
+    image_url: "/product-hoodie.png",
+    offset_class: "",
+    order_index: 1,
+    active: true,
+    created_at: "2026-01-01T00:00:00.000Z",
+    images: [
+      {
+        id: "fallback-product-hoodie-image",
+        product_id: "fallback-product-hoodie",
+        image_url: "/product-hoodie.png",
+        order_index: 1,
+        created_at: "2026-01-01T00:00:00.000Z",
+      },
+    ],
+  },
+  {
+    id: "fallback-product-jacket",
+    sku: "SS-JACKET-01",
+    name: "Storm Shell Jacket",
+    material: "Layered cotton canvas",
+    description:
+      "A structured outer layer with distressed edges and a darker street profile.",
+    price: "DM FOR PRICE",
+    image_url: "/product-jacket.png",
+    offset_class: "md:translate-y-10",
+    order_index: 2,
+    active: true,
+    created_at: "2026-01-01T00:00:00.000Z",
+    images: [
+      {
+        id: "fallback-product-jacket-image",
+        product_id: "fallback-product-jacket",
+        image_url: "/product-jacket.png",
+        order_index: 1,
+        created_at: "2026-01-01T00:00:00.000Z",
+      },
+    ],
+  },
+];
+
+const fallbackLookbook: LookbookItem[] = [
+  {
+    id: "fallback-lookbook-01",
+    item_id: "UB-01",
+    image_url: "/lookbook-01.png",
+    order_index: 1,
+    created_at: "2026-01-01T00:00:00.000Z",
+  },
+  {
+    id: "fallback-lookbook-02",
+    item_id: "UB-02",
+    image_url: "/lookbook-02.png",
+    order_index: 2,
+    created_at: "2026-01-01T00:00:00.000Z",
+  },
+  {
+    id: "fallback-lookbook-03",
+    item_id: "UB-03",
+    image_url: "/lookbook-03.png",
+    order_index: 3,
+    created_at: "2026-01-01T00:00:00.000Z",
+  },
+];
 
 // Supabase 未設定時も動くようにエラーを吸収
 async function safeGetActiveDrops() {
@@ -43,8 +136,12 @@ export default async function Home() {
     safeGetSiteSettings(),
   ]);
 
+  const homeDrops = drops.length > 0 ? drops : fallbackDrops;
+  const homeProducts = products.length > 0 ? products : fallbackProducts;
+  const homeLookbook = lookbook.length > 0 ? lookbook : fallbackLookbook;
+
   // トップでは最大 6 点（モバイル 2列×3行 / PC 3列×2行）。残りは /pieces で見せる。
-  const featuredProducts = products.slice(0, 6);
+  const featuredProducts = homeProducts.slice(0, 6);
 
   return (
     <>
@@ -58,7 +155,7 @@ export default async function Home() {
         <ManifestoStrip />
 
         {/* 3. Drop — current releases (carousel up to 5). Past drops are at /drops. */}
-        <Drop drops={drops} />
+        <Drop drops={homeDrops} />
 
         {/* 3b. Drop link strip — replaces the inline archive on the landing page */}
         <section className="section-gap-before bg-void section-link-strip">
@@ -75,7 +172,7 @@ export default async function Home() {
         </section>
 
         {/* 4. Lookbook teaser — full lookbook is at /lookbook */}
-        <LookbookTeaser data={lookbook} limit={4} />
+        <LookbookTeaser data={homeLookbook} limit={4} />
 
         {/* 5. Pieces preview — first 3 only. Rest at /pieces. */}
         <Products data={featuredProducts} />
