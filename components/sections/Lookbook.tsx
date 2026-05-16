@@ -143,7 +143,6 @@ export default function Lookbook({ data }: Props) {
                 src={item.src}
                 alt={`Lookbook — ${item.label} — Soul Skin`}
                 fill
-                preload={i === 0}
                 sizes="calc(100vw - 280px)"
                 className="object-contain object-center"
               />
@@ -305,7 +304,7 @@ export default function Lookbook({ data }: Props) {
                   key={i}
                   type="button"
                   onClick={() => goTo(i)}
-                  aria-label={`画像 ${i + 1}`}
+                  aria-label={`Image ${i + 1}`}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     i === activeIdx ? "w-5 bg-bone/90" : "w-1.5 bg-iron/45"
                   }`}
@@ -331,7 +330,7 @@ export default function Lookbook({ data }: Props) {
                 <button
                   type="button"
                   onClick={goPrev}
-                  aria-label="前の画像"
+                  aria-label="Previous image"
                   className="lookbook-nav-button"
                 >
                   ←
@@ -339,7 +338,7 @@ export default function Lookbook({ data }: Props) {
                 <button
                   type="button"
                   onClick={goNext}
-                  aria-label="次の画像"
+                  aria-label="Next image"
                   className="lookbook-nav-button"
                 >
                   →
@@ -398,7 +397,7 @@ function FilmFrame({
     <button
       type="button"
       onClick={onClick}
-      aria-label={`${item.label} を表示`}
+      aria-label={`View ${item.label}`}
       className="relative flex-shrink-0"
       style={{ width: 96, height }}
       onMouseEnter={() => setHovered(true)}

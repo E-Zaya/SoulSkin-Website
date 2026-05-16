@@ -48,9 +48,9 @@
   --nav-h: 3.5rem;
   --nav-h-md: 4rem;
   --hero-content-x: 1.5rem;
-  --hero-content-bottom: 3rem;
-  --hero-content-x-md: 2.5rem;
+  --hero-content-top: calc(var(--nav-h) + 2.5rem);
   --hero-content-bottom-md: 5rem;
+  --hero-content-x-md: 2.5rem;
 
   /* ── Typography Tokens ── */
   --text-label: 0.6875rem;
@@ -72,9 +72,9 @@
   --noise-global-opacity: 0.035;
   --overlay-hero: linear-gradient(
     90deg,
-    rgba(10, 9, 8, 0.72) 0%,
-    rgba(10, 9, 8, 0.42) 34%,
-    rgba(10, 9, 8, 0.16) 64%,
+    rgba(10, 9, 8, 0.78) 0%,
+    rgba(10, 9, 8, 0.52) 38%,
+    rgba(10, 9, 8, 0.18) 62%,
     rgba(10, 9, 8, 0.04) 100%
   );
   --overlay-hero-bottom: linear-gradient(
@@ -435,13 +435,14 @@ body::-webkit-scrollbar {
   }
 
   .hero-shell {
-    min-height: 92svh;
-    height: 92svh;
+    min-height: 100svh;
+    height: 100svh;
   }
 
   .hero-content-position {
     left: var(--hero-content-x);
-    bottom: var(--hero-content-bottom);
+    top: var(--hero-content-top);
+    bottom: auto;
   }
 
   .hero-title-stack {
@@ -961,12 +962,13 @@ body::-webkit-scrollbar {
     }
 
     .hero-shell {
-      min-height: 92dvh;
-      height: 92dvh;
+      min-height: 100dvh;
+      height: 100dvh;
     }
 
     .hero-content-position {
       left: var(--hero-content-x-md);
+      top: auto;
       bottom: var(--hero-content-bottom-md);
     }
 

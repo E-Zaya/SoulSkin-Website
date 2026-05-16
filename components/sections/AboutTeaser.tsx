@@ -16,18 +16,24 @@ type Props = {
 export default function AboutTeaser({ imageUrl, description }: Props) {
   const displayImage = imageUrl || "/about.png";
   const displayDescription =
-    description ||
-    "Soul Skin is a Ulaanbaatar streetwear label focused on limited silhouettes, rough texture, and custom details that make each piece feel owned from day one.";
+    description || siteContent.about.descriptionFallback;
 
   return (
     <section id="about" className="section-gap-before relative bg-ash overflow-hidden">
       <div className="editorial-split flex flex-col md:flex-row">
-        {/* Text column */}
-        <div className="md:w-[44%] flex flex-col justify-center px-6 md:px-14 section-pad-editorial shrink-0">
+        {/* Text column — on mobile comes first (order-1), image second (order-2) */}
+        <div className="order-1 md:w-[44%] flex flex-col justify-center px-6 md:px-14 section-pad-editorial shrink-0">
           <ScrollReveal delay={0}>
-            <p className="text-brand-label mb-6 md:mb-8">
-              {siteContent.about.label}
-            </p>
+            <div className="flex items-center gap-2.5 mb-6 md:mb-8">
+              <span
+                className="block h-1.5 w-1.5 rounded-full shrink-0"
+                style={{ backgroundColor: "var(--color-ember)" }}
+                aria-hidden="true"
+              />
+              <p className="text-brand-label">
+                {siteContent.about.label}
+              </p>
+            </div>
           </ScrollReveal>
 
           <ScrollReveal delay={80}>
@@ -42,7 +48,7 @@ export default function AboutTeaser({ imageUrl, description }: Props) {
                 href="/about"
                 className="cta-link cta-link-sm text-dust hover:text-bone transition-colors w-fit"
               >
-                <span className="link-underline-grow">Read more</span>
+                <span className="link-underline-grow">{siteContent.about.cta}</span>
                 <span>→</span>
               </Link>
               <p className="text-brand-label">
@@ -53,7 +59,7 @@ export default function AboutTeaser({ imageUrl, description }: Props) {
         </div>
 
         {/* Image column */}
-        <div className="relative md:w-[56%] aspect-[5/4] md:aspect-[16/10] overflow-hidden">
+        <div className="order-2 relative md:w-[56%] aspect-[5/4] md:aspect-[16/10] overflow-hidden">
           <Image
             src={displayImage}
             alt="Soul Skin — Ulaanbaatar"

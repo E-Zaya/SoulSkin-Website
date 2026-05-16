@@ -10,22 +10,24 @@ import { siteContent } from "@/data/siteContent";
 import { getSiteSettings } from "@/lib/db";
 
 export const metadata: Metadata = {
-  title: "About - Soul Skin",
+  title: "About",
   description:
     "Soul Skin is a streetwear label from Ulaanbaatar. Built for those who carry their identity on their back.",
+  alternates: { canonical: "/about" },
   openGraph: {
-    title: "About - Soul Skin",
+    title: "About — Soul Skin",
     description:
       "Soul Skin is a streetwear label from Ulaanbaatar. Built for those who carry their identity on their back.",
     type: "article",
+    url: "/about",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "About Soul Skin" }],
   },
 };
 
 async function safeGetSiteSettings() {
   try {
     return await getSiteSettings();
-  } catch (error) {
-    console.error("[about] safeGetSiteSettings", error);
+  } catch {
     return null;
   }
 }

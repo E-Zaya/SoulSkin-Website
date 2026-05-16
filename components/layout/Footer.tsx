@@ -31,16 +31,16 @@ export default function Footer() {
           >
             {siteContent.brand.name}
           </Link>
-          <span className="font-mono text-[11px] uppercase tracking-widest text-iron">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-dust/70">
             {siteContent.brand.location}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-iron/60">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-dust/50">
             {siteContent.brand.taglineShort}
           </span>
         </div>
 
         <nav aria-label="Footer">
-          <ul className="grid grid-cols-2 gap-x-10 gap-y-2.5">
+          <ul className="flex flex-col gap-2.5">
             {FOOTER_LINKS.map((link) => (
               <li key={link.name}>
                 <Link
@@ -67,7 +67,7 @@ export default function Footer() {
           {siteContent.brand.email && (
             <Link
               href={`mailto:${siteContent.brand.email}`}
-              className="font-mono text-[11px] uppercase tracking-widest text-iron transition-colors hover:text-bone"
+              className="font-mono text-[11px] uppercase tracking-widest text-dust/70 transition-colors hover:text-bone"
             >
               {siteContent.brand.email}
             </Link>
@@ -76,7 +76,7 @@ export default function Footer() {
       </div>
 
       <div className="container-base relative z-10 border-t border-cinder/50 py-3">
-        <p className="font-mono text-[11px] tracking-wide text-iron/60">
+        <p className="font-mono text-[11px] tracking-wide text-dust/45">
           {siteContent.brand.copyright}
         </p>
       </div>

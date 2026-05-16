@@ -46,11 +46,6 @@ export default function CustomOrder() {
         style={{ backgroundColor: "var(--cta-accent-faint)" }}
         aria-hidden="true"
       />
-      <div
-        className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 opacity-70"
-        style={{ backgroundColor: "var(--cta-accent-faint)" }}
-        aria-hidden="true"
-      />
       <NoiseAccent
         inset="0 0 0 0"
         width="100%"

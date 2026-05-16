@@ -19,8 +19,7 @@ export const metadata: Metadata = {
 async function safeGetLookbookItems() {
   try {
     return await getLookbookItems();
-  } catch (error) {
-    console.error("[lookbook] safeGetLookbookItems", error);
+  } catch {
     return [];
   }
 }

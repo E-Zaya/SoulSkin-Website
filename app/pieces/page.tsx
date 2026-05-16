@@ -8,22 +8,24 @@ import { getProductsWithImages } from "@/lib/db";
 import { toSlug } from "@/lib/slug";
 
 export const metadata: Metadata = {
-  title: "Pieces — Soul Skin",
+  title: "Pieces",
   description:
     "Selected pieces from Soul Skin. Each one is hand-finished in Ulaanbaatar — built to be worn, not to be browsed.",
+  alternates: { canonical: "/pieces" },
   openGraph: {
     title: "Pieces — Soul Skin",
     description:
       "Selected pieces from Soul Skin. Each one is hand-finished in Ulaanbaatar — built to be worn, not to be browsed.",
     type: "website",
+    url: "/pieces",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Soul Skin Pieces" }],
   },
 };
 
 async function safeGetProducts() {
   try {
     return await getProductsWithImages();
-  } catch (error) {
-    console.error("[pieces] safeGetProducts", error);
+  } catch {
     return [];
   }
 }

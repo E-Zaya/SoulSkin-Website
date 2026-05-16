@@ -113,6 +113,15 @@ function CarouselWithOverlay({
       {/* ドラッグ / スワイプ レイヤー */}
       <div className="pointer-events-none absolute inset-0 z-[9] bg-void/0 transition-colors duration-500 md:group-hover/carousel:bg-void/18" />
 
+      {/* モバイルタップヒント */}
+      <div className="pointer-events-none absolute top-2.5 right-2.5 z-20 flex items-center gap-1 rounded-sm bg-void/55 px-2 py-1 backdrop-blur-[3px] md:hidden">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+          <circle cx="4.5" cy="4.5" r="3.5" stroke="currentColor" strokeWidth="1" className="text-bone/60"/>
+          <path d="M4.5 2.5v2l1.2 1.2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" className="text-bone/60"/>
+        </svg>
+        <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-bone/60">View</span>
+      </div>
+
       <div
         className="absolute inset-0 z-10"
         onMouseDown={onMouseDown}
@@ -130,7 +139,7 @@ function CarouselWithOverlay({
           <button
             onClick={(e) => { e.stopPropagation(); setIdx((i) => (i - 1 + total) % total); }}
             className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 flex items-center justify-center bg-void/60 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-all opacity-0 group-hover/carousel:opacity-100 duration-200"
-            aria-label="前の画像"
+            aria-label="Previous image"
           >
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
               <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -139,7 +148,7 @@ function CarouselWithOverlay({
           <button
             onClick={(e) => { e.stopPropagation(); setIdx((i) => (i + 1) % total); }}
             className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 flex items-center justify-center bg-void/60 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-all opacity-0 group-hover/carousel:opacity-100 duration-200"
-            aria-label="次の画像"
+            aria-label="Next image"
           >
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
               <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -160,7 +169,7 @@ function CarouselWithOverlay({
               <button
                 key={i}
                 onClick={(e) => { e.stopPropagation(); setIdx(i); }}
-                aria-label={`${i + 1}枚目`}
+                aria-label={`Image ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${
                   i === idx
                     ? "w-[10px] h-[5px] bg-bone"
@@ -180,15 +189,6 @@ function CarouselWithOverlay({
         </p>
       </div>
 
-      {/* SKU ホバーバー（PCのみ hover 時） */}
-      <div className="absolute bottom-0 left-0 right-0 z-[21] px-4 py-2 bg-void/75 backdrop-blur-[4px]
-        translate-y-full group-hover/carousel:translate-y-0 transition-transform duration-500 ease-out
-        pointer-events-none hidden sm:block">
-        <p className="font-mono text-[9px] text-dust tracking-[0.25em] uppercase">
-          {/* SKU はカードコンポーネントから渡す必要があるのでここでは表示しない。
-              SKU 表示が必要な場合は ProductCard 内で id prop として受け取る */}
-        </p>
-      </div>
     </div>
   );
 }
@@ -205,6 +205,14 @@ function Modal({
   const [idx, setIdx] = useState(0);
   const total = product.images.length;
   const touchStartX = useRef<number | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // 開いた直後に閉じるボタンへフォーカス
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+  }, []);
 
   // ESC / 矢印キー
   useEffect(() => {
@@ -253,9 +261,10 @@ function Modal({
       >
         {/* 閉じるボタン */}
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="absolute top-3 right-3 z-30 w-8 h-8 flex items-center justify-center text-iron hover:text-bone transition-colors"
-          aria-label="閉じる"
+          aria-label="Close product detail"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -300,7 +309,7 @@ function Modal({
               <button
                 onClick={() => setIdx((i) => (i - 1 + total) % total)}
                 className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-void/60 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
-                aria-label="前の画像"
+                aria-label="Previous image"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -309,7 +318,7 @@ function Modal({
               <button
                 onClick={() => setIdx((i) => (i + 1) % total)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-void/60 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
-                aria-label="次の画像"
+                aria-label="Next image"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -325,7 +334,7 @@ function Modal({
                 <button
                   key={i}
                   onClick={() => setIdx(i)}
-                  aria-label={`${i + 1}枚目`}
+                  aria-label={`Image ${i + 1}`}
                   className={`rounded-full transition-all duration-300 ${
                     i === idx ? "w-[10px] h-[5px] bg-bone" : "w-[5px] h-[5px] bg-bone/40 hover:bg-bone/70"
                   }`}
@@ -377,6 +386,19 @@ function ProductCard({
   index: number;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
+  const openTriggerRef = useRef<HTMLDivElement>(null);
+
+  function handleOpen() {
+    setModalOpen(true);
+  }
+
+  function handleClose() {
+    setModalOpen(false);
+    // フォーカスをトリガー要素に戻す
+    requestAnimationFrame(() => {
+      openTriggerRef.current?.focus();
+    });
+  }
 
   return (
     <>
@@ -386,12 +408,16 @@ function ProductCard({
       >
         <div className={`group ${product.offset}`}>
           {/* カルーセル */}
-          <div className="relative overflow-hidden mb-4 md:mb-5">
+          <div
+            ref={openTriggerRef}
+            tabIndex={-1}
+            className="relative overflow-hidden mb-4 md:mb-5 outline-none"
+          >
             <CarouselWithOverlay
               images={product.images}
               name={product.name}
               material={product.material}
-              onOpen={() => setModalOpen(true)}
+              onOpen={handleOpen}
             />
           </div>
 
@@ -413,7 +439,7 @@ function ProductCard({
       </ScrollReveal>
 
       {modalOpen && (
-        <Modal product={product} onClose={() => setModalOpen(false)} />
+        <Modal product={product} onClose={handleClose} />
       )}
     </>
   );

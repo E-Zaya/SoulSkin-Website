@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Camera as InstagramIcon } from "lucide-react";
@@ -25,6 +25,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
+  const navRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname() || "/";
   const activeLink = navLinks.find((link) => isActive(pathname, link.href)) ?? navLinks[0];
 
@@ -57,11 +59,44 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    // メニューを閉じたらトリガーボタンにフォーカスを戻す
+    requestAnimationFrame(() => {
+      menuButtonRef.current?.focus();
+    });
+  }, []);
+
   useEffect(() => {
     if (!menuOpen) return;
 
+    const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        closeMenu();
+        return;
+      }
+      // フォーカストラップ: Tab / Shift+Tab でメニュー内に閉じ込める
+      if (e.key === "Tab" && navRef.current) {
+        const focusable = Array.from(
+          navRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)
+        ).filter((el) => !el.closest("[aria-hidden='true']"));
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     };
     const prev = document.body.style.overflow;
 
@@ -71,7 +106,7 @@ export default function Navbar() {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [menuOpen]);
+  }, [menuOpen, closeMenu]);
 
   return (
     <>
@@ -87,6 +122,7 @@ export default function Navbar() {
         }`}
       >
         <button
+          ref={menuButtonRef}
           type="button"
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
@@ -131,23 +167,28 @@ export default function Navbar() {
       </header>
 
       <div
+        ref={navRef}
         id="brand-navigation"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
         className={`fixed inset-0 z-[60] bg-void/95 backdrop-blur-xl transition-opacity duration-500 ${
           menuOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!menuOpen}
-        onClick={() => setMenuOpen(false)}
+        onClick={closeMenu}
       >
         <nav
-          className="relative h-full w-full overflow-y-auto px-[var(--container-x)] pb-10 pt-[calc(var(--nav-h)+2.5rem)] md:px-[var(--container-x-md)] md:pb-14 md:pt-[calc(var(--nav-h-md)+4rem)]"
+          className="relative h-full w-full overflow-y-auto px-[var(--container-x)] pb-6 pt-[calc(var(--nav-h)+1.5rem)] md:px-[var(--container-x-md)] md:pb-10 md:pt-[calc(var(--nav-h-md)+2.5rem)]"
           aria-label="Primary navigation"
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="pointer-events-none absolute right-[-0.08em] top-[calc(var(--nav-h)+1rem)] z-0 text-right font-display text-[8.75rem] uppercase leading-[0.78] tracking-[-0.03em] text-bone/[0.035] md:top-[calc(var(--nav-h-md)+1rem)] md:text-[16rem]"
+            className="pointer-events-none absolute right-[-0.08em] top-[calc(var(--nav-h)+1rem)] z-0 text-right font-display uppercase leading-[0.78] tracking-[-0.03em] text-bone/[0.035] md:top-[calc(var(--nav-h-md)+1rem)]"
             style={{
+              fontSize: "clamp(5rem, 18svh, 16rem)",
               transform: menuOpen ? "translateX(0)" : "translateX(24px)",
               opacity: menuOpen ? 1 : 0,
               transition:
@@ -164,7 +205,7 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={handleBrandClick}
-            className="relative z-10 mb-10 block w-fit font-display text-[3.5rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-14 md:text-[5.5rem]"
+            className="relative z-10 mb-6 block w-fit font-display text-[3.5rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-10 md:text-[5.5rem]"
             style={{
               transform: menuOpen ? "translateY(0)" : "translateY(14px)",
               opacity: menuOpen ? 1 : 0,
@@ -185,9 +226,9 @@ export default function Navbar() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={closeMenu}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex items-center gap-5 border-t border-bone/12 py-3 first:border-t-0 md:gap-8 md:py-4 ${
+                    className={`group flex items-center gap-5 border-t border-bone/12 py-2 first:border-t-0 md:gap-8 md:py-3 ${
                       active ? "text-bone" : "text-bone/64"
                     }`}
                     style={{
@@ -205,7 +246,7 @@ export default function Navbar() {
                     <span className="w-10 shrink-0 font-mono text-[0.75rem] tracking-[0.18em] text-bone/45 md:w-14 md:text-[0.875rem]">
                       {link.index}
                     </span>
-                    <span className="font-display text-[3.25rem] uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3 md:text-[5.75rem] lg:text-[6.75rem]">
+                    <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "clamp(2.25rem, 7svh, 5.75rem)" }}>
                       {link.name}
                     </span>
                   </Link>
@@ -219,7 +260,7 @@ export default function Navbar() {
               href={siteContent.brand.url}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
+              onClick={closeMenu}
               className="inline-flex w-fit items-center gap-2 font-mono text-[12px] uppercase tracking-[0.2em] text-bone transition-opacity hover:opacity-70"
             >
               <span>Instagram / {siteContent.brand.handle}</span>

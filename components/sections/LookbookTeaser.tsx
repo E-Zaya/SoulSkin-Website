@@ -35,8 +35,10 @@ export default function LookbookTeaser({ data, limit = 4 }: Props) {
               <h2 className="text-brand-display display-section leading-[0.92]">
                 {siteContent.lookbook.titleLine1}
                 <br />
-                {siteContent.lookbook.titleLine2}{" "}
-                {siteContent.lookbook.titleLine3}
+                <span className="text-dust/55">
+                  {siteContent.lookbook.titleLine2}{" "}
+                  {siteContent.lookbook.titleLine3}
+                </span>
               </h2>
             </div>
             <Link
@@ -64,8 +66,8 @@ export default function LookbookTeaser({ data, limit = 4 }: Props) {
                   sizes="(min-width: 768px) 25vw, 50vw"
                   className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-void/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="absolute bottom-2 left-2 font-mono text-[9px] text-bone/70 tracking-widest pointer-events-none">
+                <div className="absolute inset-0 bg-void/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute bottom-0 left-0 right-0 font-mono text-[9px] tracking-widest pointer-events-none px-2.5 py-2 text-bone/50 group-hover:text-bone transition-colors duration-300 bg-gradient-to-t from-void/60 to-transparent opacity-0 group-hover:opacity-100">
                   {item.item_id}
                 </span>
               </Link>

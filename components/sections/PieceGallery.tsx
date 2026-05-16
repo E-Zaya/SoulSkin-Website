@@ -74,7 +74,7 @@ export default function PieceGallery({ images, alt }: Props) {
             <button
               type="button"
               onClick={() => setIdx((i) => (i - 1 + total) % total)}
-              aria-label="前の画像"
+              aria-label="Previous image"
               className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -90,7 +90,7 @@ export default function PieceGallery({ images, alt }: Props) {
             <button
               type="button"
               onClick={() => setIdx((i) => (i + 1) % total)}
-              aria-label="次の画像"
+              aria-label="Next image"
               className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -110,7 +110,7 @@ export default function PieceGallery({ images, alt }: Props) {
                   key={i}
                   type="button"
                   onClick={() => setIdx(i)}
-                  aria-label={`${i + 1}枚目`}
+                  aria-label={`Image ${i + 1}`}
                   className={`rounded-full transition-all duration-300 ${
                     i === idx
                       ? "w-[10px] h-[5px] bg-bone"
@@ -131,7 +131,7 @@ export default function PieceGallery({ images, alt }: Props) {
               key={src + i}
               type="button"
               onClick={() => setIdx(i)}
-              aria-label={`サムネイル ${i + 1}`}
+              aria-label={`Thumbnail ${i + 1}`}
               className="relative shrink-0 w-[68px] h-[85px] overflow-hidden"
               style={{
                 outline:

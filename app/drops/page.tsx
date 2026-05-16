@@ -9,22 +9,24 @@ import { getAllPublicDrops } from "@/lib/db";
 import { toSlug } from "@/lib/slug";
 
 export const metadata: Metadata = {
-  title: "Drops — Soul Skin",
+  title: "Drops",
   description:
     "Every Soul Skin release. Limited drops out of Ulaanbaatar — each piece is a document of the season it was made in.",
+  alternates: { canonical: "/drops" },
   openGraph: {
     title: "Drops — Soul Skin",
     description:
       "Every Soul Skin release. Limited drops out of Ulaanbaatar — each piece is a document of the season it was made in.",
     type: "website",
+    url: "/drops",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Soul Skin Drops" }],
   },
 };
 
 async function safeGetAllPublicDrops() {
   try {
     return await getAllPublicDrops();
-  } catch (error) {
-    console.error("[drops] safeGetAllPublicDrops", error);
+  } catch {
     return [];
   }
 }

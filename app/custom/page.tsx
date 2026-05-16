@@ -8,14 +8,17 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 
 export const metadata: Metadata = {
-  title: "Custom Order - Soul Skin",
+  title: "Custom Order",
   description:
-    "Bring us your idea. Every Soul Skin piece can be made one-of-one - sketch, fit, and finish, all from Ulaanbaatar.",
+    "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
+  alternates: { canonical: "/custom" },
   openGraph: {
-    title: "Custom Order - Soul Skin",
+    title: "Custom Order — Soul Skin",
     description:
-      "Bring us your idea. Every Soul Skin piece can be made one-of-one - sketch, fit, and finish, all from Ulaanbaatar.",
+      "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
     type: "article",
+    url: "/custom",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Soul Skin Custom Order" }],
   },
 };
 

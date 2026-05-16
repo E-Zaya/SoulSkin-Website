@@ -64,7 +64,7 @@ export default function Hero({ imageUrl }: Props) {
           src={heroImage}
           alt="Soul Skin — Wear Your Soul"
           fill
-          preload
+          priority
           className="object-cover object-center"
           onLoad={() => setLoaded(true)}
         />
@@ -91,25 +91,26 @@ export default function Hero({ imageUrl }: Props) {
         className="z-[2]"
       />
       <NoiseAccent
-        inset="0 0 auto auto"
-        width="25%"
-        height="30%"
-        opacity={0.04}
-        tileSize="220px"
+        inset="auto 0 0 auto"
+        width="35%"
+        height="45%"
+        opacity={0.05}
+        tileSize="200px"
+        className="z-[2]"
       />
 
       {/* Hero copy */}
-      <div key={entranceKey} className="absolute hero-content-position z-10">
+      <div key={entranceKey} className="absolute hero-content-position z-10 max-w-[58%] md:max-w-none">
         <p
-          className="text-brand-label mb-4 md:mb-5"
+          className="mb-4 font-mono text-[10px] uppercase tracking-[0.32em] text-bone/28 md:mb-5 md:text-[11px]"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateX(0)" : "translateX(-12px)",
             transition:
-              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 400ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 400ms",
+              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 360ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 360ms",
           }}
         >
-          {siteContent.hero.tag}
+          {siteContent.hero.tag.toUpperCase()}
         </p>
 
         <div
@@ -121,104 +122,34 @@ export default function Hero({ imageUrl }: Props) {
               "opacity 900ms cubic-bezier(0.16,1,0.3,1) 600ms, transform 900ms cubic-bezier(0.16,1,0.3,1) 600ms",
           }}
         >
-          <h1
-            className={`text-brand-display display-hero ${
-              loaded ? "animate-hero-glitch" : ""
-            }`}
-          >
+          <h1 className="text-brand-display text-[4.75rem] leading-[0.86] tracking-normal [text-shadow:var(--shadow-hero-title)] md:text-[6.5rem] lg:text-[8rem] xl:text-[9rem]">
             {siteContent.hero.titleLine1}
             <br />
             {siteContent.hero.titleLine2}
           </h1>
-          <span className="hero-title-split hero-title-split-a" aria-hidden="true">
-            {siteContent.hero.titleLine1}
-            <br />
-            {siteContent.hero.titleLine2}
-          </span>
-          <span className="hero-title-split hero-title-split-b" aria-hidden="true">
-            {siteContent.hero.titleLine1}
-            <br />
-            {siteContent.hero.titleLine2}
-          </span>
         </div>
 
-        <p
-          className="mt-4 max-w-[19.5rem] font-sans text-[14px] leading-relaxed text-dust/82 md:mt-5 md:max-w-[31rem] md:text-[15px]"
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(10px)",
-            transition:
-              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 900ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 900ms",
-          }}
-        >
-          {siteContent.hero.subtitle}
-        </p>
-
         <div
-          className="mt-6 flex flex-wrap items-center gap-3 md:mt-7"
+          className="mt-5 flex flex-col items-start gap-2 md:mt-6 md:flex-row md:flex-wrap md:items-center md:gap-3"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(10px)",
             transition:
-              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 1050ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 1050ms",
+              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 780ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 780ms",
           }}
         >
           <Link
             href="/drops"
             className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-void transition-colors hover:bg-transparent hover:text-bone"
           >
-            Shop drops
+            {siteContent.hero.ctaPrimary}
           </Link>
           <Link
             href="/lookbook"
             className="inline-flex min-h-11 items-center border border-bone/25 px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-bone transition-colors hover:border-bone/60"
           >
-            View lookbook
+            {siteContent.hero.ctaSecondary}
           </Link>
-        </div>
-
-        <div
-          className="mt-5 grid max-w-[22rem] grid-cols-3 border-y border-bone/16 py-3 md:mt-7 md:max-w-[30rem]"
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(8px)",
-            transition:
-              "opacity 700ms cubic-bezier(0.16,1,0.3,1) 1200ms, transform 700ms cubic-bezier(0.16,1,0.3,1) 1200ms",
-          }}
-          aria-label="Soul Skin highlights"
-        >
-          {["Limited drops", "Custom orders", "UB made"].map((item) => (
-            <span
-              key={item}
-              className="border-r border-bone/12 px-2 first:pl-0 last:border-r-0 font-mono text-[9px] uppercase tracking-[0.18em] text-dust/72 md:text-[10px]"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-
-        {/* Accent line */}
-        <div
-          className="mt-4 md:mt-5 h-px bg-bone/30 origin-left"
-          style={{
-            width: loaded ? "120px" : "0px",
-            transition: "width 1s cubic-bezier(0.16,1,0.3,1) 1.2s",
-          }}
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-10 right-6 md:bottom-12 md:right-10 z-10 flex flex-col items-center"
-        style={{
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 700ms ease-out 1.4s",
-        }}
-        aria-hidden="true"
-      >
-        <div className="w-px h-[52px] md:h-[60px] overflow-hidden">
-          <div className="w-full h-full bg-bone animate-scroll-line" />
         </div>
       </div>
     </section>

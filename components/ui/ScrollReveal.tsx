@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { memo, useEffect, useRef, type ReactNode } from "react";
 
 type RevealVariant =
   | "fade-up"     // default — translateY(24) + opacity
@@ -49,7 +49,7 @@ const variantStyles: Record<
   },
 };
 
-export default function ScrollReveal({
+function ScrollReveal({
   children,
   className,
   delay = 0,
@@ -101,3 +101,5 @@ export default function ScrollReveal({
     </div>
   );
 }
+
+export default memo(ScrollReveal);

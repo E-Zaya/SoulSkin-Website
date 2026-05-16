@@ -7,24 +7,41 @@ export const siteContent = {
     email: null as string | null,
     location: "Ulaanbaatar, Mongolia",
     copyright: "© 2026 SOUL SKIN. ALL RIGHTS RESERVED.",
-    taglineShort: "UB.MN / EST. 2021",
+    taglineShort: "UB — EST. 2021",
   },
   hero: {
     tag: "Streetwear from Ulaanbaatar",
     titleLine1: "CHOOSE YOUR",
     titleLine2: "SKIN",
-    subtitle:
-      "",
+    ctaPrimary: "Shop drops",
+    ctaSecondary: "View lookbook",
   },
   drop: {
-    label: "ШИНЭ DROP",
-    cta: "Instagram-р захиалах",
+    label: "NEW DROP",
+    cta: "Order via Instagram",
   },
   manifesto: {
     kicker: "Manifesto",
     line1: "Not made to fit in.",
     line2:
       "Built in Ulaanbaatar for people who want their clothes to carry weight, texture, and identity.",
+    notes: [
+      {
+        number: "01",
+        title: "Limited drops",
+        copy: "Small runs keep each release focused and easy to recognize.",
+      },
+      {
+        number: "02",
+        title: "Custom work",
+        copy: "Made-to-order details for people who want one piece, not a uniform.",
+      },
+      {
+        number: "03",
+        title: "UB texture",
+        copy: "Concrete, night light, weather, and movement shape the visual language.",
+      },
+    ],
   },
   marquees: {
     top: "SOUL SKIN — UB.MN — LIMITED —",
@@ -40,16 +57,19 @@ export const siteContent = {
   },
   products: {
     label: "Selected Pieces",
-    cta: "Instagram-р захиалах",
+    cta: "Order via Instagram",
   },
   customOrder: {
     titleLine1: "WANT SOMETHING",
     titleLine2: "UNIQUE?",
     description:
-      "Every piece can be customized. Reach out on Instagram and we will build it with you.",
+      "Every piece can be customized. Reach out on Instagram and we'll build it together.",
     cta: "Start on Instagram",
   },
   about: {
-    label: "About",
+    label: "The Label",
+    cta: "Read more",
+    descriptionFallback:
+      "Soul Skin is a Ulaanbaatar streetwear label focused on limited silhouettes, rough texture, and custom details that make each piece feel owned from day one.",
   },
 };

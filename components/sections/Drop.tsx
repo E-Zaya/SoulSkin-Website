@@ -283,7 +283,7 @@ export default function Drop({ drops, data }: Props) {
         {list.map((d, i) => (
           <div
             key={d.id}
-            className="drop-bg-type absolute inset-0 transition-opacity duration-700"
+            className="drop-bg-type absolute inset-0 transition-opacity duration-300"
             style={{ opacity: i === active ? 1 : 0 }}
           >
             DROP {d.title_line2}
@@ -299,7 +299,7 @@ export default function Drop({ drops, data }: Props) {
         {list.map((d, i) => (
           <div
             key={d.id}
-            className="transition-opacity duration-500"
+            className="transition-opacity duration-300"
             style={{
               gridArea: "slide",
               opacity: i === active ? 1 : 0,

@@ -113,19 +113,19 @@ const fallbackLookbook: LookbookItem[] = [
 // Supabase 未設定時も動くようにエラーを吸収
 async function safeGetActiveDrops() {
   try { return await getActiveDrops(); }
-  catch (error) { console.error("[page] safeGetActiveDrops", error); return []; }
+  catch { return []; }
 }
 async function safeGetProducts() {
   try { return await getProductsWithImages(); }
-  catch (error) { console.error("[page] safeGetProducts", error); return []; }
+  catch { return []; }
 }
 async function safeGetLookbookItems() {
   try { return await getLookbookItems(); }
-  catch (error) { console.error("[page] safeGetLookbookItems", error); return []; }
+  catch { return []; }
 }
 async function safeGetSiteSettings() {
   try { return await getSiteSettings(); }
-  catch (error) { console.error("[page] safeGetSiteSettings", error); return null; }
+  catch { return null; }
 }
 
 export default async function Home() {

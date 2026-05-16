@@ -46,8 +46,7 @@ export async function generateStaticParams() {
     return drops
       .map((d) => ({ slug: toSlug(d.label) }))
       .filter((p) => p.slug.length > 0);
-  } catch (error) {
-    console.error("[drops/[slug]] generateStaticParams", error);
+  } catch {
     return [];
   }
 }
@@ -101,8 +100,8 @@ export default async function DropDetailPage(props: DropDetailProps) {
   let drop = null;
   try {
     drop = await getDropBySlugWithImages(slug);
-  } catch (error) {
-    console.error("[drops/[slug]] getDropBySlugWithImages", error);
+  } catch {
+    // silently fall through to notFound()
   }
   if (!drop) notFound();
 

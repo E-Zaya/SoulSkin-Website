@@ -18,8 +18,7 @@ export async function generateStaticParams() {
     return products
       .map((p) => ({ slug: toSlug(p.sku) }))
       .filter((p) => p.slug.length > 0);
-  } catch (error) {
-    console.error("[pieces/[slug]] generateStaticParams", error);
+  } catch {
     return [];
   }
 }
@@ -60,8 +59,8 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
   let product = null;
   try {
     product = await getProductBySlugWithImages(slug);
-  } catch (error) {
-    console.error("[pieces/[slug]] getProductBySlugWithImages", error);
+  } catch {
+    // silently fall through to notFound()
   }
   if (!product) notFound();
 
