@@ -435,7 +435,9 @@ body::-webkit-scrollbar {
   }
 
   .hero-shell {
+    min-height: 100vh;
     min-height: 100svh;
+    height: 100vh;
     height: 100svh;
   }
 
@@ -962,7 +964,9 @@ body::-webkit-scrollbar {
     }
 
     .hero-shell {
+      min-height: 100vh;
       min-height: 100dvh;
+      height: 100vh;
       height: 100dvh;
     }
 

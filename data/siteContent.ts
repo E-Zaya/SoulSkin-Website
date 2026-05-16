@@ -65,6 +65,13 @@ export const siteContent = {
     description:
       "Every piece can be customized. Reach out on Instagram and we'll build it together.",
     cta: "Start on Instagram",
+    dropVariant: {
+      titleLine1: "MAKE IT",
+      titleLine2: "YOURS.",
+      description:
+        "Like this drop? Add your own colors, logo, or details. Reach out on Instagram and we'll customize it for you.",
+      cta: "Start on Instagram",
+    },
   },
   about: {
     label: "The Label",

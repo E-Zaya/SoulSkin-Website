@@ -122,7 +122,7 @@ export default function Hero({ imageUrl }: Props) {
               "opacity 900ms cubic-bezier(0.16,1,0.3,1) 600ms, transform 900ms cubic-bezier(0.16,1,0.3,1) 600ms",
           }}
         >
-          <h1 className="text-brand-display text-[4.75rem] leading-[0.86] tracking-normal [text-shadow:var(--shadow-hero-title)] md:text-[6.5rem] lg:text-[8rem] xl:text-[9rem]">
+          <h1 className="text-brand-display text-[4.75rem] leading-[0.86] tracking-normal [text-shadow:var(--shadow-hero-title)] md:text-[6.5rem] lg:text-[8rem] xl:text-[7.75rem]">
             {siteContent.hero.titleLine1}
             <br />
             {siteContent.hero.titleLine2}

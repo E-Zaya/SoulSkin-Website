@@ -6,7 +6,15 @@ import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 
-export default function CustomOrder() {
+type Props = {
+  variant?: "default" | "drop";
+};
+
+export default function CustomOrder({ variant = "default" }: Props) {
+  const content =
+    variant === "drop"
+      ? siteContent.customOrder.dropVariant
+      : siteContent.customOrder;
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -79,16 +87,16 @@ export default function CustomOrder() {
         {/* CTA title */}
         <ScrollReveal variant="fade-up">
           <h2 className="text-brand-display display-cta text-bone mb-5 md:mb-6">
-            {siteContent.customOrder.titleLine1}
+            {content.titleLine1}
             <br />
-            {siteContent.customOrder.titleLine2}
+            {content.titleLine2}
           </h2>
         </ScrollReveal>
 
         {/* CTA copy */}
         <ScrollReveal delay={120} variant="fade-only">
           <p className="body-copy md:body-copy-md mb-8 md:mb-10 max-w-[420px] mx-auto text-dust/70">
-            {siteContent.customOrder.description}
+            {content.description}
           </p>
         </ScrollReveal>
 
@@ -99,7 +107,7 @@ export default function CustomOrder() {
             className="group btn-hover-fill cta-button border border-[color:var(--cta-accent-soft)]"
           >
             <span className="transition-colors duration-300 group-hover:text-void">
-              Start a custom order
+              {content.cta}
             </span>
             <span className="text-[16px] transition-all duration-300 group-hover:text-void group-hover:translate-x-1">
               →

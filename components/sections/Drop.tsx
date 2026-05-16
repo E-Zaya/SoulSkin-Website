@@ -7,6 +7,7 @@ import { Camera as InstagramIcon } from "lucide-react";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
+import { toSlug } from "@/lib/slug";
 import type { Drop as DropData } from "@/lib/db";
 
 type Props = {
@@ -99,7 +100,10 @@ function DropSlide({ drop }: { drop: DropData }) {
         )}
 
         {/* Mobile-only overlay header: ラベル + タイトルを画像下部に重ねる */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 md:hidden">
+        <Link
+          href={`/drops/${toSlug(drop.label)}`}
+          className="absolute inset-x-0 bottom-0 z-10 md:hidden"
+        >
           <div
             className="px-6 pb-5 pt-24"
             style={{
@@ -114,7 +118,7 @@ function DropSlide({ drop }: { drop: DropData }) {
               {titleLine2}
             </h2>
           </div>
-        </div>
+        </Link>
 
         <NoiseAccent
           inset="0 0 0 auto"
@@ -181,27 +185,36 @@ function DropSlide({ drop }: { drop: DropData }) {
         </ScrollReveal>
 
         <ScrollReveal delay={240}>
-          {isSoldOut ? (
-            <span className="inline-flex cursor-not-allowed select-none items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-widest text-iron/40">
-              <span>{cta}</span>
-              <span aria-hidden="true">-</span>
-            </span>
-          ) : (
+          <div className="flex flex-col gap-4">
+            {isSoldOut ? (
+              <span className="inline-flex cursor-not-allowed select-none items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-widest text-iron/40">
+                <span>{cta}</span>
+                <span aria-hidden="true">-</span>
+              </span>
+            ) : (
+              <Link
+                href={siteContent.brand.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-link group"
+              >
+                <span className="link-underline-grow">{cta}</span>
+                <InstagramIcon
+                  size={14}
+                  strokeWidth={1.6}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
+              </Link>
+            )}
             <Link
-              href={siteContent.brand.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-link group"
+              href={`/drops/${toSlug(drop.label)}`}
+              className="cta-link cta-link-sm text-dust/60 hover:text-bone transition-colors"
             >
-              <span className="link-underline-grow">{cta}</span>
-              <InstagramIcon
-                size={14}
-                strokeWidth={1.6}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-                aria-hidden="true"
-              />
+              <span className="link-underline-grow">View drop</span>
+              <span>→</span>
             </Link>
-          )}
+          </div>
         </ScrollReveal>
       </div>
     </div>

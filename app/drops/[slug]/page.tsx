@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CustomOrder from "@/components/sections/CustomOrder";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
@@ -333,6 +334,8 @@ export default async function DropDetailPage(props: DropDetailProps) {
             </div>
           </section>
         )}
+
+        <CustomOrder variant="drop" />
 
         {/* Back to all drops */}
         <section className="bg-void section-pad-tight border-t border-cinder/40">

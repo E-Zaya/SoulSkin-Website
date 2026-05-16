@@ -36,7 +36,7 @@ const PROCESS_STEPS: Array<{ no: string; title: string; body: string }> = [
   {
     no: "03",
     title: "Build",
-    body: "We build it in our Ulaanbaatar studio. 3-4 weeks typical lead time. Ships worldwide.",
+    body: "We build it in our Ulaanbaatar studio. 3-4 weeks typical lead time.",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function CustomOrderPage() {
             <div className="flex items-center gap-4">
               <span className="text-brand-label !text-iron">Lead time</span>
               <span className="font-mono text-[12px] uppercase tracking-widest text-bone">
-                3-4 weeks / Ships worldwide
+                3-4 weeks
               </span>
             </div>
             <span className="font-mono text-[10px] uppercase tracking-widest text-iron/60">
