@@ -37,7 +37,7 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://soulskin.mn";
+const SITE_URL = "https://soul-skin-website.vercel.app";
 
 export const metadata: Metadata = {
   title: {
