@@ -5,13 +5,20 @@ import { usePathname } from "next/navigation";
 
 export default function PageTransition() {
   const pathname = usePathname();
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  // Route change: adjust state during render instead of inside an effect.
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setActive(true);
+  }
 
   useEffect(() => {
-    setActive(true);
+    if (!active) return;
     const timer = window.setTimeout(() => setActive(false), 520);
     return () => window.clearTimeout(timer);
-  }, [pathname]);
+  }, [active]);
 
   return (
     <div

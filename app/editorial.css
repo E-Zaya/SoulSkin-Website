@@ -24,12 +24,6 @@
   overflow-wrap: anywhere;
 }
 
-.ss-wrap {
-  width: min(100%, 1600px);
-  margin-inline: auto;
-  padding-inline: var(--ss-gutter);
-}
-
 .ss-kicker {
   font-family: var(--font-mono);
   font-size: 0.625rem;
@@ -110,12 +104,6 @@
   color: white;
 }
 
-.ss-link-light {
-  border-color: transparent;
-  background: var(--ss-bone);
-  color: var(--ss-ink);
-}
-
 .ss-section-label {
   display: flex;
   align-items: center;
@@ -156,6 +144,7 @@
 }
 
 /* Home */
+
 .ss-home-index {
   display: grid;
   grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr) minmax(12rem, 0.85fr);
@@ -345,6 +334,7 @@
 }
 
 /* Drops */
+
 .ss-page-head {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.7fr);
@@ -405,6 +395,7 @@
 }
 
 /* Pieces */
+
 .ss-pieces-shell {
   display: grid;
   grid-template-columns: 8.5rem minmax(0, 1fr) 16rem;
@@ -471,6 +462,7 @@
 }
 
 /* Lookbook */
+
 .ss-lookbook-topbar {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -534,6 +526,7 @@
 }
 
 /* Custom */
+
 .ss-custom-hero {
   display: grid;
   min-height: min(780px, calc(100svh - var(--nav-h-md)));
@@ -595,6 +588,7 @@
 }
 
 /* About */
+
 .ss-about-story {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(25rem, 0.92fr);
@@ -649,7 +643,6 @@
   .ss-about-story {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .ss-home-chapters,
   .ss-home-manifesto,
   .ss-page-head > div:first-child,
@@ -660,63 +653,50 @@
     border-right: 0;
     border-bottom: 1px solid var(--ss-rule);
   }
-
   .ss-home-index {
     display: block;
   }
-
   .ss-home-note {
     min-height: 16rem;
   }
-
   .ss-release-ledger {
     grid-template-columns: 3.25rem minmax(0, 1fr);
   }
-
   .ss-release-ledger .ss-drop-copy {
     grid-column: 1 / -1;
     border-top: 1px solid var(--ss-rule);
   }
-
   .ss-pieces-shell {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .ss-pieces-rail,
   .ss-pieces-filter {
     display: none;
   }
-
   .ss-lookbook-stage {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .ss-lookbook-copy,
   .ss-lookbook-side {
     border: 0;
   }
-
   .ss-lookbook-copy {
     min-height: 20rem;
     border-bottom: 1px solid var(--ss-rule);
   }
-
   .ss-lookbook-side {
     gap: 2rem;
     border-top: 1px solid var(--ss-rule);
   }
-
   .ss-process-grid,
   .ss-material-grid,
   .ss-meta-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
   .ss-process-card:nth-child(2),
   .ss-meta-cell:nth-child(2) {
     border-right: 0;
   }
-
   .ss-material-grid > div {
     border-bottom: 1px solid var(--ss-rule);
   }
@@ -733,18 +713,15 @@
     width: 100vw;
     max-width: 100vw;
   }
-
   .ss-pieces-grid,
   .ss-catalog-card {
     width: 100vw;
     max-width: 100vw;
     overflow: hidden;
   }
-
   .ss-display {
     font-size: clamp(4rem, 22vw, 6rem);
   }
-
   .ss-products-home,
   .ss-pieces-grid,
   .ss-lookbook-home,
@@ -753,15 +730,12 @@
   .ss-meta-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .ss-product-card {
     grid-column: 1;
   }
-
   .ss-product-card:nth-child(2n) {
     margin-top: 2.5rem;
   }
-
   .ss-lookbook-frame,
   .ss-process-card,
   .ss-meta-cell,
@@ -769,33 +743,26 @@
     border-right: 0;
     border-bottom: 1px solid var(--ss-rule);
   }
-
   .ss-lookbook-frame {
     aspect-ratio: 4 / 5;
   }
-
   .ss-release-row {
     grid-template-columns: 2.25rem 1fr auto;
   }
-
   .ss-release-row > :nth-child(3),
   .ss-release-row > :nth-child(4) {
     display: none;
   }
-
   .ss-catalog-media,
   .ss-catalog-card:nth-child(3n + 1) .ss-catalog-media {
     min-height: 29rem;
   }
-
   .ss-lookbook-topbar {
     grid-template-columns: 1fr auto;
   }
-
   .ss-lookbook-topbar > :nth-child(3) {
     display: none;
   }
-
   .ss-lookbook-main,
   .ss-custom-image,
   .ss-about-photo {

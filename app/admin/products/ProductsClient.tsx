@@ -42,10 +42,9 @@ function ProductImagesEditor({
   onImagesChange: (imgs: ProductImage[]) => void;
 }) {
   const [uploading, setUploading] = useState(false);
-  const [pendingUrls, setPendingUrls] = useState<Record<string, string>>({});
   const [, startTransition] = useTransition();
 
-  function handleAdd(url: string, uploadedUrl?: string) {
+  function handleAdd(url: string) {
     if (!url || images.length >= MAX_IMAGES) return;
     const nextOrder = images.length;
     setUploading(true);
@@ -57,7 +56,6 @@ function ProductImagesEditor({
           order_index: nextOrder,
         });
         if (result) onImagesChange([...images, result as ProductImage]);
-        if (uploadedUrl) setPendingUrls((p) => { const n = { ...p }; delete n[uploadedUrl]; return n; });
       } finally {
         setUploading(false);
       }
@@ -166,7 +164,7 @@ function ProductImagesEditor({
                 deleteStorageImageAction(pendingNew).catch(console.error);
               }
               setPendingNew(url);
-              handleAdd(url, url);
+              handleAdd(url);
               setNewUrl("");
               setPendingNew(null);
             }}
@@ -451,7 +449,7 @@ export default function ProductsClient({ initialProducts }: Props) {
       {/* ── 商品リスト ── */}
       {products.length === 0 && !addingNew ? (
         <p className="text-[13px] text-[#666] font-mono py-10 text-center">
-          No products yet. Use "+ Add Product" to create one.
+          No products yet. Use &quot;+ Add Product&quot; to create one.
         </p>
       ) : (
         <div className="space-y-2">

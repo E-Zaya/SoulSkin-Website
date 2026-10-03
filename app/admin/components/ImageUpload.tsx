@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { isManagedImageUrl } from "@/lib/images";
 
 type Props = {
@@ -25,11 +25,14 @@ export default function ImageUpload({
   const inputRef = useRef<HTMLInputElement>(null);
 
   // 親側で別レコードを選択した時、古い画像プレビューが残らないよう同期する
-  useEffect(() => {
+  // （effect ではなく render 中に prop の変化を検知して state を合わせる）
+  const [syncedUrl, setSyncedUrl] = useState(currentUrl);
+  if (currentUrl !== syncedUrl) {
+    setSyncedUrl(currentUrl);
     setUrl(currentUrl ?? "");
     setPreview(currentUrl ?? "");
     setError("");
-  }, [currentUrl]);
+  }
 
   function handleUrlInput(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value.trim();
