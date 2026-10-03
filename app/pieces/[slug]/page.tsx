@@ -7,20 +7,16 @@ import PieceGallery from "@/components/sections/PieceGallery";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import {
-  getProductBySlugWithImages,
-  getProductsWithImages,
-} from "@/lib/db";
+  getPublicProductBySlug,
+  getPublicProducts,
+} from "@/lib/public-content";
 import { toSlug } from "@/lib/slug";
 
 export async function generateStaticParams() {
-  try {
-    const products = await getProductsWithImages();
-    return products
-      .map((p) => ({ slug: toSlug(p.sku) }))
-      .filter((p) => p.slug.length > 0);
-  } catch {
-    return [];
-  }
+  const products = await getPublicProducts();
+  return products
+    .map((p) => ({ slug: toSlug(p.sku) }))
+    .filter((p) => p.slug.length > 0);
 }
 
 type PieceDetailProps = {
@@ -31,37 +27,28 @@ export async function generateMetadata(
   props: PieceDetailProps
 ): Promise<Metadata> {
   const { slug } = await props.params;
-  try {
-    const product = await getProductBySlugWithImages(slug);
-    if (!product) return { title: "Piece not found — Soul Skin" };
-    const cover =
-      product.images && product.images.length > 0
-        ? product.images[0].image_url
-        : product.image_url ?? undefined;
-    return {
+  const product = await getPublicProductBySlug(slug);
+  if (!product) return { title: "Piece not found — Soul Skin" };
+  const cover =
+    product.images && product.images.length > 0
+      ? product.images[0].image_url
+      : product.image_url ?? undefined;
+  return {
+    title: `${product.name} — Soul Skin`,
+    description: product.description,
+    openGraph: {
       title: `${product.name} — Soul Skin`,
       description: product.description,
-      openGraph: {
-        title: `${product.name} — Soul Skin`,
-        description: product.description,
-        type: "article",
-        images: cover ? [cover] : undefined,
-      },
-    };
-  } catch {
-    return { title: "Piece — Soul Skin" };
-  }
+      type: "article",
+      images: cover ? [cover] : undefined,
+    },
+  };
 }
 
 export default async function PieceDetailPage(props: PieceDetailProps) {
   const { slug } = await props.params;
 
-  let product = null;
-  try {
-    product = await getProductBySlugWithImages(slug);
-  } catch {
-    // silently fall through to notFound()
-  }
+  const product = await getPublicProductBySlug(slug);
   if (!product) notFound();
 
   const images =

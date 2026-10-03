@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Lookbook from "@/components/sections/Lookbook";
-import { getLookbookItems } from "@/lib/db";
+import { getPublicLookbook } from "@/lib/public-content";
 
 export const metadata: Metadata = {
   title: "Lookbook — Soul Skin",
@@ -16,16 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
-async function safeGetLookbookItems() {
-  try {
-    return await getLookbookItems();
-  } catch {
-    return [];
-  }
-}
-
 export default async function LookbookPage() {
-  const items = await safeGetLookbookItems();
+  const items = await getPublicLookbook();
 
   return (
     <>

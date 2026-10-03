@@ -8,7 +8,10 @@ import CustomOrder from "@/components/sections/CustomOrder";
 import NoiseAccent from "@/components/ui/NoiseAccent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
-import { getAllPublicDrops, getDropBySlugWithImages } from "@/lib/db";
+import {
+  getPublicDropBySlug,
+  getPublicDrops,
+} from "@/lib/public-content";
 import { toSlug } from "@/lib/slug";
 
 const DOT_MAX = 10;
@@ -42,14 +45,10 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
 }
 
 export async function generateStaticParams() {
-  try {
-    const drops = await getAllPublicDrops();
-    return drops
-      .map((d) => ({ slug: toSlug(d.label) }))
-      .filter((p) => p.slug.length > 0);
-  } catch {
-    return [];
-  }
+  const drops = await getPublicDrops();
+  return drops
+    .map((d) => ({ slug: toSlug(d.label) }))
+    .filter((p) => p.slug.length > 0);
 }
 
 type DropDetailProps = {
@@ -60,23 +59,19 @@ export async function generateMetadata(
   props: DropDetailProps
 ): Promise<Metadata> {
   const { slug } = await props.params;
-  try {
-    const drop = await getDropBySlugWithImages(slug);
-    if (!drop) return { title: "Drop not found — Soul Skin" };
-    const title = `${drop.title_line1} ${drop.title_line2} — ${drop.label}`;
-    return {
+  const drop = await getPublicDropBySlug(slug);
+  if (!drop) return { title: "Drop not found — Soul Skin" };
+  const title = `${drop.title_line1} ${drop.title_line2} — ${drop.label}`;
+  return {
+    title: `${title} — Soul Skin`,
+    description: drop.description,
+    openGraph: {
       title: `${title} — Soul Skin`,
       description: drop.description,
-      openGraph: {
-        title: `${title} — Soul Skin`,
-        description: drop.description,
-        type: "article",
-        images: drop.image_url ? [drop.image_url] : undefined,
-      },
-    };
-  } catch {
-    return { title: "Drop — Soul Skin" };
-  }
+      type: "article",
+      images: drop.image_url ? [drop.image_url] : undefined,
+    },
+  };
 }
 
 /**
@@ -98,12 +93,7 @@ function buildGallery(
 export default async function DropDetailPage(props: DropDetailProps) {
   const { slug } = await props.params;
 
-  let drop = null;
-  try {
-    drop = await getDropBySlugWithImages(slug);
-  } catch {
-    // silently fall through to notFound()
-  }
+  const drop = await getPublicDropBySlug(slug);
   if (!drop) notFound();
 
   const isSoldOut = drop.pieces_left === 0;

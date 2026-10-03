@@ -203,7 +203,16 @@ npm run dev
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Optional: use Supabase for public content. The default is bundled local content.
+SITE_CONTENT_SOURCE=database
 ```
+
+The public site defaults to the images and editorial content in `public/` and
+`data/localContent.ts`, so it remains fully browsable while Supabase is paused.
+When `SITE_CONTENT_SOURCE=database` is set, Supabase is preferred and the same
+local content is used automatically if a public query is unavailable or empty.
 
 ---
 

@@ -1,461 +1,112 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
 import Image from "next/image";
-import NoiseAccent from "@/components/ui/NoiseAccent";
-import { siteContent } from "@/data/siteContent";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { LookbookItem } from "@/lib/db";
 
-type Props = {
-  data?: LookbookItem[];
-};
+type Props = { data?: LookbookItem[] };
 
-type ViewItem = {
-  key: string;
-  label: string;
-  src: string;
-};
+export default function Lookbook({ data = [] }: Props) {
+  const [active, setActive] = useState(0);
+  const touchStart = useRef<number | null>(null);
+  const count = data.length;
 
-const STRIP_HEIGHTS = [158, 128, 172, 118, 148, 164, 124, 152, 140, 130];
+  const go = useCallback((next: number) => {
+    if (!count) return;
+    setActive((next + count) % count);
+  }, [count]);
 
-export default function Lookbook({ data }: Props) {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [transitionDirection, setTransitionDirection] = useState(1);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const stripRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef<number | null>(null);
-
-  const items: ViewItem[] = (data ?? [])
-    .filter((item): item is LookbookItem & { image_url: string } =>
-      Boolean(item.image_url)
-    )
-    .map((item) => ({
-      key: item.id,
-      label: item.item_id,
-      src: item.image_url,
-    }));
-
-  const goTo = useCallback(
-    (idx: number) => {
-      if (items.length === 0) return;
-      const nextIdx = (idx + items.length) % items.length;
-      if (nextIdx === activeIdx) return;
-      setTransitionDirection(
-        nextIdx > activeIdx || (activeIdx === items.length - 1 && nextIdx === 0)
-          ? 1
-          : -1
-      );
-      setActiveIdx(nextIdx);
-    },
-    [activeIdx, items.length]
-  );
-
-  const goPrev = useCallback(() => goTo(activeIdx - 1), [activeIdx, goTo]);
-  const goNext = useCallback(() => goTo(activeIdx + 1), [activeIdx, goTo]);
-
-  function onTouchStart(e: React.TouchEvent) {
-    touchStartX.current = e.touches[0].clientX;
-  }
-
-  function onTouchEnd(e: React.TouchEvent) {
-    if (touchStartX.current === null) return;
-    const diff = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (Math.abs(diff) < 42) return;
-    if (diff < 0) goNext();
-    else goPrev();
-  }
+  const next = useCallback(() => go(active + 1), [active, go]);
+  const previous = useCallback(() => go(active - 1), [active, go]);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktop(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  // キーボード操作
-  useEffect(() => {
-    if (items.length === 0) return;
-    const handler = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
-      if (e.key === "ArrowLeft") goPrev();
-      if (e.key === "ArrowRight") goNext();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") next();
+      if (event.key === "ArrowLeft") previous();
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [goPrev, goNext, items.length]);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [next, previous]);
 
-  // フィルムストリップを常に水平スクロール
-  useEffect(() => {
-    if (items.length === 0) return;
-    const inner = stripRef.current;
-    if (!inner) return;
-    const scroller = inner.parentElement;
-    if (!scroller) return;
-    const frame = inner.children[activeIdx] as HTMLElement | undefined;
-    if (!frame) return;
-    if (isDesktop) {
-      const targetTop =
-        frame.offsetTop - scroller.clientHeight / 2 + frame.clientHeight / 2;
-      scroller.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
-      return;
-    }
-    const targetLeft =
-      frame.offsetLeft - scroller.clientWidth / 2 + frame.clientWidth / 2;
-    scroller.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
-  }, [activeIdx, isDesktop, items.length]);
-
-  if (items.length === 0) return null;
-
-  const activeItem = items[activeIdx];
-  const frameNumber = String(activeIdx + 1).padStart(3, "0");
-  const frameMeta = `${siteContent.hero.tag.replace(/\s+/g, "")} / FRAME ${frameNumber}`;
-
-  // ════════════════════════════════════════
-  // PC: Option A (フルワイド＋フィルムストリップ下)
-  // ════════════════════════════════════════
-  if (isDesktop) {
-    return (
-      <section id="lookbook" className="lookbook-desktop-layout relative overflow-hidden bg-void section-gap-before">
-        {/* フルワイド画像エリア */}
-        <div
-          className="lookbook-desktop-main relative w-full overflow-hidden bg-ash"
-          style={{ height: "80vh", maxHeight: "850px" }}
-        >
-          {/* 画像スタック（フェードトランジション） */}
-          {items.map((item, i) => (
-            <div
-              key={item.key}
-              className="absolute inset-0 transition-all duration-700 ease-out"
-              style={{
-                opacity: i === activeIdx ? 1 : 0,
-                transform:
-                  i === activeIdx
-                    ? "translateX(0) scale(1)"
-                    : `translateX(${transitionDirection * 18}px) scale(1.012)`,
-                zIndex: i === activeIdx ? 1 : 0,
-                pointerEvents: i === activeIdx ? "auto" : "none",
-              }}
-            >
-              <Image
-                src={item.src}
-                alt={`Lookbook — ${item.label} — Soul Skin`}
-                fill
-                sizes="calc(100vw - 280px)"
-                className="object-contain object-center"
-              />
-            </div>
-          ))}
-
-          {/* 下部グラデーション */}
-          <div className="pointer-events-none absolute inset-0 z-10 lookbook-desktop-bottom-overlay" />
-
-          {/* ノイズアクセント */}
-          <NoiseAccent
-            inset="0 0 auto auto"
-            width="40%"
-            height="50%"
-            opacity={0.06}
-            tileSize="180px"
-            drift
-            className="z-[2]"
-          />
-
-          {/* 縦ラベル */}
-          <div
-            className="absolute left-4 top-1/2 z-20 flex -translate-y-1/2"
-            aria-hidden="true"
-          >
-            <span
-              className="text-brand-label"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-            >
-              {siteContent.lookbook.label}
-            </span>
-          </div>
-
-          {/* 左下キャプション */}
-          <div className="lookbook-caption absolute z-20">
-            <p className="mb-3 text-brand-label text-dust/70">
-              {frameMeta}
-            </p>
-            <h2 className="lookbook-title mb-4 text-brand-display">
-              {siteContent.lookbook.titleLine1}
-              <br />
-              {siteContent.lookbook.titleLine2}
-              <br />
-              {siteContent.lookbook.titleLine3}
-            </h2>
-            <p className="font-mono text-[10px] tracking-[0.28em] text-dust/85 transition-all duration-500">
-              {activeItem.label}
-            </p>
-          </div>
-        </div>
-
-        {/* フィルムストリップ（水平・全幅） */}
-        <div className="lookbook-desktop-film relative bg-void">
-          <Sprockets />
-          <div
-            className="lookbook-desktop-film-scroll bg-ash"
-            style={{
-              overflowX: "hidden",
-              overflowY: "auto",
-              height: "100%",
-              scrollbarWidth: "none",
-            }}
-          >
-            <div
-              ref={stripRef}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "3px",
-                minHeight: "max-content",
-                padding: "0.75rem 1rem",
-              }}
-            >
-              {items.map((item, i) => (
-                <FilmFrame
-                  key={item.key}
-                  item={item}
-                  index={i}
-                  isActive={i === activeIdx}
-                  height={STRIP_HEIGHTS[i % STRIP_HEIGHTS.length]}
-                  onClick={() => goTo(i)}
-                />
-              ))}
-            </div>
-          </div>
-          <Sprockets />
-        </div>
-      </section>
-    );
+  if (!count) {
+    return <section className="px-[var(--ss-gutter)] py-24"><p className="ss-kicker">No frames published yet.</p></section>;
   }
 
-  // ════════════════════════════════════════
-  // スマホ: 元のレイアウトをそのまま維持
-  // ════════════════════════════════════════
+  const item = data[active];
+  const frame = String(active + 1).padStart(3, "0");
+
   return (
-    <section id="lookbook" className="lookbook-section relative overflow-hidden bg-void">
-      <div className="lookbook-inner">
-        <div className="lookbook-grid">
-          {/* メイン画像 */}
-          <div
-            className="lookbook-main"
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-          >
-            <div
-              key={activeItem.key}
-              className="absolute inset-0 animate-lookbook-slide"
-              style={
-                {
-                  "--lookbook-slide-x": `${transitionDirection * 18}px`,
-                } as CSSProperties
-              }
-            >
-              <Image
-              src={activeItem.src}
-              alt={`Lookbook — ${activeItem.label} — Soul Skin`}
-              fill
-              sizes="100vw"
-              className="lookbook-mobile-image"
-              />
-            </div>
+    <section aria-label="Soul Skin lookbook">
+      <div className="ss-lookbook-topbar">
+        <p className="ss-kicker"><span className="ss-blue">Lookbook</span> &nbsp; UB night files</p>
+        <p className="ss-kicker ss-blue">{frame} / {String(count).padStart(3, "0")}</p>
+        <p className="ss-kicker text-right">47.9180° N · 106.9177° E</p>
+      </div>
 
-            {/* スマホ用グラデーション */}
-            <div className="lookbook-mobile-fade pointer-events-none absolute inset-x-0 bottom-0 z-10" />
+      <div className="ss-lookbook-stage">
+        <div className="ss-lookbook-copy">
+          <div>
+            <p className="ss-kicker mb-7">Archive / 2021—present</p>
+            <h1 className="ss-display-sm">UB<br />Night<br />Files</h1>
+          </div>
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-2 font-mono text-[9px] uppercase tracking-[0.12em] text-dust/65">
+            <dt>Location</dt><dd>Zaisan Hill</dd>
+            <dt>Time</dt><dd>23:41</dd>
+            <dt>Temp</dt><dd>−18°C</dd>
+            <dt>Wind</dt><dd>12 km/h</dd>
+            <dt>Frame</dt><dd>{item.item_id}</dd>
+            <dt>Color</dt><dd>Blue hour</dd>
+          </dl>
+        </div>
 
-            {/* ノイズアクセント */}
-            <NoiseAccent
-              inset="0 0 auto auto"
-              width="40%"
-              height="50%"
-              opacity={0.06}
-              tileSize="180px"
-              drift
-              className="z-[2]"
-            />
+        <div
+          className="ss-lookbook-main"
+          onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
+          onTouchEnd={(event) => {
+            if (touchStart.current === null) return;
+            const delta = (event.changedTouches[0]?.clientX ?? touchStart.current) - touchStart.current;
+            if (Math.abs(delta) > 45) {
+              if (delta < 0) next();
+              else previous();
+            }
+            touchStart.current = null;
+          }}
+        >
+          <Image key={item.id} src={item.image_url || "/lookbook-01.png"} alt={`Soul Skin lookbook ${item.item_id}`} fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover animate-lookbook-slide" />
+          <div className="absolute inset-0 bg-gradient-to-t from-void/35 via-transparent to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-[2] flex items-center justify-between border-t ss-rule p-4 font-mono text-[9px] uppercase tracking-[0.12em] text-bone/70">
+            <span>35mm</span><span>ISO 3200</span><span>1/125</span><span>F2.8</span><span>5600K</span>
+          </div>
+        </div>
 
-            {/* 左下キャプション */}
-            <div className="lookbook-caption absolute z-20">
-              <p className="mb-2 text-brand-label text-dust/70">
-                {frameMeta}
-              </p>
-              <h2 className="lookbook-title mb-3 text-brand-display">
-                {siteContent.lookbook.titleLine1}
-                <br />
-                {siteContent.lookbook.titleLine2}
-                <br />
-                {siteContent.lookbook.titleLine3}
-              </h2>
-              <p className="font-mono text-[10px] tracking-[0.28em] text-dust/85 transition-all duration-500">
-                {activeItem.label}
-              </p>
-            </div>
-
-            {/* ドットナビゲーション */}
-            <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-1.5">
-              {items.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => goTo(i)}
-                  aria-label={`Image ${i + 1}`}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    i === activeIdx ? "w-5 bg-bone/90" : "w-1.5 bg-iron/45"
-                  }`}
-                />
+        <aside className="ss-lookbook-side">
+          <div>
+            <div className="ss-filmstrip">
+              {data.map((thumb, index) => (
+                <button key={thumb.id} type="button" onClick={() => go(index)} className={`ss-film-thumb ${index === active ? "is-active" : ""}`} aria-label={`Open frame ${index + 1}`} aria-current={index === active ? "true" : undefined}>
+                  <Image src={thumb.image_url || "/lookbook-01.png"} alt="" fill sizes="100px" className="object-cover" />
+                </button>
               ))}
+            </div>
+            <div className="mt-8 border-l border-ember pl-5">
+              <p className="ss-kicker ss-blue">{item.item_id}</p>
+              <p className="mt-4 font-mono text-[10px] uppercase leading-7 tracking-[0.1em] text-dust/70">Delivered in darkness.<br />Built for movement.<br />Made in Ulaanbaatar.</p>
+              <p className="mt-6 flex items-center gap-2 ss-kicker ss-signal"><span className="ss-dot" /> REC</p>
             </div>
           </div>
 
-          {/* フィルムストリップエリア */}
-          <aside className="lookbook-aside relative flex flex-col bg-void">
-            <div className="flex items-center justify-between border-b border-cinder/60 pb-4">
-              <span
-                key={activeIdx}
-                className="lookbook-counter-pop font-mono text-[11px] tracking-widest text-dust/50"
-              >
-                {String(activeIdx + 1).padStart(2, "0")}
-                <span className="text-iron/50">
-                  {" / "}
-                  {String(items.length).padStart(2, "0")}
-                </span>
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={goPrev}
-                  aria-label="Previous image"
-                  className="lookbook-nav-button"
-                >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={goNext}
-                  aria-label="Next image"
-                  className="lookbook-nav-button"
-                >
-                  →
-                </button>
+          <div className="border ss-rule p-5">
+            <p className="ss-kicker ss-blue">Next frame</p>
+            <div className="mt-4 flex items-end justify-between">
+              <span className="font-display text-6xl leading-none">{String(((active + 1) % count) + 1).padStart(3, "0")}</span>
+              <div className="flex gap-2">
+                <button type="button" onClick={previous} className="ss-link !min-h-10 !px-3" aria-label="Previous frame">←</button>
+                <button type="button" onClick={next} className="ss-link !min-h-10 !px-3" aria-label="Next frame">→</button>
               </div>
             </div>
-
-            <div className="lookbook-copy-block">
-              <p className="body-copy text-measure-lg text-dust/65">
-                {siteContent.lookbook.description}
-              </p>
-            </div>
-
-            <div className="relative min-h-0 flex-1">
-              <Sprockets />
-              <div className="lookbook-strip-scroller bg-ash">
-                <div ref={stripRef} className="lookbook-strip-inner">
-                  {items.map((item, i) => (
-                    <FilmFrame
-                      key={item.key}
-                      item={item}
-                      index={i}
-                      isActive={i === activeIdx}
-                      height={STRIP_HEIGHTS[i % STRIP_HEIGHTS.length]}
-                      onClick={() => goTo(i)}
-                    />
-                  ))}
-                </div>
-              </div>
-              <Sprockets />
-            </div>
-          </aside>
-        </div>
+          </div>
+        </aside>
       </div>
     </section>
-  );
-}
-
-/* 個別フィルムフレーム */
-function FilmFrame({
-  item,
-  index,
-  isActive,
-  height,
-  onClick,
-}: {
-  item: ViewItem;
-  index: number;
-  isActive: boolean;
-  height: number;
-  onClick: () => void;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={`View ${item.label}`}
-      className="relative flex-shrink-0"
-      style={{ width: 96, height }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div
-        className="relative h-full w-full overflow-hidden"
-        style={{
-          outline: isActive
-            ? "1.5px solid var(--color-ember)"
-            : "1.5px solid transparent",
-        }}
-      >
-        <Image
-          src={item.src}
-          alt={`フィルム ${item.label}`}
-          fill
-          sizes="96px"
-          className="object-cover object-center"
-          style={{
-            filter: isActive || hovered ? "none" : "grayscale(100%)",
-            opacity: isActive ? 1 : hovered ? 0.85 : 0.45,
-            transition: "filter 400ms ease, opacity 400ms ease",
-          }}
-        />
-        <p
-          className="pointer-events-none absolute bottom-1.5 left-2 font-mono text-[8px] tracking-widest"
-          style={{
-            color: isActive
-              ? "var(--color-ember)"
-              : hovered
-                ? "rgba(255,255,255,0.6)"
-                : "rgba(255,255,255,0.22)",
-            transition: "color 300ms ease",
-          }}
-        >
-          {String(index + 1).padStart(3, "0")}
-        </p>
-      </div>
-    </button>
-  );
-}
-
-/* スプロケット穴バー */
-function Sprockets() {
-  return (
-    <div
-      className="flex items-center gap-[10px] overflow-hidden bg-ash px-4"
-      style={{ height: 18 }}
-      aria-hidden="true"
-    >
-      {Array.from({ length: 60 }).map((_, i) => (
-        <div
-          key={i}
-          className="flex-shrink-0 rounded-[2px] bg-void"
-          style={{ width: 11, height: 8 }}
-        />
-      ))}
-    </div>
   );
 }

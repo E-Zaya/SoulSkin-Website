@@ -1,182 +1,94 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { Camera as InstagramIcon } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import NoiseAccent from "@/components/ui/NoiseAccent";
-import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 
 export const metadata: Metadata = {
-  title: "Custom Order",
-  description:
-    "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
+  title: "Custom Atelier",
+  description: "One-of-one Soul Skin pieces, designed and hand-finished in Ulaanbaatar.",
   alternates: { canonical: "/custom" },
-  openGraph: {
-    title: "Custom Order — Soul Skin",
-    description:
-      "Bring us your idea. Every Soul Skin piece can be made one-of-one — sketch, fit, and finish, all from Ulaanbaatar.",
-    type: "article",
-    url: "/custom",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Soul Skin Custom Order" }],
-  },
 };
 
-const PROCESS_STEPS: Array<{ no: string; title: string; body: string }> = [
-  {
-    no: "01",
-    title: "Reach out",
-    body: "DM us on Instagram or send an email. Tell us what you have in mind - references, sketches, anything.",
-  },
-  {
-    no: "02",
-    title: "Sketch & quote",
-    body: "We come back within 48h with a rough sketch, material plan, lead time, and a quote.",
-  },
-  {
-    no: "03",
-    title: "Build",
-    body: "We build it in our Ulaanbaatar studio. 3-4 weeks typical lead time.",
-  },
+const process = [
+  { no: "01", title: "Brief", body: "Share references, fit notes and the details that matter. We confirm scope and timing." },
+  { no: "02", title: "Build", body: "Pattern, cut and construction. Every decision is made with intention." },
+  { no: "03", title: "Finish", body: "Hand-finished, inspected and signed in our Ulaanbaatar studio." },
 ];
 
-export default function CustomOrderPage() {
-  const { brand } = siteContent;
-
+export default function CustomPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: "var(--nav-h)" }}>
-        <section
-          className="relative overflow-hidden section-pad-feature"
-          style={{ backgroundColor: "var(--cta-bg)" }}
-        >
-          <NoiseAccent
-            inset="0 0 0 0"
-            width="100%"
-            height="100%"
-            opacity={0.04}
-            blendMode="overlay"
-            tileSize="180px"
-            pulse
-          />
-          <div className="container-base relative z-10 text-center">
-            <ScrollReveal variant="fade-up">
-              <p className="text-brand-label mb-6">Custom Order</p>
-            </ScrollReveal>
-            <ScrollReveal delay={80} variant="fade-up">
-              <h1 className="text-brand-display display-cta text-bone">
-                BRING US
-                <br />
-                YOUR IDEA
-              </h1>
-            </ScrollReveal>
-            <ScrollReveal delay={160} variant="fade-only">
-              <p className="body-copy mx-auto mt-7 max-w-[460px] text-dust/75 md:body-copy-md">
-                Every Soul Skin piece can be made one-of-one. Tell us what you
-                want - fabric, fit, story - and we build it with you.
-              </p>
-            </ScrollReveal>
-          </div>
-        </section>
-
-        <section className="section-pad border-t border-cinder/40 bg-void">
-          <div className="container-base">
-            <ScrollReveal variant="fade-up">
-              <div className="mb-10 flex items-center gap-5 md:mb-14">
-                <span className="text-brand-label !text-iron">Process</span>
-                <span className="h-px flex-1 bg-iron/30" />
-                <span className="font-mono text-[11px] tracking-widest text-iron/50">
-                  3 STEPS
-                </span>
-              </div>
-            </ScrollReveal>
-            <ol className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
-              {PROCESS_STEPS.map((step, i) => (
-                <ScrollReveal key={step.no} delay={i * 120} variant="fade-up">
-                  <li className="flex flex-col gap-3 border-t border-cinder/60 pt-5 md:gap-4 md:pt-6">
-                    <span className="font-mono text-[11px] tracking-widest text-ember">
-                      {step.no}
-                    </span>
-                    <h2 className="font-display text-[24px] leading-none tracking-tight text-bone md:text-[28px]">
-                      {step.title}
-                    </h2>
-                    <p className="body-copy text-dust/80">{step.body}</p>
-                  </li>
-                </ScrollReveal>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="border-y border-cinder/60 bg-ash">
-          <div className="container-base flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-4">
-              <span className="text-brand-label !text-iron">Lead time</span>
-              <span className="font-mono text-[12px] uppercase tracking-widest text-bone">
-                3-4 weeks
-              </span>
+      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+        <section className="ss-custom-hero" aria-labelledby="custom-heading">
+          <div className="ss-custom-copy">
+            <div>
+              <p className="ss-kicker mb-8">Custom / Atelier</p>
+              <h1 id="custom-heading" className="ss-display-sm">Made<br />for one.</h1>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-iron/60">
-              Reply within 48h
-            </span>
+            <div>
+              <p className="ss-body">In Ulaanbaatar, we cut, shape and finish each custom piece by hand — in small runs for people who choose their own path.</p>
+              <div className="mt-8 flex items-center gap-2 ss-kicker"><span className="ss-dot" /><span>Atelier runs / Open</span></div>
+            </div>
+          </div>
+          <div className="ss-custom-image">
+            <Image src="/product-hoodie.png" alt="Soul Skin custom hoodie construction" fill priority sizes="(min-width: 900px) 65vw, 100vw" className="object-cover object-center scale-[1.08]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-void/25 via-transparent to-transparent" />
+            <p className="absolute bottom-5 right-5 ss-kicker text-bone/70">Pattern / Fabric / Finish</p>
           </div>
         </section>
 
-        <section
-          className="section-pad relative overflow-hidden"
-          style={{ backgroundColor: "var(--cta-bg)" }}
-        >
-          <NoiseAccent
-            inset="0 0 0 0"
-            width="100%"
-            height="100%"
-            opacity={0.035}
-            blendMode="overlay"
-            tileSize="180px"
-          />
-          <div className="container-base relative z-10 text-center">
-            <ScrollReveal variant="fade-up">
-              <p className="text-brand-label mb-5">Start</p>
-            </ScrollReveal>
-            <ScrollReveal delay={80} variant="fade-up">
-              <h2 className="text-brand-display display-section mb-8 text-bone">
-                READY WHEN YOU ARE.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal
-              delay={160}
-              variant="fade-only"
-              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
-            >
-              <Link
-                href={brand.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group btn-hover-fill cta-button w-full justify-center border border-[color:var(--cta-accent-soft)] sm:w-auto"
-              >
-                <span className="transition-colors duration-300 group-hover:text-void">
-                  Start on Instagram
-                </span>
-                <InstagramIcon
-                  size={16}
-                  strokeWidth={1.6}
-                  className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-void"
-                  aria-hidden="true"
-                />
-              </Link>
-              {brand.email && (
-                <Link
-                  href={`mailto:${brand.email}?subject=Soul%20Skin%20Custom%20Order`}
-                  className="inline-flex w-full items-center justify-center gap-2 border border-cinder px-6 py-4 font-mono text-[11px] uppercase tracking-widest text-dust transition-colors hover:border-iron hover:text-bone sm:w-auto"
-                >
-                  <span>Email us</span>
-                  <span aria-hidden="true">-&gt;</span>
-                </Link>
-              )}
-            </ScrollReveal>
+        <section className="ss-process-grid" aria-label="Custom process">
+          {process.map((step) => (
+            <article key={step.no} className="ss-process-card">
+              <span className="ss-process-no">{step.no}</span>
+              <h2 className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-bone">{step.title}</h2>
+              <p className="mt-4 text-sm leading-relaxed text-dust/70">{step.body}</p>
+            </article>
+          ))}
+          <article className="ss-process-card bg-bone !text-void">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-void/55">Lead time</p>
+            <p className="mt-6 font-display text-5xl leading-none">3–4 weeks</p>
+            <p className="mt-5 text-sm leading-relaxed text-void/65">Rush availability depends on current studio capacity.</p>
+          </article>
+        </section>
+
+        <section className="ss-material-grid" aria-labelledby="materials-heading">
+          <div>
+            <p id="materials-heading" className="ss-kicker mb-8">Materials / Selected by project</p>
+            <div className="grid grid-cols-3 gap-3">
+              <figure><div className="aspect-[3/4] border ss-rule bg-[#121212]" /><figcaption className="ss-kicker mt-3">Heavy cotton</figcaption></figure>
+              <figure><div className="aspect-[3/4] border ss-rule bg-[#242424] [background-image:radial-gradient(#454545_1px,transparent_1px)] [background-size:5px_5px]" /><figcaption className="ss-kicker mt-3">Canvas</figcaption></figure>
+              <figure><div className="aspect-[3/4] border ss-rule bg-[#0d1014] [background-image:linear-gradient(90deg,transparent_48%,#30343b_50%,transparent_52%)] [background-size:8px_8px]" /><figcaption className="ss-kicker mt-3">Rib knit</figcaption></figure>
+            </div>
+          </div>
+
+          <div>
+            <p className="ss-kicker mb-8">Project spotlight / SS-24</p>
+            <div className="relative aspect-[16/10] overflow-hidden bg-ash">
+              <Image src="/lookbook-03.png" alt="Soul Skin custom project" fill sizes="(min-width: 900px) 40vw, 100vw" className="object-cover" />
+            </div>
+            <dl className="mt-5 grid grid-cols-2 gap-y-2 font-mono text-[9px] uppercase tracking-[0.12em] text-dust/70">
+              <dt>Fabric</dt><dd>Heavy cotton</dd><dt>Finish</dt><dd>Screen / Discharge</dd><dt>Run</dt><dd>1 of 1</dd>
+            </dl>
+          </div>
+
+          <div className="flex flex-col justify-between bg-ash">
+            <p className="ss-kicker ss-blue">Ready to build?</p>
+            <div>
+              <h2 className="ss-display-sm !text-[clamp(3rem,5vw,5rem)]">Start a custom</h2>
+              <p className="ss-body mt-6">Send the item, size, references and desired timing. We reply with the next step.</p>
+              <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="ss-link mt-8 w-full"><span>DM on Instagram</span><span>↗</span></Link>
+            </div>
           </div>
         </section>
+
+        <div className="flex items-center justify-between gap-4 border-b ss-rule px-[var(--ss-gutter)] py-5">
+          <p className="ss-kicker">Lead time &nbsp; <span className="text-bone">3–4 weeks</span></p>
+          <p className="ss-kicker"><span className="ss-signal">●</span> Reply within 48h</p>
+        </div>
       </main>
       <Footer />
     </>

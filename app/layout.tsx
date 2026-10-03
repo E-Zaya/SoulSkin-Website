@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import PageTransition from "@/components/layout/PageTransition";
 import "./globals.css";
+import "./editorial.css";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",

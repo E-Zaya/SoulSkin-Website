@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 import { Camera as InstagramIcon } from "lucide-react";
 import { siteContent } from "@/data/siteContent";
 
-const navLinks: ReadonlyArray<{ name: string; href: string; index: string }> = [
-  { name: "Home", href: "/", index: "01" },
-  { name: "Drops", href: "/drops", index: "02" },
-  { name: "Lookbook", href: "/lookbook", index: "03" },
-  { name: "Pieces", href: "/pieces", index: "04" },
-  { name: "Custom", href: "/custom", index: "05" },
-  { name: "About", href: "/about", index: "06" },
+const navLinks: ReadonlyArray<{ name: string; href: string; index: string; note: string }> = [
+  { name: "Home", href: "/", index: "01", note: "Film / Manifesto" },
+  { name: "Drops", href: "/drops", index: "02", note: "Current release" },
+  { name: "Lookbook", href: "/lookbook", index: "03", note: "UB night files" },
+  { name: "Pieces", href: "/pieces", index: "04", note: "Made to order" },
+  { name: "Custom", href: "/custom", index: "05", note: "Open / 3–4 weeks" },
+  { name: "About", href: "/about", index: "06", note: "Ulaanbaatar / 2021" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -143,6 +143,9 @@ export default function Navbar() {
             />
           </span>
           <span>{menuOpen ? "Close" : "Choose"}</span>
+          {!menuOpen && (
+            <span className="hidden h-1.5 w-1.5 rounded-full bg-ember md:block" aria-hidden="true" />
+          )}
         </button>
 
         <Link
@@ -246,8 +249,13 @@ export default function Navbar() {
                     <span className="w-10 shrink-0 font-mono text-[0.75rem] tracking-[0.18em] text-bone/45 md:w-14 md:text-[0.875rem]">
                       {link.index}
                     </span>
-                    <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "clamp(2.25rem, 7svh, 5.75rem)" }}>
-                      {link.name}
+                    <span className="flex min-w-0 flex-1 items-end justify-between gap-4">
+                      <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "clamp(2.25rem, 7svh, 5.75rem)" }}>
+                        {link.name}
+                      </span>
+                      <span className={`hidden pb-1 font-mono text-[9px] uppercase tracking-[0.18em] md:block ${active ? "text-ember" : "text-iron"}`}>
+                        {link.note}
+                      </span>
                     </span>
                   </Link>
                 </li>

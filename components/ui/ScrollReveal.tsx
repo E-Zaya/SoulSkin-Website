@@ -92,7 +92,9 @@ function ScrollReveal({
       ref={ref}
       className={className}
       style={{
-        ...v.initial,
+        /* Content must remain readable when IntersectionObserver or JavaScript
+           is unavailable. Motion is progressive enhancement, never a gate. */
+        ...v.final,
         transition: `${v.transition}`,
         transitionDelay: `${delay}ms`,
       }}

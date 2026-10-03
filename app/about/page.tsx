@@ -1,155 +1,75 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Camera as InstagramIcon } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import NoiseAccent from "@/components/ui/NoiseAccent";
-import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
-import { getSiteSettings } from "@/lib/db";
+import { getPublicSiteSettings } from "@/lib/public-content";
 
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Soul Skin is a streetwear label from Ulaanbaatar. Built for those who carry their identity on their back.",
+  description: "Soul Skin is an independent streetwear label from Ulaanbaatar, Mongolia.",
   alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About — Soul Skin",
-    description:
-      "Soul Skin is a streetwear label from Ulaanbaatar. Built for those who carry their identity on their back.",
-    type: "article",
-    url: "/about",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "About Soul Skin" }],
-  },
 };
 
-async function safeGetSiteSettings() {
-  try {
-    return await getSiteSettings();
-  } catch {
-    return null;
-  }
-}
-
-const FACTS: Array<{ label: string; value: string }> = [
-  { label: "Founded", value: "2021" },
-  { label: "Studio", value: "Ulaanbaatar, MN" },
-  { label: "Production", value: "Hand-finished" },
-  { label: "Custom orders", value: "Open" },
-];
-
 export default async function AboutPage() {
-  const settings = await safeGetSiteSettings();
-  const description =
-    settings?.about_description ??
-    "Soul Skin is a streetwear label from Ulaanbaatar, Mongolia. Built for those who carry their identity on their back.";
-  const imageUrl = settings?.about_image_url ?? null;
+  const settings = await getPublicSiteSettings();
 
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: "var(--nav-h)" }}>
-        <section className="section-pad-tight border-b border-cinder/40 bg-void">
-          <div className="container-base">
-            <ScrollReveal variant="fade-up">
-              <p className="text-brand-label mb-4">
-                {siteContent.about.label}
-              </p>
-              <h1 className="text-brand-display display-section">
-                CHOOSE YOUR
-                <br />
-                SKIN.
-              </h1>
-            </ScrollReveal>
+      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+        <section className="ss-about-story" aria-labelledby="about-heading">
+          <div className="ss-about-photo">
+            <Image src={settings.about_image_url || "/about.png"} alt="Soul Skin in Ulaanbaatar" fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-void/55 via-transparent to-void/10" />
+            <div className="absolute inset-x-0 bottom-0 z-[2] flex items-end justify-between p-[var(--ss-gutter)]">
+              <p className="ss-kicker text-bone/70">About / Field 01</p>
+              <p className="ss-kicker text-bone/70">47.9180° N<br />106.9177° E</p>
+            </div>
           </div>
-        </section>
 
-        <section className="relative overflow-hidden bg-ash">
-          <div className="editorial-split flex flex-col md:flex-row">
-            {imageUrl && (
-              <div className="relative aspect-[5/4] overflow-hidden md:aspect-[16/12] md:w-[56%]">
-                <Image
-                  src={imageUrl}
-                  alt="Soul Skin - Ulaanbaatar"
-                  fill
-                  priority
-                  sizes="(min-width: 768px) 56vw, 100vw"
-                  className="object-cover object-center"
-                />
-                <NoiseAccent
-                  inset="0 auto 0 0"
-                  width="30%"
-                  height="100%"
-                  opacity={0.06}
-                  tileSize="190px"
-                />
-                <NoiseAccent
-                  inset="auto 0 0 auto"
-                  width="40%"
-                  height="35%"
-                  opacity={0.04}
-                  tileSize="210px"
-                />
-              </div>
-            )}
+          <div className="ss-about-copy">
+            <div>
+              <div className="flex items-center justify-between gap-4"><p className="ss-kicker">The story</p><p className="ss-kicker ss-signal">UB raw precision</p></div>
+              <h1 id="about-heading" className="ss-display-sm mt-10">Choose<br />your skin.</h1>
+              <p className="ss-body mt-10">{settings.about_description || siteContent.about.descriptionFallback}</p>
+              <p className="ss-body mt-5">Built in Mongolia. Inspired by the steppe, the city and the people who move between them.</p>
+            </div>
 
-            <div
-              className={`section-pad-editorial flex shrink-0 flex-col justify-center px-6 md:px-14 ${
-                imageUrl ? "md:w-[44%]" : "md:w-full"
-              }`}
-            >
-              <ScrollReveal delay={0}>
-                <p className="text-brand-label mb-6 md:mb-8">Story</p>
-              </ScrollReveal>
-              <ScrollReveal delay={80}>
-                <p className="body-copy-md text-measure-lg mb-6 text-bone md:mb-8">
-                  {description}
-                </p>
-              </ScrollReveal>
-              <ScrollReveal delay={140}>
-                <p className="text-brand-label">
-                  {siteContent.brand.taglineShort}
-                </p>
-              </ScrollReveal>
+            <div className="ss-timeline">
+              <p className="ss-kicker mb-5">Timeline</p>
+              <ol>
+                <li><strong className="ss-blue">2021 — Ulaanbaatar</strong><br />Soul Skin is founded. The first pieces are made in small runs.</li>
+                <li><strong className="text-bone">Now — Process over hype</strong><br />Limited silhouettes, custom work and hand-finished production continue.</li>
+                <li><strong className="text-bone">Next — New chapters</strong><br />The same soul, carried into the next release.</li>
+              </ol>
             </div>
           </div>
         </section>
 
-        <section className="section-pad-tight border-t border-cinder/40 bg-void">
-          <div className="container-base">
-            <ScrollReveal variant="fade-up">
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-6 border-t border-cinder/60 pt-6 md:grid-cols-4">
-                {FACTS.map((fact) => (
-                  <div key={fact.label} className="flex flex-col gap-2">
-                    <dt className="text-brand-label !text-iron">
-                      {fact.label}
-                    </dt>
-                    <dd className="font-mono text-[12px] uppercase tracking-widest text-bone">
-                      {fact.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </ScrollReveal>
-          </div>
+        <blockquote className="ss-quote">
+          “We do not follow trends.<br />
+          <span className="ss-blue">We build uniforms</span><br />
+          for everyday survival.”
+        </blockquote>
+
+        <section className="ss-meta-grid">
+          <div className="ss-meta-cell"><p className="ss-kicker">Founded</p><p className="ss-meta-value">2021 / Ulaanbaatar</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Production</p><p className="ss-meta-value">Hand-finished</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Method</p><p className="ss-meta-value">Limited runs</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Custom</p><p className="ss-meta-value ss-signal">Open</p></div>
         </section>
 
-        <section className="section-pad border-t border-cinder/40 bg-void text-center">
-          <div className="container-base">
-            <ScrollReveal variant="fade-up">
-              <p className="text-brand-label mb-5">Reach out</p>
-              <Link
-                href={siteContent.brand.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-display text-[28px] leading-none tracking-tight text-bone transition-opacity hover:opacity-70 md:text-[36px]"
-              >
-                <span>{siteContent.brand.handle}</span>
-                <InstagramIcon size={22} strokeWidth={1.5} aria-hidden="true" />
-              </Link>
-            </ScrollReveal>
+        <section className="grid min-h-72 border-b ss-rule md:grid-cols-[1fr_auto]">
+          <div className="flex flex-col justify-between border-b ss-rule p-[var(--ss-gutter)] md:border-b-0 md:border-r">
+            <p className="ss-kicker ss-blue">Join the community</p>
+            <h2 className="ss-display-sm mt-14">From UB,<br />for everywhere.</h2>
           </div>
+          <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="group flex min-w-[36vw] items-end justify-between gap-8 bg-bone p-[var(--ss-gutter)] text-void">
+            <span className="font-display text-[clamp(3rem,6vw,6rem)] leading-none uppercase">Instagram</span>
+            <span className="text-3xl transition-transform group-hover:translate-x-2">↗</span>
+          </Link>
         </section>
       </main>
       <Footer />

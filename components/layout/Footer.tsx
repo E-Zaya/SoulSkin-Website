@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Camera as InstagramIcon } from "lucide-react";
-import NoiseAccent from "@/components/ui/NoiseAccent";
 import { siteContent } from "@/data/siteContent";
 
 const FOOTER_LINKS: ReadonlyArray<{ name: string; href: string }> = [
@@ -13,72 +11,42 @@ const FOOTER_LINKS: ReadonlyArray<{ name: string; href: string }> = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-cinder bg-void">
-      <NoiseAccent
-        inset="0 0 auto 0"
-        width="60%"
-        height="80px"
-        opacity={0.03}
-        tileSize="180px"
-      />
-
-      <div className="container-base relative z-10 flex flex-col gap-8 py-10 md:flex-row md:items-start md:justify-between md:py-12">
-        <div className="flex flex-col gap-3">
-          <Link
-            href="/"
-            className="w-fit text-brand-display text-[26px] leading-none transition-opacity hover:opacity-70 md:text-[30px]"
-            aria-label={siteContent.brand.name}
-          >
+    <footer className="border-t ss-rule bg-void">
+      <div className="grid border-b ss-rule md:grid-cols-[1.1fr_1fr_1fr]">
+        <div className="flex min-h-48 flex-col justify-between border-b ss-rule p-[var(--ss-gutter)] md:border-b-0 md:border-r">
+          <Link href="/" className="w-fit font-display text-[2.4rem] leading-none tracking-[0.08em] text-bone">
             {siteContent.brand.name}
           </Link>
-          <span className="font-mono text-[11px] uppercase tracking-widest text-dust/70">
-            {siteContent.brand.location}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-dust/50">
-            {siteContent.brand.taglineShort}
-          </span>
+          <div className="mt-10 space-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-dust/60">
+            <p>{siteContent.brand.location}</p>
+            <p>{siteContent.brand.taglineShort}</p>
+          </div>
         </div>
 
-        <nav aria-label="Footer">
-          <ul className="flex flex-col gap-2.5">
-            {FOOTER_LINKS.map((link) => (
-              <li key={link.name}>
-                <Link
-                  href={link.href}
-                  className="font-mono text-[12px] uppercase tracking-[0.18em] text-dust transition-colors hover:text-bone"
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <nav className="grid grid-cols-2 gap-x-8 gap-y-3 border-b ss-rule p-[var(--ss-gutter)] md:border-b-0 md:border-r" aria-label="Footer">
+          {FOOTER_LINKS.map((link, index) => (
+            <Link key={link.name} href={link.href} className="group flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-dust transition-colors hover:text-bone">
+              <span className="text-iron">{String(index + 2).padStart(2, "0")}</span>
+              <span>{link.name}</span>
+            </Link>
+          ))}
         </nav>
 
-        <div className="flex flex-col gap-3 md:items-end">
-          <Link
-            href={siteContent.brand.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-sans text-[13px] font-medium text-dust transition-colors duration-200 hover:text-bone"
-          >
+        <div className="flex min-h-48 flex-col justify-between p-[var(--ss-gutter)]">
+          <div className="flex items-center gap-2 ss-kicker">
+            <span className="ss-dot" />
+            <span>Custom orders open</span>
+          </div>
+          <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="mt-10 flex items-end justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.14em] text-bone hover:text-ember">
             <span>Instagram / {siteContent.brand.handle}</span>
-            <InstagramIcon size={14} strokeWidth={1.5} aria-hidden="true" />
+            <span aria-hidden="true">↗</span>
           </Link>
-          {siteContent.brand.email && (
-            <Link
-              href={`mailto:${siteContent.brand.email}`}
-              className="font-mono text-[11px] uppercase tracking-widest text-dust/70 transition-colors hover:text-bone"
-            >
-              {siteContent.brand.email}
-            </Link>
-          )}
         </div>
       </div>
 
-      <div className="container-base relative z-10 border-t border-cinder/50 py-3">
-        <p className="font-mono text-[11px] tracking-wide text-dust/45">
-          {siteContent.brand.copyright}
-        </p>
+      <div className="flex flex-col justify-between gap-2 px-[var(--ss-gutter)] py-4 font-mono text-[9px] uppercase tracking-[0.14em] text-iron sm:flex-row">
+        <p>{siteContent.brand.copyright}</p>
+        <p>Independent · Made in Ulaanbaatar</p>
       </div>
     </footer>
   );

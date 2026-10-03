@@ -1,207 +1,205 @@
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import ManifestoStrip from "@/components/sections/ManifestoStrip";
-import Marquee from "@/components/sections/Marquee";
-import Drop from "@/components/sections/Drop";
-import LookbookTeaser from "@/components/sections/LookbookTeaser";
-import Products from "@/components/sections/Products";
-import CustomOrder from "@/components/sections/CustomOrder";
-import AboutTeaser from "@/components/sections/AboutTeaser";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import {
-  getActiveDrops,
-  getProductsWithImages,
-  getLookbookItems,
-  getSiteSettings,
-  type Drop as DropData,
-  type LookbookItem,
-  type ProductWithImages,
-} from "@/lib/db";
+  getPublicActiveDrops,
+  getPublicLookbook,
+  getPublicProducts,
+  getPublicSiteSettings,
+} from "@/lib/public-content";
+import { toSlug } from "@/lib/slug";
 
-const fallbackDrops: DropData[] = [
-  {
-    id: "fallback-drop-01",
-    label: "Soul Skin 01",
-    title_line1: "RAW",
-    title_line2: "HOOD",
-    description:
-      "Heavy streetwear layers built for cold nights, concrete light, and a silhouette that reads from across the street.",
-    pieces_left: 7,
-    cta: siteContent.drop.cta,
-    image_url: "/hero2.png",
-    active: true,
-    order_index: 1,
-    created_at: "2026-01-01T00:00:00.000Z",
-  },
-];
-
-const fallbackProducts: ProductWithImages[] = [
-  {
-    id: "fallback-product-hoodie",
-    sku: "SS-HOOD-01",
-    name: "Heavy Raw Hoodie",
-    material: "Washed cotton fleece",
-    description:
-      "Oversized hood, raw hem, and a quiet front profile made for layering.",
-    price: "DM FOR PRICE",
-    image_url: "/product-hoodie.png",
-    offset_class: "",
-    order_index: 1,
-    active: true,
-    created_at: "2026-01-01T00:00:00.000Z",
-    images: [
-      {
-        id: "fallback-product-hoodie-image",
-        product_id: "fallback-product-hoodie",
-        image_url: "/product-hoodie.png",
-        order_index: 1,
-        created_at: "2026-01-01T00:00:00.000Z",
-      },
-    ],
-  },
-  {
-    id: "fallback-product-jacket",
-    sku: "SS-JACKET-01",
-    name: "Storm Shell Jacket",
-    material: "Layered cotton canvas",
-    description:
-      "A structured outer layer with distressed edges and a darker street profile.",
-    price: "DM FOR PRICE",
-    image_url: "/product-jacket.png",
-    offset_class: "md:translate-y-10",
-    order_index: 2,
-    active: true,
-    created_at: "2026-01-01T00:00:00.000Z",
-    images: [
-      {
-        id: "fallback-product-jacket-image",
-        product_id: "fallback-product-jacket",
-        image_url: "/product-jacket.png",
-        order_index: 1,
-        created_at: "2026-01-01T00:00:00.000Z",
-      },
-    ],
-  },
-];
-
-const fallbackLookbook: LookbookItem[] = [
-  {
-    id: "fallback-lookbook-01",
-    item_id: "UB-01",
-    image_url: "/lookbook-01.png",
-    order_index: 1,
-    created_at: "2026-01-01T00:00:00.000Z",
-  },
-  {
-    id: "fallback-lookbook-02",
-    item_id: "UB-02",
-    image_url: "/lookbook-02.png",
-    order_index: 2,
-    created_at: "2026-01-01T00:00:00.000Z",
-  },
-  {
-    id: "fallback-lookbook-03",
-    item_id: "UB-03",
-    image_url: "/lookbook-03.png",
-    order_index: 3,
-    created_at: "2026-01-01T00:00:00.000Z",
-  },
-];
-
-// Supabase 未設定時も動くようにエラーを吸収
-async function safeGetActiveDrops() {
-  try { return await getActiveDrops(); }
-  catch { return []; }
-}
-async function safeGetProducts() {
-  try { return await getProductsWithImages(); }
-  catch { return []; }
-}
-async function safeGetLookbookItems() {
-  try { return await getLookbookItems(); }
-  catch { return []; }
-}
-async function safeGetSiteSettings() {
-  try { return await getSiteSettings(); }
-  catch { return null; }
-}
+const chapters = ["Manifesto", "Live drop", "Selected pieces", "Lookbook", "Atelier"];
 
 export default async function Home() {
   const [drops, products, lookbook, siteSettings] = await Promise.all([
-    safeGetActiveDrops(),
-    safeGetProducts(),
-    safeGetLookbookItems(),
-    safeGetSiteSettings(),
+    getPublicActiveDrops(),
+    getPublicProducts(),
+    getPublicLookbook(),
+    getPublicSiteSettings(),
   ]);
 
-  const homeDrops = drops.length > 0 ? drops : fallbackDrops;
-  const homeProducts = products.length > 0 ? products : fallbackProducts;
-  const homeLookbook = lookbook.length > 0 ? lookbook : fallbackLookbook;
-
-  // トップでは最大 6 点（モバイル 2列×3行 / PC 3列×2行）。残りは /pieces で見せる。
-  const featuredProducts = homeProducts.slice(0, 6);
+  const currentDrop = drops[0];
+  const featuredProducts = products.slice(0, 4);
+  const featuredLookbook = lookbook.slice(0, 3);
 
   return (
     <>
       <Navbar />
+      <main className="ss-public">
+        <Hero imageUrl={siteSettings.hero_image_url} />
 
-      <main>
-        {/* 1. Hero */}
-        <Hero imageUrl={siteSettings?.hero_image_url} />
+        <section className="ss-home-index" aria-labelledby="manifesto-heading">
+          <div className="ss-home-chapters">
+            <p className="ss-kicker">Chapters / 01—05</p>
+            <ol>
+              {chapters.map((chapter, index) => (
+                <li key={chapter}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span>{chapter}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
 
-        {/* 2. Brand manifesto */}
-        <ManifestoStrip />
+          <div className="ss-home-manifesto">
+            <ScrollReveal variant="fade-up">
+              <p className="ss-kicker mb-8">01 / Manifesto</p>
+              <h2 id="manifesto-heading">
+                Made for the open.
+                <br />
+                <span className="ss-blue">Built for the city.</span>
+              </h2>
+              <p className="ss-body mt-8 max-w-xl">
+                {siteContent.manifesto.line2} Rooted in the steppe, shaped by
+                Ulaanbaatar after dark.
+              </p>
+            </ScrollReveal>
+          </div>
 
-        {/* 3. Drop — current releases (carousel up to 5). Past drops are at /drops. */}
-        <Drop drops={homeDrops} />
+          <div className="ss-home-note">
+            <p className="ss-kicker">Field note / UB</p>
+            <div>
+              <p className="font-serif text-2xl italic leading-tight text-bone/90">
+                “Clothing should feel lived in before the first night out.”
+              </p>
+              <p className="ss-kicker mt-6">47.9180° N · 106.9177° E</p>
+            </div>
+          </div>
+        </section>
 
-        {/* 3b. Drop link strip — replaces the inline archive on the landing page */}
-        <section className="section-gap-before bg-void section-link-strip">
-          <div className="container-base flex items-center justify-between gap-4">
-            <span className="text-brand-label !text-iron">Releases</span>
-            <Link
-              href="/drops"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span className="link-underline-grow">See all drops</span>
-              <span>→</span>
+        {currentDrop && (
+          <section id="drop" aria-labelledby="home-drop-heading">
+            <div className="ss-section-label">
+              <span className="ss-kicker ss-blue">02 / Live drop</span>
+              <span className="ss-kicker">Limited release</span>
+            </div>
+            <div className="ss-drop-feature">
+              <Link href={`/drops/${toSlug(currentDrop.label)}`} className="ss-drop-image group">
+                {currentDrop.image_url && (
+                  <Image
+                    src={currentDrop.image_url}
+                    alt={`${currentDrop.title_line1} ${currentDrop.title_line2}`}
+                    fill
+                    sizes="(min-width: 900px) 65vw, 100vw"
+                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
+                  />
+                )}
+                <span className="absolute bottom-5 left-5 z-[2] ss-kicker text-bone/70">
+                  Ulaanbaatar / Campaign 01
+                </span>
+              </Link>
+              <div className="ss-drop-copy">
+                <div>
+                  <div className="ss-drop-status ss-kicker">
+                    <span className="ss-dot" />
+                    <span className="ss-signal">{currentDrop.label} / Live</span>
+                  </div>
+                  <h2 id="home-drop-heading" className="ss-drop-title">
+                    {currentDrop.title_line1}
+                    <br />
+                    <span className="ss-blue">{currentDrop.title_line2}</span>
+                  </h2>
+                  <p className="ss-body">{currentDrop.description}</p>
+                </div>
+                <div>
+                  <div className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
+                    <div>
+                      <p className="ss-kicker">Availability</p>
+                      <p className="ss-meta-value">{currentDrop.pieces_left} pieces left</p>
+                    </div>
+                    <div>
+                      <p className="ss-kicker">Made in</p>
+                      <p className="ss-meta-value">Ulaanbaatar</p>
+                    </div>
+                  </div>
+                  <Link href={`/drops/${toSlug(currentDrop.label)}`} className="ss-link w-full">
+                    <span>Enter drop</span><span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section aria-labelledby="pieces-heading">
+          <div className="ss-section-label">
+            <span className="ss-kicker">03 / Selected pieces</span>
+            <Link href="/pieces" className="ss-kicker transition-colors hover:text-bone">View all ↗</Link>
+          </div>
+          <div className="ss-products-home">
+            {featuredProducts.map((product, index) => {
+              const image = product.images[0]?.image_url ?? product.image_url;
+              return (
+                <ScrollReveal key={product.id} delay={index * 80} variant="fade-up" className="ss-product-card">
+                  <Link href={`/pieces/${toSlug(product.sku)}`} className="group block">
+                    <div className="ss-product-media">
+                      {image && (
+                        <Image src={image} alt={product.name} fill sizes="(min-width: 600px) 50vw, 100vw" className="object-cover" />
+                      )}
+                      <span className="absolute left-4 top-4 z-[2] ss-kicker text-bone/65">
+                        {String(index + 1).padStart(2, "0")} / {product.sku}
+                      </span>
+                    </div>
+                    <div className="ss-product-caption">
+                      <div>
+                        <h2 id={index === 0 ? "pieces-heading" : undefined} className="ss-product-name">{product.name}</h2>
+                        <p className="ss-kicker mt-2">{product.material}</p>
+                      </div>
+                      <span className="ss-kicker text-bone/70">DM to order ↗</span>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        </section>
+
+        {featuredLookbook.length > 0 && (
+          <section aria-labelledby="lookbook-heading">
+            <div className="ss-section-label">
+              <span id="lookbook-heading" className="ss-kicker ss-blue">04 / Lookbook</span>
+              <Link href="/lookbook" className="ss-kicker transition-colors hover:text-bone">UB night files ↗</Link>
+            </div>
+            <div className="ss-lookbook-home">
+              {featuredLookbook.map((item, index) => (
+                <Link key={item.id} href="/lookbook" className="ss-lookbook-frame">
+                  <Image src={item.image_url || "/lookbook-01.png"} alt={item.item_id} fill sizes="(min-width: 600px) 33vw, 100vw" className="object-cover" />
+                  <span className="ss-kicker text-bone">{String(index + 1).padStart(3, "0")} / {item.item_id}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="ss-atelier-banner" aria-labelledby="atelier-heading">
+          <div className="ss-atelier-copy">
+            <p className="ss-kicker ss-blue">05 / Atelier</p>
+            <div>
+              <h2 id="atelier-heading" className="ss-display-sm">Made for one.</h2>
+              <p className="ss-body mt-6">Small runs. Personal process. Cut, finished and checked by hand in Ulaanbaatar.</p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-between bg-bone !text-void">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
+            <Link href="/custom" className="group flex items-end justify-between gap-6">
+              <span className="font-display text-[clamp(3rem,6vw,6rem)] leading-[0.86] uppercase">Start a project</span>
+              <span className="text-3xl transition-transform group-hover:translate-x-2">→</span>
             </Link>
           </div>
         </section>
 
-        {/* 4. Lookbook teaser — full lookbook is at /lookbook */}
-        <LookbookTeaser data={homeLookbook} limit={4} />
-
-        {/* 5. Pieces preview — first 3 only. Rest at /pieces. */}
-        <Products data={featuredProducts} />
-        <section className="section-gap-before bg-void section-link-strip">
-          <div className="container-base flex items-center justify-between gap-4">
-            <span className="text-brand-label !text-iron">Pieces</span>
-            <Link
-              href="/pieces"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span className="link-underline-grow">All pieces</span>
-              <span>→</span>
-            </Link>
-          </div>
+        <section className="ss-meta-grid">
+          <div className="ss-meta-cell"><p className="ss-kicker">Founded</p><p className="ss-meta-value">2021</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Studio</p><p className="ss-meta-value">Ulaanbaatar, MN</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Production</p><p className="ss-meta-value">Hand-finished</p></div>
+          <div className="ss-meta-cell"><p className="ss-kicker">Philosophy</p><p className="ss-meta-value">Limited / Intentional</p></div>
         </section>
-
-        {/* 6. Marquee — single bottom strip (was previously a top + bottom pair) */}
-        <Marquee text={siteContent.marquees.bottom} noiseSide="bottom" />
-
-        {/* 7. Custom Order CTA — links to /custom */}
-        <CustomOrder />
-
-        {/* 8. About teaser — full story is at /about */}
-        <AboutTeaser
-          imageUrl={siteSettings?.about_image_url}
-          description={siteSettings?.about_description}
-        />
       </main>
-
       <Footer />
     </>
   );
