@@ -46,7 +46,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase mb-8">
+      <h1 className="text-sm tracking-label text-[#aaa] uppercase mb-8">
         Dashboard
       </h1>
 
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
           <Link key={card.href} href={card.href}
             className="block border border-[#222] bg-[#0f0f0f] p-5 hover:border-[#3a3a3a] hover:bg-[#111] transition-colors group">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-xs tracking-[0.2em] text-[#888] uppercase">{card.label}</p>
+              <p className="text-xs tracking-label text-[#888] uppercase">{card.label}</p>
               {card.live && (
                 <span className="text-xs tracking-widest text-[#5dd49a] border border-[#1a3d2a] px-2 py-0.5">
                   LIVE
@@ -69,7 +69,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="border-t border-[#1a1a1a] pt-6">
-        <p className="text-xs tracking-[0.2em] text-[#555] uppercase mb-4">Quick Actions</p>
+        <p className="text-xs tracking-label text-[#555] uppercase mb-4">Quick Actions</p>
         <div className="flex flex-wrap gap-3">
           {[
             { href: "/admin/drop",     label: "Edit Drop" },

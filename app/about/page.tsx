@@ -18,10 +18,10 @@ export default async function AboutPage() {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <section className="ss-about-story" aria-labelledby="about-heading">
           <div className="ss-about-photo">
-            <Image src={settings.about_image_url || "/about.png"} alt="Soul Skin in Ulaanbaatar" fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
+            <Image src={settings.about_image_url || "/about.webp"} alt="Soul Skin in Ulaanbaatar" fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-void/55 via-transparent to-void/10" />
           </div>
 
@@ -63,7 +63,7 @@ export default async function AboutPage() {
           </div>
           <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="group flex min-w-[36vw] items-end justify-between gap-8 bg-bone p-[var(--ss-gutter)] text-void">
             <span className="font-display text-2xl leading-none uppercase">Instagram</span>
-            <span className="text-xl transition-transform group-hover:translate-x-2">↗</span>
+            
           </Link>
         </section>
       </main>

@@ -70,7 +70,7 @@ export default function Lookbook({ data = [] }: Props) {
             touchStart.current = null;
           }}
         >
-          <Image key={item.id} src={item.image_url || "/lookbook-01.png"} alt={`Soul Skin lookbook ${item.item_id}`} fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover animate-lookbook-slide" />
+          <Image key={item.id} src={item.image_url || "/lookbook-01.webp"} alt={`Soul Skin lookbook ${item.item_id}`} fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover animate-lookbook-slide" />
           <p className="absolute bottom-4 left-4 z-[2] ss-kicker text-bone">{item.item_id}</p>
         </div>
 
@@ -78,7 +78,7 @@ export default function Lookbook({ data = [] }: Props) {
           <div className="ss-filmstrip">
             {data.map((thumb, index) => (
               <button key={thumb.id} type="button" onClick={() => go(index)} className={`ss-film-thumb ${index === active ? "is-active" : ""}`} aria-label={`Open frame ${index + 1}`} aria-current={index === active ? "true" : undefined}>
-                <Image src={thumb.image_url || "/lookbook-01.png"} alt="" fill sizes="100px" className="object-cover" />
+                <Image src={thumb.image_url || "/lookbook-01.webp"} alt="" fill sizes="100px" className="object-cover" />
               </button>
             ))}
           </div>

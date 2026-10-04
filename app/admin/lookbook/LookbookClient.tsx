@@ -181,7 +181,7 @@ export default function LookbookClient({ initialItems }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase">Lookbook</h1>
+        <h1 className="text-sm tracking-label text-[#aaa] uppercase">Lookbook</h1>
         {!addingNew && (
           <button onClick={handleAddNew} disabled={isPending}
             className="text-xs tracking-widest uppercase border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40">
@@ -204,26 +204,26 @@ export default function LookbookClient({ initialItems }: Props) {
       {/* ── 新規追加フォーム ── */}
       {addingNew && (
         <div className="mb-4 border border-[#333] bg-[#111] p-5 space-y-4">
-          <p className="text-xs tracking-[0.2em] text-[#aaa] uppercase">New Lookbook Item</p>
+          <p className="text-xs tracking-label text-[#aaa] uppercase">New Lookbook Item</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Item ID</label>
+              <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Item ID</label>
               <input type="text" value={newItem.item_id}
                 onChange={(e) => setNewItem((f) => ({ ...f, item_id: e.target.value }))}
                 placeholder="SS25 — 001"
-                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] placeholder:text-[#444]"
+                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] placeholder:text-[#444]"
               />
             </div>
             <div>
-              <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Order</label>
+              <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Order</label>
               <input type="number" value={newItem.order_index} min={0}
                 onChange={(e) => setNewItem((f) => ({ ...f, order_index: Number(e.target.value) }))}
-                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]"
+                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
               />
             </div>
           </div>
           <div>
-            <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Image</p>
+            <p className="text-xs tracking-label text-[#999] uppercase mb-2">Image</p>
             <ImageUpload
               currentUrl={null}
               onUrlChange={(url) => setNewItem((f) => ({ ...f, image_url: url }))}
@@ -323,22 +323,22 @@ export default function LookbookClient({ initialItems }: Props) {
                 <div className="border-t border-[#222] px-4 py-5 space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Item ID</label>
+                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Item ID</label>
                       <input type="text" value={state.item_id}
                         onChange={(e) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], item_id: e.target.value } }))}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]"
+                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Order</label>
+                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Order</label>
                       <input type="number" value={state.order_index} min={0}
                         onChange={(e) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], order_index: Number(e.target.value) } }))}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]"
+                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
                       />
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Image</p>
+                    <p className="text-xs tracking-label text-[#999] uppercase mb-2">Image</p>
                     <ImageUpload
                       currentUrl={state.image_url || null}
                       onUrlChange={(url) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], image_url: url } }))}

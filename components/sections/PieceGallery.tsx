@@ -120,7 +120,7 @@ export default function PieceGallery({ images, alt }: Props) {
               type="button"
               onClick={() => setIdx((i) => (i - 1 + total) % total)}
               aria-label="Previous image"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 text-bone/80 hover:text-bone transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -130,7 +130,7 @@ export default function PieceGallery({ images, alt }: Props) {
               type="button"
               onClick={() => setIdx((i) => (i + 1) % total)}
               aria-label="Next image"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 backdrop-blur-[2px] text-bone/80 hover:text-bone transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-void/55 text-bone/80 hover:text-bone transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

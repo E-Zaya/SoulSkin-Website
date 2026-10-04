@@ -13,7 +13,13 @@ import {
 } from "@/lib/public-content";
 import { toSlug } from "@/lib/slug";
 
-const chapters = ["Manifesto", "Live drop", "Selected pieces", "Lookbook", "Atelier"];
+const chapters = [
+  { label: "Manifesto", href: "#manifesto" },
+  { label: "Live drop", href: "#drop" },
+  { label: "Selected pieces", href: "#pieces" },
+  { label: "Lookbook", href: "#lookbook" },
+  { label: "Atelier", href: "#atelier" },
+];
 
 export default async function Home() {
   const [drops, products, lookbook, siteSettings] = await Promise.all([
@@ -30,25 +36,26 @@ export default async function Home() {
   return (
     <>
       <Navbar />
-      <main className="ss-public">
+      <main id="main" className="ss-public">
         <Hero imageUrl={siteSettings.hero_image_url} />
 
-        <section className="ss-home-index" aria-labelledby="manifesto-heading">
-          <div className="ss-home-chapters">
-            <p className="ss-kicker">Chapters / 01—05</p>
+        <section id="manifesto" className="ss-home-index" aria-labelledby="manifesto-heading">
+          <nav className="ss-home-chapters" aria-label="On this page">
+            <p className="ss-kicker">On this page</p>
             <ol>
-              {chapters.map((chapter, index) => (
-                <li key={chapter}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <span>{chapter}</span>
+              {chapters.map((chapter) => (
+                <li key={chapter.href}>
+                  <a href={chapter.href} className="inline-flex min-h-11 items-center transition-colors hover:text-bone">
+                    {chapter.label}
+                  </a>
                 </li>
               ))}
             </ol>
-          </div>
+          </nav>
 
           <div className="ss-home-manifesto">
+            {/* The one scroll reveal on the site: the manifesto is the showpiece. */}
             <ScrollReveal variant="fade-up">
-              <p className="ss-kicker mb-8">01 / Manifesto</p>
               <h2 id="manifesto-heading">
                 Made for the open.
                 <br />
@@ -72,7 +79,7 @@ export default async function Home() {
         {currentDrop && (
           <section id="drop" aria-labelledby="home-drop-heading">
             <div className="ss-section-label">
-              <span className="ss-kicker ss-blue">02 / Live drop</span>
+              <span className="ss-kicker ss-blue">Live drop</span>
               <span className="ss-kicker">Limited release</span>
             </div>
             <div className="ss-drop-feature">
@@ -104,18 +111,18 @@ export default async function Home() {
                   <p className="ss-body">{currentDrop.description}</p>
                 </div>
                 <div>
-                  <div className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
+                  <dl className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
                     <div>
-                      <p className="ss-kicker">Availability</p>
-                      <p className="ss-meta-value">{currentDrop.pieces_left} pieces left</p>
+                      <dt className="ss-kicker">Availability</dt>
+                      <dd className="ss-meta-value">{currentDrop.pieces_left} pieces left</dd>
                     </div>
                     <div>
-                      <p className="ss-kicker">Made in</p>
-                      <p className="ss-meta-value">Ulaanbaatar</p>
+                      <dt className="ss-kicker">Made in</dt>
+                      <dd className="ss-meta-value">Ulaanbaatar</dd>
                     </div>
-                  </div>
+                  </dl>
                   <Link href={`/drops/${toSlug(currentDrop.label)}`} className="ss-link w-full">
-                    <span>Enter drop</span><span>→</span>
+                    Enter drop
                   </Link>
                 </div>
               </div>
@@ -123,69 +130,68 @@ export default async function Home() {
           </section>
         )}
 
-        <section aria-labelledby="pieces-heading">
+        <section id="pieces" aria-labelledby="pieces-heading">
           <div className="ss-section-label">
-            <span className="ss-kicker">03 / Selected pieces</span>
-            <Link href="/pieces" className="ss-kicker transition-colors hover:text-bone">View all ↗</Link>
+            <span id="pieces-heading" className="ss-kicker">Selected pieces</span>
+            <Link href="/pieces" className="ss-kicker inline-flex min-h-11 items-center transition-colors hover:text-bone">View all pieces</Link>
           </div>
           <div className="ss-products-home">
-            {featuredProducts.map((product, index) => {
+            {featuredProducts.map((product) => {
               const image = product.images[0]?.image_url ?? product.image_url;
               return (
-                <ScrollReveal key={product.id} delay={index * 80} variant="fade-up" className="ss-product-card">
+                <div key={product.id} className="ss-product-card">
                   <Link href={`/pieces/${toSlug(product.sku)}`} className="group block">
                     <div className="ss-product-media">
                       {image && (
                         <Image src={image} alt={product.name} fill sizes="(min-width: 600px) 50vw, 100vw" className="object-cover" />
                       )}
                       <span className="absolute left-4 top-4 z-[2] ss-kicker text-bone/65">
-                        {String(index + 1).padStart(2, "0")} / {product.sku}
+                        {product.sku}
                       </span>
                     </div>
                     <div className="ss-product-caption">
                       <div>
-                        <h2 id={index === 0 ? "pieces-heading" : undefined} className="ss-product-name">{product.name}</h2>
+                        <h3 className="ss-product-name">{product.name}</h3>
                         <p className="ss-kicker mt-2">{product.material}</p>
                       </div>
-                      <span className="ss-kicker text-bone/70">DM to order ↗</span>
+                      <span className="ss-kicker text-bone/70">Made to order</span>
                     </div>
                   </Link>
-                </ScrollReveal>
+                </div>
               );
             })}
           </div>
         </section>
 
         {featuredLookbook.length > 0 && (
-          <section aria-labelledby="lookbook-heading">
+          <section id="lookbook" aria-labelledby="lookbook-heading">
             <div className="ss-section-label">
-              <span id="lookbook-heading" className="ss-kicker ss-blue">04 / Lookbook</span>
-              <Link href="/lookbook" className="ss-kicker transition-colors hover:text-bone">UB night files ↗</Link>
+              <span id="lookbook-heading" className="ss-kicker ss-blue">Lookbook</span>
+              <Link href="/lookbook" className="ss-kicker inline-flex min-h-11 items-center transition-colors hover:text-bone">Open the lookbook</Link>
             </div>
             <div className="ss-lookbook-home">
-              {featuredLookbook.map((item, index) => (
+              {featuredLookbook.map((item) => (
                 <Link key={item.id} href="/lookbook" className="ss-lookbook-frame">
-                  <Image src={item.image_url || "/lookbook-01.png"} alt={item.item_id} fill sizes="(min-width: 600px) 33vw, 100vw" className="object-cover" />
-                  <span className="ss-kicker text-bone">{String(index + 1).padStart(3, "0")} / {item.item_id}</span>
+                  <Image src={item.image_url || "/lookbook-01.webp"} alt={item.item_id} fill sizes="(min-width: 600px) 33vw, 100vw" className="object-cover" />
+                  <span className="ss-kicker text-bone">{item.item_id}</span>
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        <section className="ss-atelier-banner" aria-labelledby="atelier-heading">
+        <section id="atelier" className="ss-atelier-banner" aria-labelledby="atelier-heading">
           <div className="ss-atelier-copy">
-            <p className="ss-kicker ss-blue">05 / Atelier</p>
+            <p className="ss-kicker ss-blue">Atelier</p>
             <div>
               <h2 id="atelier-heading" className="ss-display-sm">Made for one.</h2>
               <p className="ss-body mt-6">Small runs. Personal process. Cut, finished and checked by hand in Ulaanbaatar.</p>
             </div>
           </div>
           <div className="flex flex-col justify-between bg-bone !text-void">
-            <p className="text-xs uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
-            <Link href="/custom" className="group flex items-end justify-between gap-6">
-              <span className="font-display text-2xl leading-[0.86] uppercase">Start a project</span>
-              <span className="text-xl transition-transform group-hover:translate-x-2">→</span>
+            <p className="text-xs uppercase tracking-label text-void/55">Custom orders / Open</p>
+            <Link href="/custom" className="group inline-flex min-h-11 items-end">
+              <span className="font-display text-2xl leading-[0.86] uppercase transition-transform group-hover:translate-x-2">Start a project</span>
             </Link>
           </div>
         </section>

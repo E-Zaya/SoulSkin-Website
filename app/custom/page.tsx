@@ -21,7 +21,7 @@ export default function CustomPage() {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <section className="ss-custom-hero" aria-labelledby="custom-heading">
           <div className="ss-custom-copy">
             <div>
@@ -34,7 +34,7 @@ export default function CustomPage() {
             </div>
           </div>
           <div className="ss-custom-image">
-            <Image src="/product-hoodie.png" alt="Soul Skin custom hoodie" fill priority sizes="(min-width: 900px) 65vw, 100vw" className="object-cover object-center scale-[1.08]" />
+            <Image src="/product-hoodie.webp" alt="Soul Skin custom hoodie" fill priority sizes="(min-width: 900px) 65vw, 100vw" className="object-cover object-center scale-[1.08]" />
             <div className="absolute inset-0 bg-gradient-to-r from-void/25 via-transparent to-transparent" />
           </div>
         </section>
@@ -43,7 +43,7 @@ export default function CustomPage() {
           {steps.map((step) => (
             <article key={step.no} className="ss-process-card">
               <span className="ss-process-no tabular-nums">{step.no}</span>
-              <h2 className="mt-6 text-xs uppercase tracking-[0.18em] text-bone">{step.title}</h2>
+              <h2 className="mt-6 text-xs uppercase tracking-label text-bone">{step.title}</h2>
               <p className="mt-4 text-sm leading-relaxed text-dust/70">{step.body}</p>
             </article>
           ))}
@@ -53,7 +53,7 @@ export default function CustomPage() {
           <div>
             <p className="ss-kicker mb-8">From the studio</p>
             <div className="relative aspect-[16/10] overflow-hidden bg-ash">
-              <Image src="/lookbook-03.png" alt="Soul Skin piece worn in Ulaanbaatar at night" fill sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
+              <Image src="/lookbook-03.webp" alt="Soul Skin piece worn in Ulaanbaatar at night" fill sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
             </div>
           </div>
 
@@ -62,7 +62,7 @@ export default function CustomPage() {
             <div>
               <h2 id="start-heading" className="ss-display-sm">Start a custom</h2>
               <p className="ss-body mt-6">Send the item, size, references and desired timing. We reply with the next step.</p>
-              <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="ss-link mt-8 w-full"><span>DM on Instagram</span><span aria-hidden="true">↗</span></Link>
+              <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="ss-link mt-8 w-full"><span>DM on Instagram</span></Link>
             </div>
           </div>
         </section>

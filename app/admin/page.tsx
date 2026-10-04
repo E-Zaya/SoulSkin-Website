@@ -29,10 +29,10 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+    <div className="min-h-dvh bg-[#0a0a0a] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         {/* Brand */}
-        <p className="text-xs tracking-[0.3em] text-[#555] uppercase mb-10 text-center">
+        <p className="text-xs tracking-label text-[#555] uppercase mb-10 text-center">
           SOUL SKIN / ADMIN
         </p>
 
@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#141414] border border-[#222] text-[#ccc] text-sm px-4 py-3 focus:outline-none focus:border-[#444] transition-colors"
+              className="w-full bg-[#141414] border border-[#222] text-[#ccc] text-sm px-4 py-3 focus:border-[#444] transition-colors"
               placeholder="••••••••"
               required
               autoFocus

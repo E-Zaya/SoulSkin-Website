@@ -20,7 +20,7 @@ export default async function DropsPage() {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <section className="ss-page-head" aria-labelledby="drops-heading">
           <div>
             <p className="ss-kicker mb-7">All releases / Ulaanbaatar</p>
@@ -61,7 +61,7 @@ export default async function DropsPage() {
                   <div><dt className="ss-kicker">Availability</dt><dd className="ss-meta-value">{current.pieces_left} pieces left</dd></div>
                   <div><dt className="ss-kicker">Made in</dt><dd className="ss-meta-value">Ulaanbaatar</dd></div>
                 </dl>
-                <Link href={`/drops/${toSlug(current.label)}`} className="ss-link w-full"><span>Enter drop</span><span aria-hidden="true">→</span></Link>
+                <Link href={`/drops/${toSlug(current.label)}`} className="ss-link w-full"><span>Enter drop</span></Link>
               </div>
             </div>
           </section>
@@ -81,7 +81,7 @@ export default async function DropsPage() {
                 <span><strong className="block font-display text-xl uppercase text-bone">{drop.title_line1} {drop.title_line2}</strong><span className="ss-kicker mt-1 block">{drop.label}</span></span>
                 <span className="ss-kicker">{new Date(drop.created_at).toLocaleDateString("en", { month: "short", year: "numeric" })}</span>
                 <span className="ss-kicker">Archived</span>
-                <span aria-hidden="true">↗</span>
+                
               </Link>
             ))}
           </div>

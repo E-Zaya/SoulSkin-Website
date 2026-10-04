@@ -63,7 +63,7 @@ export default function SiteClient({ initialSettings }: Props) {
   return (
     <div>
       {/* Header */}
-      <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase mb-8">
+      <h1 className="text-sm tracking-label text-[#aaa] uppercase mb-8">
         Site Settings
       </h1>
 
@@ -82,7 +82,7 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* Hero 画像 */}
         <section>
-          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
             Hero
           </p>
           <p className="text-xs text-[#555] mb-4">
@@ -105,7 +105,7 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* About 画像 */}
         <section>
-          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
             About - Image
           </p>
           <p className="text-xs text-[#555] mb-4">
@@ -128,7 +128,7 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* About テキスト */}
         <section>
-          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
             About - Text
           </p>
           <p className="text-xs text-[#555] mb-4">
@@ -138,7 +138,7 @@ export default function SiteClient({ initialSettings }: Props) {
             value={aboutDesc}
             onChange={(e) => setAboutDesc(e.target.value)}
             rows={4}
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
+            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
             placeholder="Enter About text..."
           />
         </section>

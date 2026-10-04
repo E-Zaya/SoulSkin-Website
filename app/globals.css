@@ -34,6 +34,9 @@
   --text-2xl--line-height: 0.95;
   --text-3xl: clamp(3rem, 7vw, 6rem);
   --text-3xl--line-height: 0.88;
+
+  /* ── Tracking: one value for uppercase labels ── */
+  --tracking-label: 0.18em;
 }
 
 :root {
@@ -47,7 +50,6 @@
   --hero-content-bottom-md: 5rem;
   --hero-content-x-md: 2.5rem;
   /* ── Effect Tokens ── */
-  --noise-global-opacity: 0.035;
   --overlay-hero: linear-gradient(
     90deg,
     rgba(10, 9, 8, 0.78) 0%,
@@ -92,38 +94,33 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+/* ── Focus: every interactive element shows the same ring ── */
+
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+}
+
+/* ── Skip link: hidden until focused, then pinned under the nav ── */
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-bone);
+  color: var(--color-void);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 /* ── Keyframes ── */
-
-@keyframes noise-drift {
-  0% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(-2px, 1px);
-  }
-  40% {
-    transform: translate(1px, -2px);
-  }
-  60% {
-    transform: translate(-1px, 2px);
-  }
-  80% {
-    transform: translate(2px, -1px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-@keyframes noise-pulse {
-  0%,
-      100% {
-    opacity: var(--noise-opacity, 0.04);
-  }
-  50% {
-    opacity: calc(var(--noise-opacity, 0.04) * 1.6);
-  }
-}
 
 @keyframes hero-film-drift {
   from {
@@ -180,12 +177,6 @@ body::-webkit-scrollbar {
 
 @layer utilities {
   /* Animation Utilities */
-  .animate-noise-drift {
-    animation: noise-drift 12s steps(3) infinite;
-  }
-  .animate-noise-pulse {
-    animation: noise-pulse 6s ease-in-out infinite;
-  }
   .animate-lookbook-slide {
     animation: lookbook-slide 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
@@ -224,7 +215,18 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: flex-end;
     gap: 0.6rem;
-    color: rgba(237, 232, 225, 0.54);
+    color: color-mix(in srgb, var(--color-bone) 72%, transparent);
+  }
+  .hero-film-toggle {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    padding-inline: 0.5rem;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-bone);
   }
   .hero-film-counter {
     font-family: var(--font-mono);
@@ -261,45 +263,6 @@ body::-webkit-scrollbar {
     font-family: var(--font-display);
     color: var(--color-bone);
     line-height: 0.9;
-  }
-  /* Image Ratio Utilities */
-  /* Interaction Utilities */
-  /* ── Lookbook ── */
-  .lookbook-main {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: var(--color-ash);
-    height: clamp(460px, 72svh, 620px);
-    width: 100%;
-  }
-  /* Editorial Image Utilities */
-  /* Noise Utilities */
-  .noise-global {
-    position: fixed;
-    inset: 0;
-    background-image: url("/noise.svg");
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: var(--noise-global-opacity);
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    z-index: 9998;
-  }
-  .noise-global::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(237, 232, 225, 0.018) 0,
-      rgba(237, 232, 225, 0.018) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-    opacity: 0.32;
   }
   .page-transition {
     position: fixed;

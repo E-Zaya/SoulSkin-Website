@@ -62,7 +62,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <nav className="ss-section-label" aria-label="Breadcrumb">
           <Link href="/pieces" className="ss-kicker transition-colors hover:text-bone">
             All pieces
@@ -102,7 +102,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
                 className="ss-link w-full"
               >
                 <span>{siteContent.products.cta}</span>
-                <span aria-hidden="true">↗</span>
+                
               </Link>
               <p className="ss-kicker mt-4">
                 Opens Instagram. Send the piece name and your size.
@@ -113,12 +113,12 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
 
         <nav className="ss-pager" aria-label="More">
           <Link href="/pieces" className="ss-link">
-            <span aria-hidden="true">←</span>
+            
             <span>All pieces</span>
           </Link>
           <Link href="/custom" className="ss-link">
             <span>Custom order</span>
-            <span aria-hidden="true">→</span>
+            
           </Link>
         </nav>
       </main>

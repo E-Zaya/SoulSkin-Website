@@ -22,7 +22,7 @@ export default async function LookbookPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: "var(--nav-h)" }}>
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <Lookbook data={items} />
       </main>
       <Footer />

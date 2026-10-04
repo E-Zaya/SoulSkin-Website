@@ -18,7 +18,7 @@ export default async function PiecesPage() {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <section className="ss-page-head" aria-labelledby="pieces-heading">
           <div>
             <p className="ss-kicker mb-7">Made to order / Ulaanbaatar</p>
@@ -31,19 +31,18 @@ export default async function PiecesPage() {
         </section>
 
         <section className="ss-pieces-grid" aria-label="All pieces">
-          {products.map((product, index) => {
+          {products.map((product) => {
             const image = product.images[0]?.image_url ?? product.image_url;
             return (
               <Link key={product.id} href={`/pieces/${toSlug(product.sku)}`} className="ss-catalog-card group">
                 <div className="ss-catalog-media">
                   {image && <Image src={image} alt={product.name} fill sizes="(min-width: 900px) 50vw, 100vw" className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.025]" />}
-                  <span className="absolute left-4 top-4 z-[2] ss-kicker text-bone/70 tabular-nums">{String(index + 1).padStart(2, "0")}</span>
                   <span className="absolute right-4 top-4 z-[2] ss-kicker text-bone/70">Made to order</span>
                 </div>
                 <div className="ss-catalog-copy">
                   <div className="flex items-start justify-between gap-5">
                     <div><h2 className="ss-product-name">{product.name}</h2><p className="ss-kicker mt-2">{product.sku}</p></div>
-                    <span className="text-xl transition-transform group-hover:translate-x-1" aria-hidden="true">↗</span>
+                    
                   </div>
                   <dl className="mt-6 border-t ss-rule pt-4">
                     <dt className="ss-kicker">Material</dt>

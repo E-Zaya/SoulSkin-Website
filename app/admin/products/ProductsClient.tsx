@@ -108,7 +108,7 @@ function ProductImagesEditor({
 
   return (
     <div>
-      <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-3">
+      <p className="text-xs tracking-label text-[#999] uppercase mb-3">
         Product Images
         <span className="text-[#555] ml-2 normal-case tracking-normal">
           ({images.length}/{MAX_IMAGES}) - First image is used as the main image
@@ -387,7 +387,7 @@ export default function ProductsClient({ initialProducts }: Props) {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase">Products</h1>
+        <h1 className="text-sm tracking-label text-[#aaa] uppercase">Products</h1>
         {!addingNew && (
           <button onClick={handleAddNew} disabled={isPending}
             className="text-xs tracking-widest uppercase border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40">
@@ -406,21 +406,21 @@ export default function ProductsClient({ initialProducts }: Props) {
       {/* ── 新規追加フォーム ── */}
       {addingNew && (
         <div className="mb-4 border border-[#333] bg-[#111] p-5 space-y-4">
-          <p className="text-xs tracking-[0.2em] text-[#aaa] uppercase">New Product</p>
+          <p className="text-xs tracking-label text-[#aaa] uppercase">New Product</p>
           <div className="grid grid-cols-2 gap-3">
             <F label="SKU *"  value={newForm.sku}  onChange={(v) => setNewForm((f) => ({ ...f, sku: v }))}  placeholder="SK-004" />
             <F label="Name *" value={newForm.name} onChange={(v) => setNewForm((f) => ({ ...f, name: v }))} placeholder="Item name" />
           </div>
           <F label="Material" value={newForm.material} onChange={(v) => setNewForm((f) => ({ ...f, material: v }))} placeholder="HEAVY COTTON / 380GSM" />
           <div>
-            <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Description</label>
+            <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Description</label>
             <textarea value={newForm.description} onChange={(e) => setNewForm((f) => ({ ...f, description: e.target.value }))}
               rows={2} placeholder="Product description..."
-              className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none placeholder:text-[#444]" />
+              className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none placeholder:text-[#444]" />
           </div>
           <F label="Price" value={newForm.price} onChange={(v) => setNewForm((f) => ({ ...f, price: v }))} />
           <div>
-            <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
+            <p className="text-xs tracking-label text-[#999] uppercase mb-2">
               First image <span className="text-[#555] normal-case tracking-normal">(You can add more images after saving)</span>
             </p>
             <ImageUpload
@@ -536,19 +536,19 @@ export default function ProductsClient({ initialProducts }: Props) {
                     </div>
                     <F label="Material" value={editForm.material} onChange={(v) => handleEditField(product.id, "material", v)} />
                     <div>
-                      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Description</label>
+                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Description</label>
                       <textarea value={editForm.description}
                         onChange={(e) => handleEditField(product.id, "description", e.target.value)}
                         rows={3}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none leading-relaxed" />
+                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none leading-relaxed" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <F label="Price" value={editForm.price} onChange={(v) => handleEditField(product.id, "price", v)} />
                       <div>
-                        <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">Grid Offset</label>
+                        <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Grid Offset</label>
                         <select value={editForm.offset_class}
                           onChange={(e) => handleEditField(product.id, "offset_class", e.target.value)}
-                          className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]">
+                          className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]">
                           {OFFSET_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                         </select>
                       </div>
@@ -600,10 +600,10 @@ function F({
 }) {
   return (
     <div>
-      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">{label}</label>
+      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">{label}</label>
       <input type="text" value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] placeholder:text-[#444]" />
+        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] placeholder:text-[#444]" />
     </div>
   );
 }

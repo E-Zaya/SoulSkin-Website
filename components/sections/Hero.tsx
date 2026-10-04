@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import NoiseAccent from "@/components/ui/NoiseAccent";
 import { siteContent } from "@/data/siteContent";
 
 type Props = {
@@ -70,6 +69,7 @@ export default function Hero({ imageUrl }: Props) {
   const [scrollY, setScrollY] = useState(0);
   const [entranceKey, setEntranceKey] = useState(0);
   const [activeScene, setActiveScene] = useState(0);
+  const [paused, setPaused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const heroImage = imageUrl || HERO_SCENES[0].src;
 
@@ -87,8 +87,10 @@ export default function Hero({ imageUrl }: Props) {
   }, []);
 
   // Five film frames, paced as a ten-second loop. Reduced-motion users keep
-  // the opening still while retaining the full Hero layout and copy.
+  // the opening still while retaining the full Hero layout and copy, and the
+  // visible toggle lets anyone stop the loop (it runs longer than 5 seconds).
   useEffect(() => {
+    if (paused) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = window.setInterval(() => {
@@ -97,7 +99,7 @@ export default function Hero({ imageUrl }: Props) {
     }, HERO_SCENE_DURATION_MS);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [paused]);
 
   // Parallax — image moves slower than scroll, disabled for reduced motion users.
   useEffect(() => {
@@ -182,43 +184,32 @@ export default function Hero({ imageUrl }: Props) {
         style={{ background: "var(--overlay-hero-bottom)" }}
       />
 
-      {/* Noise accents */}
-      <NoiseAccent
-        inset="auto auto 0 0"
-        width="55%"
-        height="60%"
-        opacity={0.07}
-        tileSize="180px"
-        drift
-        className="z-[2]"
-      />
-
-      <div className="hero-film-timeline" aria-hidden="true">
-        <span className="hero-film-counter">
+      <div className="hero-film-timeline">
+        <button
+          type="button"
+          onClick={() => setPaused((value) => !value)}
+          aria-pressed={paused}
+          className="hero-film-toggle"
+        >
+          {paused ? "Play film" : "Pause film"}
+        </button>
+        <span className="hero-film-counter" aria-hidden="true">
           {String(activeScene + 1).padStart(2, "0")} / {String(HERO_SCENES.length).padStart(2, "0")}
         </span>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1.5" aria-hidden="true">
           {HERO_SCENES.map((scene, index) => (
             <span key={scene.src} className="hero-film-tick">
-              {index === activeScene && <span className="hero-film-tick-progress" />}
+              {index === activeScene && !paused && <span className="hero-film-tick-progress" />}
             </span>
           ))}
         </div>
         <span className="sr-only">{HERO_SCENES[activeScene].label}</span>
       </div>
-      <NoiseAccent
-        inset="auto 0 0 auto"
-        width="35%"
-        height="45%"
-        opacity={0.05}
-        tileSize="200px"
-        className="z-[2]"
-      />
 
       {/* Hero copy */}
       <div key={entranceKey} className="absolute hero-content-position z-10 max-w-[58%] md:max-w-none">
         <p
-          className="mb-4 text-xs uppercase tracking-[0.32em] text-bone/28 md:mb-5"
+          className="mb-4 text-xs uppercase tracking-label text-bone/70 md:mb-5"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateX(0)" : "translateX(-12px)",
@@ -256,13 +247,13 @@ export default function Hero({ imageUrl }: Props) {
         >
           <Link
             href="/drops"
-            className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 text-xs uppercase tracking-[0.22em] text-void transition-colors hover:bg-transparent hover:text-bone"
+            className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 text-xs uppercase tracking-label text-void transition-colors hover:bg-transparent hover:text-bone"
           >
             {siteContent.hero.ctaPrimary}
           </Link>
           <Link
             href="/lookbook"
-            className="inline-flex min-h-11 items-center border border-bone/25 px-5 text-xs uppercase tracking-[0.22em] text-bone transition-colors hover:border-bone/60"
+            className="inline-flex min-h-11 items-center border border-bone/25 px-5 text-xs uppercase tracking-label text-bone transition-colors hover:border-bone/60"
           >
             {siteContent.hero.ctaSecondary}
           </Link>

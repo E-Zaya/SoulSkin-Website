@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import PageTransition from "@/components/layout/PageTransition";
 import "./globals.css";
@@ -21,6 +21,11 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://soul-skin-website.vercel.app";
+
+// Matches the page background so the browser chrome does not flash white.
+export const viewport: Viewport = {
+  themeColor: "#0a0908",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -103,8 +108,7 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Global ultra-thin noise — the ambient grain across the entire site */}
-        <div className="noise-global" aria-hidden="true" />
+        <a href="#main" className="skip-link">Skip to content</a>
         <PageTransition />
         {children}
       </body>

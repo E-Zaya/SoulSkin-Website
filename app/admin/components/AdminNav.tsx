@@ -27,7 +27,7 @@ export default function AdminNav() {
   return (
     <nav className="border-b border-[#1e1e1e] bg-[#0c0c0c]">
       <div className="max-w-4xl mx-auto px-4 flex items-center justify-between h-12">
-        <span className="text-xs tracking-[0.2em] text-[#666] uppercase">
+        <span className="text-xs tracking-label text-[#666] uppercase">
           SOUL SKIN / ADMIN
         </span>
 
@@ -49,9 +49,9 @@ export default function AdminNav() {
 
         {/* Mobile hamburger */}
         <button className="sm:hidden flex flex-col gap-1.5 p-2" onClick={() => setOpen(!open)} aria-label="Menu">
-          <span className={`block w-5 h-px bg-[#888] transition-all ${open ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-5 h-px bg-[#888] transition-all ${open ? "opacity-0" : ""}`} />
-          <span className={`block w-5 h-px bg-[#888] transition-all ${open ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span className={`block w-5 h-px bg-[#888] transition-colors ${open ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block w-5 h-px bg-[#888] transition-colors ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-5 h-px bg-[#888] transition-colors ${open ? "-rotate-45 -translate-y-2" : ""}`} />
         </button>
       </div>
 

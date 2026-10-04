@@ -3,16 +3,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Camera as InstagramIcon } from "lucide-react";
 import { siteContent } from "@/data/siteContent";
 
-const navLinks: ReadonlyArray<{ name: string; href: string; index: string; note: string }> = [
-  { name: "Home", href: "/", index: "01", note: "Film / Manifesto" },
-  { name: "Drops", href: "/drops", index: "02", note: "Current release" },
-  { name: "Lookbook", href: "/lookbook", index: "03", note: "UB night files" },
-  { name: "Pieces", href: "/pieces", index: "04", note: "Made to order" },
-  { name: "Custom", href: "/custom", index: "05", note: "Orders open" },
-  { name: "About", href: "/about", index: "06", note: "Ulaanbaatar / 2021" },
+const navLinks: ReadonlyArray<{ name: string; href: string; note: string }> = [
+  { name: "Home", href: "/", note: "Film / Manifesto" },
+  { name: "Drops", href: "/drops", note: "Current release" },
+  { name: "Lookbook", href: "/lookbook", note: "Field notes" },
+  { name: "Pieces", href: "/pieces", note: "Made to order" },
+  { name: "Custom", href: "/custom", note: "Orders open" },
+  { name: "About", href: "/about", note: "Ulaanbaatar / 2021" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -28,7 +27,6 @@ export default function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname() || "/";
-  const activeLink = navLinks.find((link) => isActive(pathname, link.href)) ?? navLinks[0];
 
   const handleBrandClick = () => {
     setMenuOpen(false);
@@ -111,13 +109,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[70] nav-shell flex items-center justify-center transition-all duration-700 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-[70] nav-shell flex items-center justify-center transition-[transform,opacity,background-color,border-color] duration-700 ease-out ${
           hidden && !menuOpen
             ? "-translate-y-full opacity-0"
             : "translate-y-0 opacity-100"
         } ${
           scrolled || menuOpen
-            ? "border-b border-white/[0.06] bg-void/80 backdrop-blur-xl"
+            ? "border-b ss-rule bg-void/90"
             : "bg-transparent"
         }`}
       >
@@ -128,30 +126,27 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="brand-navigation"
           onClick={() => setMenuOpen((v) => !v)}
-          className="absolute left-[var(--container-x)] inline-flex h-10 items-center gap-3 text-xs uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:left-[var(--container-x-md)]"
+          className="absolute left-[var(--container-x)] inline-flex min-h-11 items-center gap-3 text-xs uppercase tracking-label text-bone transition-opacity duration-300 hover:opacity-65 md:left-[var(--container-x-md)]"
         >
           <span className="relative flex h-3.5 w-5 items-center" aria-hidden="true">
             <span
-              className={`absolute left-0 h-px bg-bone transition-all duration-300 ${
+              className={`absolute left-0 h-px bg-bone transition-[top,width,transform] duration-300 ${
                 menuOpen ? "top-1/2 w-5 rotate-45" : "top-1 w-5"
               }`}
             />
             <span
-              className={`absolute left-0 h-px bg-bone transition-all duration-300 ${
+              className={`absolute left-0 h-px bg-bone transition-[top,width,transform] duration-300 ${
                 menuOpen ? "top-1/2 w-5 -rotate-45" : "top-3 w-3.5"
               }`}
             />
           </span>
           <span>{menuOpen ? "Close" : "Choose"}</span>
-          {!menuOpen && (
-            <span className="hidden h-1.5 w-1.5 rounded-full bg-ember md:block" aria-hidden="true" />
-          )}
         </button>
 
         <Link
           href="/"
           onClick={handleBrandClick}
-          className="select-none font-display text-xl uppercase leading-none tracking-[0.08em] text-bone transition-opacity duration-300 hover:opacity-75"
+          className="inline-flex min-h-11 select-none items-center font-display text-xl uppercase leading-none tracking-wide text-bone transition-opacity duration-300 hover:opacity-75"
           aria-label={siteContent.brand.name}
         >
           {siteContent.brand.name}
@@ -161,11 +156,10 @@ export default function Navbar() {
           href={siteContent.brand.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute right-[var(--container-x)] inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:right-[var(--container-x-md)]"
-          aria-label={`Instagram ${siteContent.brand.handle}`}
+          className="absolute right-[var(--container-x)] inline-flex min-h-11 items-center text-xs uppercase tracking-label text-bone transition-opacity duration-300 hover:opacity-65 md:right-[var(--container-x-md)]"
+          aria-label={`Instagram ${siteContent.brand.handle} (opens in a new tab)`}
         >
-          <span>IG</span>
-          <InstagramIcon size={13} strokeWidth={1.5} aria-hidden="true" />
+          Instagram
         </Link>
       </header>
 
@@ -175,7 +169,7 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed inset-0 z-[60] bg-void/95 backdrop-blur-xl transition-opacity duration-500 ${
+        className={`fixed inset-0 z-[60] bg-void/95 transition-opacity duration-500 ${
           menuOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
@@ -188,27 +182,10 @@ export default function Navbar() {
           aria-label="Primary navigation"
           onClick={(e) => e.stopPropagation()}
         >
-          <div
-            className="pointer-events-none absolute right-[-0.08em] top-[calc(var(--nav-h)+1rem)] z-0 text-right font-display uppercase leading-[0.78] tracking-[-0.03em] text-bone/[0.035] md:top-[calc(var(--nav-h-md)+1rem)]"
-            style={{
-              fontSize: "var(--text-3xl)",
-              transform: menuOpen ? "translateX(0)" : "translateX(24px)",
-              opacity: menuOpen ? 1 : 0,
-              transition:
-                "transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 700ms ease",
-              transitionDelay: menuOpen ? "120ms" : "0ms",
-            }}
-            aria-hidden="true"
-          >
-            {activeLink.index}
-            <br />
-            {activeLink.name}
-          </div>
-
           <Link
             href="/"
             onClick={handleBrandClick}
-            className="relative z-10 mb-6 block w-fit font-display text-2xl uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-10"
+            className="relative z-10 mb-6 inline-flex min-h-11 w-fit items-center font-display text-2xl uppercase leading-none tracking-wide text-bone transition-opacity hover:opacity-75 md:mb-10"
             style={{
               transform: menuOpen ? "translateY(0)" : "translateY(14px)",
               opacity: menuOpen ? 1 : 0,
@@ -221,7 +198,7 @@ export default function Navbar() {
             {siteContent.brand.name}
           </Link>
 
-          <ul className="relative z-10 flex flex-col border-y border-bone/12">
+          <ul className="relative z-10 flex flex-col border-y ss-rule">
             {navLinks.map((link, i) => {
               const active = isActive(pathname, link.href);
 
@@ -231,7 +208,7 @@ export default function Navbar() {
                     href={link.href}
                     onClick={closeMenu}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex items-center gap-5 border-t border-bone/12 py-2 first:border-t-0 md:gap-8 md:py-3 ${
+                    className={`group flex min-h-11 items-center gap-5 border-t ss-rule py-2 first:border-t-0 md:gap-8 md:py-3 ${
                       active ? "text-bone" : "text-bone/64"
                     }`}
                     style={{
@@ -246,14 +223,15 @@ export default function Navbar() {
                         "cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   >
-                    <span className="w-10 shrink-0 text-xs tracking-[0.18em] text-bone/45 md:w-14">
-                      {link.index}
-                    </span>
+                    <span
+                      className={`block w-1.5 shrink-0 self-stretch ${active ? "bg-ember" : "bg-transparent"}`}
+                      aria-hidden="true"
+                    />
                     <span className="flex min-w-0 flex-1 items-end justify-between gap-4">
-                      <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "var(--text-2xl)" }}>
+                      <span className="font-display uppercase leading-none transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "var(--text-2xl)" }}>
                         {link.name}
                       </span>
-                      <span className={`hidden pb-1 text-xs uppercase tracking-[0.18em] md:block ${active ? "text-ember" : "text-mist"}`}>
+                      <span className={`hidden pb-1 text-xs uppercase tracking-label md:block ${active ? "text-ember" : "text-mist"}`}>
                         {link.note}
                       </span>
                     </span>
@@ -269,10 +247,9 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}
-              className="inline-flex w-fit items-center gap-2 text-xs uppercase tracking-[0.2em] text-bone transition-opacity hover:opacity-70"
+              className="inline-flex min-h-11 w-fit items-center text-xs uppercase tracking-label text-bone transition-opacity hover:opacity-70"
             >
-              <span>Instagram / {siteContent.brand.handle}</span>
-              <InstagramIcon size={14} strokeWidth={1.5} aria-hidden="true" />
+              Instagram / {siteContent.brand.handle}
             </Link>
             <span className="text-xs uppercase tracking-widest text-mist">
               {siteContent.brand.location}

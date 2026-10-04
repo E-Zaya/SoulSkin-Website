@@ -109,7 +109,7 @@ function DropImagesEditor({
 
   return (
     <div>
-      <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-3">
+      <p className="text-xs tracking-label text-[#999] uppercase mb-3">
         Detail Images
         <span className="text-[#555] ml-2 normal-case tracking-normal">
           ({images.length}) — shown in the drop detail page gallery
@@ -428,7 +428,7 @@ export default function DropClient({ initialDrops }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase">
+          <h1 className="text-sm tracking-label text-[#aaa] uppercase">
             Drop Manager
           </h1>
           <span
@@ -464,7 +464,7 @@ export default function DropClient({ initialDrops }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Drop リスト */}
         <div className="md:col-span-1 space-y-2">
-          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-3">
+          <p className="text-xs tracking-label text-[#888] uppercase mb-3">
             All Drops
           </p>
           {drops.length === 0 && (
@@ -596,7 +596,7 @@ export default function DropClient({ initialDrops }: Props) {
             </p>
           ) : (
             <>
-              <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-4">
+              <p className="text-xs tracking-label text-[#888] uppercase mb-4">
                 Edit
               </p>
               <div className="space-y-4">
@@ -620,20 +620,20 @@ export default function DropClient({ initialDrops }: Props) {
                 />
 
                 <div>
-                  <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
+                  <label className="block text-xs tracking-label text-[#999] uppercase mb-2">
                     Description
                   </label>
                   <textarea
                     value={form.description}
                     onChange={(e) => field("description", e.target.value)}
                     rows={3}
-                    className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
+                    className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
+                    <label className="block text-xs tracking-label text-[#999] uppercase mb-2">
                       Pieces Left
                     </label>
                     <div className="flex items-center gap-2">
@@ -656,7 +656,7 @@ export default function DropClient({ initialDrops }: Props) {
                           field("pieces_left", Number(e.target.value))
                         }
                         min={0}
-                        className="flex-1 bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:outline-none focus:border-[#505050] text-center"
+                        className="flex-1 bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:border-[#505050] text-center"
                       />
                       <button
                         type="button"
@@ -677,7 +677,7 @@ export default function DropClient({ initialDrops }: Props) {
                 </div>
 
                 <div>
-                  <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
+                  <p className="text-xs tracking-label text-[#999] uppercase mb-2">
                     Main Image
                     <span className="text-[#555] ml-2 normal-case tracking-normal">
                       (used as the cover & first gallery image)
@@ -760,14 +760,14 @@ function F({
 }) {
   return (
     <div>
-      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
+      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">
         {label}
       </label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]"
+        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
       />
     </div>
   );

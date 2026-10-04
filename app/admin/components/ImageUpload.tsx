@@ -111,7 +111,7 @@ export default function ImageUpload({
             value={url}
             onChange={handleUrlInput}
             placeholder="/product.png or Supabase Storage URL"
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:outline-none focus:border-[#505050] placeholder:text-[#444]"
+            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:border-[#505050] placeholder:text-[#444]"
           />
           <div className="flex items-center gap-3 flex-wrap">
             <button

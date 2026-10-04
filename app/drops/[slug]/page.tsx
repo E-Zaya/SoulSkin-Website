@@ -54,7 +54,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
   return (
     <>
       <Navbar />
-      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+      <main id="main" className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
         <nav className="ss-section-label" aria-label="Breadcrumb">
           <Link href="/drops" className="ss-kicker transition-colors hover:text-bone">
             All drops
@@ -119,7 +119,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
                   className="ss-link w-full"
                 >
                   <span>{drop.cta}</span>
-                  <span aria-hidden="true">↗</span>
+                  
                 </Link>
               )}
             </div>
@@ -161,22 +161,22 @@ export default async function DropDetailPage(props: DropDetailProps) {
             </div>
           </div>
           <div className="flex flex-col justify-between bg-bone !text-void">
-            <p className="text-xs uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
+            <p className="text-xs uppercase tracking-label text-void/55">Custom orders / Open</p>
             <Link href="/custom" className="group flex items-end justify-between gap-6">
               <span className="font-display text-2xl leading-[0.86] uppercase">Start a project</span>
-              <span className="text-xl transition-transform group-hover:translate-x-2" aria-hidden="true">→</span>
+              
             </Link>
           </div>
         </section>
 
         <nav className="ss-pager" aria-label="More">
           <Link href="/drops" className="ss-link">
-            <span aria-hidden="true">←</span>
+            
             <span>All drops</span>
           </Link>
           <Link href="/lookbook" className="ss-link">
             <span>Lookbook</span>
-            <span aria-hidden="true">→</span>
+            
           </Link>
         </nav>
       </main>
