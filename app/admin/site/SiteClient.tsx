@@ -63,17 +63,17 @@ export default function SiteClient({ initialSettings }: Props) {
   return (
     <div>
       {/* Header */}
-      <h1 className="text-sm tracking-label text-[#aaa] uppercase mb-8">
+      <h1 className="text-sm tracking-label text-mist uppercase mb-8">
         Site Settings
       </h1>
 
       {error && (
-        <div className="mb-5 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-sm text-[#f07070]">
+        <div className="mb-5 border border-error/50 bg-error/10 px-4 py-3 text-sm text-error">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-5 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-sm text-[#5dd49a]">
+        <div className="mb-5 border border-ok/40 bg-ok/10 px-4 py-3 text-sm text-ok">
           {success}
         </div>
       )}
@@ -82,10 +82,10 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* Hero 画像 */}
         <section>
-          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-mist uppercase mb-1">
             Hero
           </p>
-          <p className="text-xs text-[#555] mb-4">
+          <p className="text-xs text-mist mb-4">
             Full-screen background image for the home page
           </p>
           <ImageUpload
@@ -101,14 +101,14 @@ export default function SiteClient({ initialSettings }: Props) {
           />
         </section>
 
-        <div className="border-t border-[#1a1a1a]" />
+        <div className="border-t border-cinder" />
 
         {/* About 画像 */}
         <section>
-          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-mist uppercase mb-1">
             About - Image
           </p>
-          <p className="text-xs text-[#555] mb-4">
+          <p className="text-xs text-mist mb-4">
             Image shown in the right column of the About section
           </p>
           <ImageUpload
@@ -124,21 +124,21 @@ export default function SiteClient({ initialSettings }: Props) {
           />
         </section>
 
-        <div className="border-t border-[#1a1a1a]" />
+        <div className="border-t border-cinder" />
 
         {/* About テキスト */}
         <section>
-          <p className="text-xs tracking-label text-[#888] uppercase mb-1">
+          <p className="text-xs tracking-label text-mist uppercase mb-1">
             About - Text
           </p>
-          <p className="text-xs text-[#555] mb-4">
+          <p className="text-xs text-mist mb-4">
             Intro text shown in the About section
           </p>
           <textarea
             value={aboutDesc}
             onChange={(e) => setAboutDesc(e.target.value)}
             rows={4}
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
+            className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron resize-none leading-relaxed placeholder:text-mist"
             placeholder="Enter About text..."
           />
         </section>
@@ -147,7 +147,7 @@ export default function SiteClient({ initialSettings }: Props) {
         <button
           onClick={handleSave}
           disabled={isPending}
-          className="w-full border border-[#444] text-sm tracking-widest uppercase py-3 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full border border-iron text-sm tracking-widest uppercase py-3 text-dust hover:bg-ash hover:text-bone transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isPending ? "Saving..." : "Save"}
         </button>

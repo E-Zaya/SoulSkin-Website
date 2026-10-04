@@ -108,9 +108,9 @@ function ProductImagesEditor({
 
   return (
     <div>
-      <p className="text-xs tracking-label text-[#999] uppercase mb-3">
+      <p className="text-xs tracking-label text-mist uppercase mb-3">
         Product Images
-        <span className="text-[#555] ml-2 normal-case tracking-normal">
+        <span className="text-mist ml-2 normal-case tracking-normal">
           ({images.length}/{MAX_IMAGES}) - First image is used as the main image
         </span>
       </p>
@@ -118,33 +118,33 @@ function ProductImagesEditor({
       {/* 既存画像リスト */}
       <div className="space-y-2 mb-3">
         {images.map((img, i) => (
-          <div key={img.id} className="flex items-center gap-2 border border-[#1e1e1e] px-3 py-2 bg-[#0a0a0a]">
+          <div key={img.id} className="flex items-center gap-2 border border-cinder px-3 py-2 bg-void">
             {/* サムネイル */}
-            <div className="w-8 h-10 shrink-0 overflow-hidden bg-[#141414]">
+            <div className="w-8 h-10 shrink-0 overflow-hidden bg-ash">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={img.image_url} alt="" className="w-full h-full object-cover" />
             </div>
             {/* 順番 */}
-            <span className="text-xs text-[#555] w-4 shrink-0">{i + 1}</span>
+            <span className="text-xs text-mist w-4 shrink-0">{i + 1}</span>
             {/* URL（truncate） */}
-            <span className="text-xs text-[#888] flex-1 truncate">{img.image_url.split("/").pop()}</span>
+            <span className="text-xs text-mist flex-1 truncate">{img.image_url.split("/").pop()}</span>
             {/* 上下ボタン */}
             <div className="flex gap-1 shrink-0">
               <button
                 onClick={() => handleMoveUp(img)}
                 disabled={i === 0}
-                className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-xs px-1"
+                className="text-mist hover:text-dust disabled:text-mist transition-colors text-xs px-1"
               >▲</button>
               <button
                 onClick={() => handleMoveDown(img)}
                 disabled={i === images.length - 1}
-                className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-xs px-1"
+                className="text-mist hover:text-dust disabled:text-mist transition-colors text-xs px-1"
               >▼</button>
             </div>
             {/* 削除 */}
             <button
               onClick={() => handleRemove(img)}
-              className="text-xs text-[#555] hover:text-[#f07070] transition-colors shrink-0 ml-1"
+              className="text-xs text-mist hover:text-error transition-colors shrink-0 ml-1"
             >
               ✕
             </button>
@@ -154,8 +154,8 @@ function ProductImagesEditor({
 
       {/* 新規追加 */}
       {canAdd && (
-        <div className="border border-dashed border-[#282828] p-3 bg-[#090909]">
-          <p className="text-xs text-[#555] mb-2">Add image ({MAX_IMAGES - images.length} remaining)</p>
+        <div className="border border-dashed border-cinder p-3 bg-void">
+          <p className="text-xs text-mist mb-2">Add image ({MAX_IMAGES - images.length} remaining)</p>
           <ImageUpload
             currentUrl={null}
             onUrlChange={setNewUrl}
@@ -174,7 +174,7 @@ function ProductImagesEditor({
             <button
               onClick={() => { handleAdd(newUrl); setNewUrl(""); }}
               disabled={uploading}
-              className="mt-2 text-xs tracking-widest uppercase border border-[#333] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
+              className="mt-2 text-xs tracking-widest uppercase border border-iron px-3 py-1.5 text-mist hover:text-bone hover:border-iron transition-colors disabled:opacity-40"
             >
               {uploading ? "Adding..." : "+ Add"}
             </button>
@@ -183,7 +183,7 @@ function ProductImagesEditor({
       )}
 
       {!canAdd && (
-        <p className="text-xs text-[#555] mt-1">Maximum of {MAX_IMAGES} images reached</p>
+        <p className="text-xs text-mist mt-1">Maximum of {MAX_IMAGES} images reached</p>
       )}
     </div>
   );
@@ -387,41 +387,41 @@ export default function ProductsClient({ initialProducts }: Props) {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm tracking-label text-[#aaa] uppercase">Products</h1>
+        <h1 className="text-sm tracking-label text-mist uppercase">Products</h1>
         {!addingNew && (
           <button onClick={handleAddNew} disabled={isPending}
-            className="text-xs tracking-widest uppercase border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40">
+            className="text-xs tracking-widest uppercase border border-iron px-4 py-2 text-mist hover:text-bone hover:border-iron transition-colors disabled:opacity-40">
             + Add Product
           </button>
         )}
       </div>
 
       {error && (
-        <div className="mb-4 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-sm text-[#f07070]">{error}</div>
+        <div className="mb-4 border border-error/50 bg-error/10 px-4 py-3 text-sm text-error">{error}</div>
       )}
       {success && (
-        <div className="mb-4 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-sm text-[#5dd49a]">{success}</div>
+        <div className="mb-4 border border-ok/40 bg-ok/10 px-4 py-3 text-sm text-ok">{success}</div>
       )}
 
       {/* ── 新規追加フォーム ── */}
       {addingNew && (
-        <div className="mb-4 border border-[#333] bg-[#111] p-5 space-y-4">
-          <p className="text-xs tracking-label text-[#aaa] uppercase">New Product</p>
+        <div className="mb-4 border border-iron bg-ash p-5 space-y-4">
+          <p className="text-xs tracking-label text-mist uppercase">New Product</p>
           <div className="grid grid-cols-2 gap-3">
             <F label="SKU *"  value={newForm.sku}  onChange={(v) => setNewForm((f) => ({ ...f, sku: v }))}  placeholder="SK-004" />
             <F label="Name *" value={newForm.name} onChange={(v) => setNewForm((f) => ({ ...f, name: v }))} placeholder="Item name" />
           </div>
           <F label="Material" value={newForm.material} onChange={(v) => setNewForm((f) => ({ ...f, material: v }))} placeholder="HEAVY COTTON / 380GSM" />
           <div>
-            <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Description</label>
+            <label className="block text-xs tracking-label text-mist uppercase mb-2">Description</label>
             <textarea value={newForm.description} onChange={(e) => setNewForm((f) => ({ ...f, description: e.target.value }))}
               rows={2} placeholder="Product description..."
-              className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none placeholder:text-[#444]" />
+              className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron resize-none placeholder:text-mist" />
           </div>
           <F label="Price" value={newForm.price} onChange={(v) => setNewForm((f) => ({ ...f, price: v }))} />
           <div>
-            <p className="text-xs tracking-label text-[#999] uppercase mb-2">
-              First image <span className="text-[#555] normal-case tracking-normal">(You can add more images after saving)</span>
+            <p className="text-xs tracking-label text-mist uppercase mb-2">
+              First image <span className="text-mist normal-case tracking-normal">(You can add more images after saving)</span>
             </p>
             <ImageUpload
               currentUrl={null}
@@ -435,11 +435,11 @@ export default function ProductsClient({ initialProducts }: Props) {
           </div>
           <div className="flex gap-3 pt-1">
             <button onClick={handleSaveNew} disabled={isPending}
-              className="border border-[#444] text-xs tracking-widest uppercase px-5 py-2.5 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40">
+              className="border border-iron text-xs tracking-widest uppercase px-5 py-2.5 text-dust hover:bg-ash hover:text-bone transition-colors disabled:opacity-40">
               {isPending ? "Creating..." : "Create Product"}
             </button>
             <button onClick={handleCancelNew} disabled={isPending}
-              className="border border-[#222] text-xs tracking-widest uppercase px-5 py-2.5 text-[#777] hover:text-[#aaa] transition-colors">
+              className="border border-cinder text-xs tracking-widest uppercase px-5 py-2.5 text-mist hover:text-mist transition-colors">
               Cancel
             </button>
           </div>
@@ -448,7 +448,7 @@ export default function ProductsClient({ initialProducts }: Props) {
 
       {/* ── 商品リスト ── */}
       {products.length === 0 && !addingNew ? (
-        <p className="text-sm text-[#666] py-10 text-center">
+        <p className="text-sm text-mist py-10 text-center">
           No products yet. Use &quot;+ Add Product&quot; to create one.
         </p>
       ) : (
@@ -463,7 +463,7 @@ export default function ProductsClient({ initialProducts }: Props) {
             return (
               <div key={product.id}
                 className={`border transition-colors ${
-                  isExpanded ? "border-[#333] bg-[#111]" : `border-[#222] ${!product.active ? "opacity-50" : ""}`
+                  isExpanded ? "border-iron bg-ash" : `border-cinder ${!product.active ? "opacity-50" : ""}`
                 }`}
               >
                 {/* 行ヘッダー */}
@@ -471,13 +471,13 @@ export default function ProductsClient({ initialProducts }: Props) {
                   {/* ↑↓ 並び替えボタン */}
                   <div className="flex flex-col gap-0.5 shrink-0">
                     <button onClick={() => move(product.id, -1)} disabled={isPending || idx === 0}
-                      className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-sm px-1">▲</button>
+                      className="text-mist hover:text-dust disabled:text-mist disabled:cursor-not-allowed transition-colors leading-none text-sm px-1">▲</button>
                     <button onClick={() => move(product.id, 1)} disabled={isPending || idx === products.length - 1}
-                      className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-sm px-1">▼</button>
+                      className="text-mist hover:text-dust disabled:text-mist disabled:cursor-not-allowed transition-colors leading-none text-sm px-1">▼</button>
                   </div>
 
                   {/* サムネイル（1枚目画像） */}
-                  <div className="w-9 h-11 bg-[#141414] shrink-0 overflow-hidden border border-[#1e1e1e] relative">
+                  <div className="w-9 h-11 bg-ash shrink-0 overflow-hidden border border-cinder relative">
                     {thumb && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={thumb} alt={product.name} className="w-full h-full object-cover" />
@@ -491,35 +491,35 @@ export default function ProductsClient({ initialProducts }: Props) {
 
                   {/* 名前・SKU */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-[#f0f0f0] truncate">{product.name}</p>
-                    <p className="text-xs text-[#777]">{product.sku}</p>
+                    <p className="text-sm text-bone truncate">{product.name}</p>
+                    <p className="text-xs text-mist">{product.sku}</p>
                   </div>
 
                   {/* アクション */}
                   {isDeleting ? (
                     <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                      <span className="text-xs text-[#f07070]">Delete this product?</span>
+                      <span className="text-xs text-error">Delete this product?</span>
                       <button onClick={() => handleDelete(product.id)} disabled={isPending}
-                        className="text-xs tracking-widest uppercase text-[#f07070] border border-[#4a1a1a] px-3 py-1 hover:bg-[#4a1a1a] transition-colors disabled:opacity-40">
+                        className="text-xs tracking-widest uppercase text-error border border-error/50 px-3 py-1 hover:bg-error/30 transition-colors disabled:opacity-40">
                         {isPending ? "..." : "Delete"}
                       </button>
                       <button onClick={() => setConfirmDeleteId(null)}
-                        className="text-xs text-[#888] hover:text-[#ccc] transition-colors">
+                        className="text-xs text-mist hover:text-dust transition-colors">
                         Cancel
                       </button>
                     </div>
                   ) : (
                     <div className="flex items-center gap-4 shrink-0">
                       <button onClick={() => isExpanded ? handleCancelEdit(product.id) : handleExpand(product)}
-                        className="text-xs tracking-widest uppercase text-[#aaa] hover:text-[#f0f0f0] transition-colors">
+                        className="text-xs tracking-widest uppercase text-mist hover:text-bone transition-colors">
                         {isExpanded ? "Close" : "Edit"}
                       </button>
                       <button onClick={() => handleToggleActive(product)} disabled={isPending}
-                        className="text-xs tracking-widest uppercase text-[#777] hover:text-[#ccc] transition-colors">
+                        className="text-xs tracking-widest uppercase text-mist hover:text-dust transition-colors">
                         {product.active ? "Hide" : "Show"}
                       </button>
                       <button onClick={() => setConfirmDeleteId(product.id)}
-                        className="text-xs tracking-widest uppercase text-[#555] hover:text-[#f07070] transition-colors">
+                        className="text-xs tracking-widest uppercase text-mist hover:text-error transition-colors">
                         Delete
                       </button>
                     </div>
@@ -528,7 +528,7 @@ export default function ProductsClient({ initialProducts }: Props) {
 
                 {/* ── 展開編集フォーム ── */}
                 {isExpanded && editForm && (
-                  <div className="border-t border-[#222] px-4 py-5 space-y-5">
+                  <div className="border-t border-cinder px-4 py-5 space-y-5">
                     {/* 基本情報 */}
                     <div className="grid grid-cols-2 gap-3">
                       <F label="SKU"  value={editForm.sku}  onChange={(v) => handleEditField(product.id, "sku", v)} />
@@ -536,26 +536,26 @@ export default function ProductsClient({ initialProducts }: Props) {
                     </div>
                     <F label="Material" value={editForm.material} onChange={(v) => handleEditField(product.id, "material", v)} />
                     <div>
-                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Description</label>
+                      <label className="block text-xs tracking-label text-mist uppercase mb-2">Description</label>
                       <textarea value={editForm.description}
                         onChange={(e) => handleEditField(product.id, "description", e.target.value)}
                         rows={3}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] resize-none leading-relaxed" />
+                        className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron resize-none leading-relaxed" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <F label="Price" value={editForm.price} onChange={(v) => handleEditField(product.id, "price", v)} />
                       <div>
-                        <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Grid Offset</label>
+                        <label className="block text-xs tracking-label text-mist uppercase mb-2">Grid Offset</label>
                         <select value={editForm.offset_class}
                           onChange={(e) => handleEditField(product.id, "offset_class", e.target.value)}
-                          className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]">
+                          className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron">
                           {OFFSET_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                         </select>
                       </div>
                     </div>
 
                     {/* ── 複数画像管理 ── */}
-                    <div className="border-t border-[#1a1a1a] pt-5">
+                    <div className="border-t border-cinder pt-5">
                       <ProductImagesEditor
                         productId={product.id}
                         images={editImages[product.id] ?? product.images ?? []}
@@ -569,16 +569,16 @@ export default function ProductsClient({ initialProducts }: Props) {
                       <input type="checkbox" checked={editForm.active}
                         onChange={(e) => handleEditField(product.id, "active", e.target.checked)}
                         className="w-4 h-4 accent-white" />
-                      <span className="text-sm text-[#aaa]">Active (visible on site)</span>
+                      <span className="text-sm text-mist">Active (visible on site)</span>
                     </label>
 
                     <div className="flex gap-3">
                       <button onClick={() => handleSaveEdit(product.id)} disabled={isPending}
-                        className="border border-[#444] text-xs tracking-widest uppercase px-5 py-2.5 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40">
+                        className="border border-iron text-xs tracking-widest uppercase px-5 py-2.5 text-dust hover:bg-ash hover:text-bone transition-colors disabled:opacity-40">
                         {isPending ? "Saving..." : "Save"}
                       </button>
                       <button onClick={() => handleCancelEdit(product.id)} disabled={isPending}
-                        className="border border-[#222] text-xs tracking-widest uppercase px-5 py-2.5 text-[#777] hover:text-[#aaa] transition-colors">
+                        className="border border-cinder text-xs tracking-widest uppercase px-5 py-2.5 text-mist hover:text-mist transition-colors">
                         Cancel
                       </button>
                     </div>
@@ -600,10 +600,10 @@ function F({
 }) {
   return (
     <div>
-      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">{label}</label>
+      <label className="block text-xs tracking-label text-mist uppercase mb-2">{label}</label>
       <input type="text" value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] placeholder:text-[#444]" />
+        className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron placeholder:text-mist" />
     </div>
   );
 }

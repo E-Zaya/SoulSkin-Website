@@ -12,6 +12,10 @@
   --color-ember: #174cff;  /* the one accent: active nav, links, selection */
   --color-rust: #c54b37;   /* signal only: LIVE / REC / SOLD OUT / open status */
   --color-rule: color-mix(in srgb, #ede8e1 13%, transparent);
+  /* Admin feedback states (readable on void: 6:1 or better as text) */
+  --color-ok: #5dd49a;
+  --color-warn: #f0a070;
+  --color-error: #f07070;
 
   /* ── Fonts: two families. Mono is system-only, for numbers/data ── */
   --font-display: var(--font-bebas-neue), "Arial Narrow", sans-serif;

@@ -88,18 +88,18 @@ export default function ImageUpload({
     <div className="space-y-3">
       <div className="flex gap-3 items-start">
         {/* Preview */}
-        <div className="w-16 h-20 bg-[#0d0d0d] border border-[#282828] shrink-0 overflow-hidden relative">
+        <div className="w-16 h-20 bg-void border border-cinder shrink-0 overflow-hidden relative">
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt="preview" className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-[#555] text-xs">No img</span>
+              <span className="text-mist text-xs">No img</span>
             </div>
           )}
           {uploading && (
-            <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-              <span className="text-xs text-white">...</span>
+            <div className="absolute inset-0 bg-void/70 flex items-center justify-center">
+              <span className="text-xs text-bone">...</span>
             </div>
           )}
         </div>
@@ -111,20 +111,20 @@ export default function ImageUpload({
             value={url}
             onChange={handleUrlInput}
             placeholder="/product.png or Supabase Storage URL"
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:border-[#505050] placeholder:text-[#444]"
+            className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2 focus:border-iron placeholder:text-mist"
           />
           <div className="flex items-center gap-3 flex-wrap">
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={uploading}
-              className="text-xs tracking-widest uppercase border border-[#282828] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#505050] transition-colors disabled:opacity-40 whitespace-nowrap"
+              className="text-xs tracking-widest uppercase border border-cinder px-3 py-1.5 text-mist hover:text-bone hover:border-iron transition-colors disabled:opacity-40 whitespace-nowrap"
             >
               {uploading ? "Uploading..." : "Upload Image"}
             </button>
-            <span className="text-xs text-[#555]">JPG / PNG / WEBP · Max 5MB</span>
+            <span className="text-xs text-mist">JPG / PNG / WEBP · Max 5MB</span>
           </div>
-          {error && <p className="text-xs text-[#e05252]">{error}</p>}
+          {error && <p className="text-xs text-error">{error}</p>}
         </div>
       </div>
 

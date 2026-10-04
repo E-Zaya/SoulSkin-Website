@@ -46,30 +46,30 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-sm tracking-label text-[#aaa] uppercase mb-8">
+      <h1 className="text-sm tracking-label text-mist uppercase mb-8">
         Dashboard
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
         {cards.map((card) => (
           <Link key={card.href} href={card.href}
-            className="block border border-[#222] bg-[#0f0f0f] p-5 hover:border-[#3a3a3a] hover:bg-[#111] transition-colors group">
+            className="block border border-cinder bg-void p-5 hover:border-iron hover:bg-ash transition-colors group">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-xs tracking-label text-[#888] uppercase">{card.label}</p>
+              <p className="text-xs tracking-label text-mist uppercase">{card.label}</p>
               {card.live && (
-                <span className="text-xs tracking-widest text-[#5dd49a] border border-[#1a3d2a] px-2 py-0.5">
+                <span className="text-xs tracking-widest text-ok border border-ok/40 px-2 py-0.5">
                   LIVE
                 </span>
               )}
             </div>
-            <p className="text-xl text-[#f0f0f0] leading-none mb-2">{card.value}</p>
-            <p className="text-xs text-[#777]">{card.sub}</p>
+            <p className="text-xl text-bone leading-none mb-2">{card.value}</p>
+            <p className="text-xs text-mist">{card.sub}</p>
           </Link>
         ))}
       </div>
 
-      <div className="border-t border-[#1a1a1a] pt-6">
-        <p className="text-xs tracking-label text-[#555] uppercase mb-4">Quick Actions</p>
+      <div className="border-t border-cinder pt-6">
+        <p className="text-xs tracking-label text-mist uppercase mb-4">Quick Actions</p>
         <div className="flex flex-wrap gap-3">
           {[
             { href: "/admin/drop",     label: "Edit Drop" },
@@ -79,7 +79,7 @@ export default async function DashboardPage() {
             { href: "/",              label: "View Site", target: "_blank" },
           ].map((a) => (
             <Link key={a.href} href={a.href} target={a.target}
-              className="text-xs tracking-widest uppercase border border-[#2a2a2a] px-4 py-2 text-[#888] hover:text-[#f0f0f0] hover:border-[#444] transition-colors">
+              className="text-xs tracking-widest uppercase border border-cinder px-4 py-2 text-mist hover:text-bone hover:border-iron transition-colors">
               {a.label}
             </Link>
           ))}

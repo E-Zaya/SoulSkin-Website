@@ -181,49 +181,49 @@ export default function LookbookClient({ initialItems }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm tracking-label text-[#aaa] uppercase">Lookbook</h1>
+        <h1 className="text-sm tracking-label text-mist uppercase">Lookbook</h1>
         {!addingNew && (
           <button onClick={handleAddNew} disabled={isPending}
-            className="text-xs tracking-widest uppercase border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40">
+            className="text-xs tracking-widest uppercase border border-iron px-4 py-2 text-mist hover:text-bone hover:border-iron transition-colors disabled:opacity-40">
             + Add Item
           </button>
         )}
       </div>
 
-      <p className="text-xs text-[#777] mb-5">
+      <p className="text-xs text-mist mb-5">
         All registered items are shown on the site. Use the up and down controls to change the order.
       </p>
 
       {error && (
-        <div className="mb-4 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-sm text-[#f07070]">{error}</div>
+        <div className="mb-4 border border-error/50 bg-error/10 px-4 py-3 text-sm text-error">{error}</div>
       )}
       {success && (
-        <div className="mb-4 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-sm text-[#5dd49a]">{success}</div>
+        <div className="mb-4 border border-ok/40 bg-ok/10 px-4 py-3 text-sm text-ok">{success}</div>
       )}
 
       {/* ── 新規追加フォーム ── */}
       {addingNew && (
-        <div className="mb-4 border border-[#333] bg-[#111] p-5 space-y-4">
-          <p className="text-xs tracking-label text-[#aaa] uppercase">New Lookbook Item</p>
+        <div className="mb-4 border border-iron bg-ash p-5 space-y-4">
+          <p className="text-xs tracking-label text-mist uppercase">New Lookbook Item</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Item ID</label>
+              <label className="block text-xs tracking-label text-mist uppercase mb-2">Item ID</label>
               <input type="text" value={newItem.item_id}
                 onChange={(e) => setNewItem((f) => ({ ...f, item_id: e.target.value }))}
                 placeholder="SS25 — 001"
-                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050] placeholder:text-[#444]"
+                className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron placeholder:text-mist"
               />
             </div>
             <div>
-              <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Order</label>
+              <label className="block text-xs tracking-label text-mist uppercase mb-2">Order</label>
               <input type="number" value={newItem.order_index} min={0}
                 onChange={(e) => setNewItem((f) => ({ ...f, order_index: Number(e.target.value) }))}
-                className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
+                className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron"
               />
             </div>
           </div>
           <div>
-            <p className="text-xs tracking-label text-[#999] uppercase mb-2">Image</p>
+            <p className="text-xs tracking-label text-mist uppercase mb-2">Image</p>
             <ImageUpload
               currentUrl={null}
               onUrlChange={(url) => setNewItem((f) => ({ ...f, image_url: url }))}
@@ -238,11 +238,11 @@ export default function LookbookClient({ initialItems }: Props) {
           </div>
           <div className="flex gap-3 pt-1">
             <button onClick={handleSaveNew} disabled={isPending}
-              className="border border-[#444] text-xs tracking-widest uppercase px-5 py-2.5 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40">
+              className="border border-iron text-xs tracking-widest uppercase px-5 py-2.5 text-dust hover:bg-ash hover:text-bone transition-colors disabled:opacity-40">
               {isPending ? "Adding..." : "Add Item"}
             </button>
             <button onClick={handleCancelNew} disabled={isPending}
-              className="border border-[#222] text-xs tracking-widest uppercase px-5 py-2.5 text-[#777] hover:text-[#aaa] transition-colors">
+              className="border border-cinder text-xs tracking-widest uppercase px-5 py-2.5 text-mist hover:text-mist transition-colors">
               Cancel
             </button>
           </div>
@@ -259,24 +259,24 @@ export default function LookbookClient({ initialItems }: Props) {
 
           return (
             <div key={item.id}
-              className={`border transition-colors ${isExpanded ? "border-[#333] bg-[#111]" : "border-[#222]"}`}
+              className={`border transition-colors ${isExpanded ? "border-iron bg-ash" : "border-cinder"}`}
             >
               {/* 行ヘッダー */}
               <div className="px-4 py-3 flex items-center gap-3">
                 {/* ↑↓ 並び替え */}
                 <div className="flex flex-col gap-0.5 shrink-0">
                   <button onClick={() => move(item.id, -1)} disabled={isPending || idx === 0}
-                    className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors text-sm px-1 leading-none">
+                    className="text-mist hover:text-dust disabled:text-mist disabled:cursor-not-allowed transition-colors text-sm px-1 leading-none">
                     ▲
                   </button>
                   <button onClick={() => move(item.id, 1)} disabled={isPending || idx === items.length - 1}
-                    className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors text-sm px-1 leading-none">
+                    className="text-mist hover:text-dust disabled:text-mist disabled:cursor-not-allowed transition-colors text-sm px-1 leading-none">
                     ▼
                   </button>
                 </div>
 
                 {/* サムネイル */}
-                <div className="w-9 h-11 bg-[#141414] shrink-0 overflow-hidden border border-[#1e1e1e]">
+                <div className="w-9 h-11 bg-ash shrink-0 overflow-hidden border border-cinder">
                   {item.image_url && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={item.image_url} alt={item.item_id} className="w-full h-full object-cover" />
@@ -285,33 +285,33 @@ export default function LookbookClient({ initialItems }: Props) {
 
                 {/* ID + Live バッジ */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-[#f0f0f0] truncate">{item.item_id}</p>
+                  <p className="text-sm text-bone truncate">{item.item_id}</p>
                   {isLive && (
-                    <span className="text-xs tracking-widest text-[#5dd49a]">● LIVE</span>
+                    <span className="text-xs tracking-widest text-ok">● LIVE</span>
                   )}
                 </div>
 
                 {/* アクション */}
                 {isDeleting ? (
                   <div className="flex items-center gap-3 shrink-0 flex-wrap">
-                    <span className="text-xs text-[#f07070]">Delete this item?</span>
+                    <span className="text-xs text-error">Delete this item?</span>
                     <button onClick={() => handleDelete(item.id)} disabled={isPending}
-                      className="text-xs tracking-widest uppercase text-[#f07070] border border-[#4a1a1a] px-3 py-1 hover:bg-[#4a1a1a] transition-colors disabled:opacity-40">
+                      className="text-xs tracking-widest uppercase text-error border border-error/50 px-3 py-1 hover:bg-error/30 transition-colors disabled:opacity-40">
                       {isPending ? "..." : "Delete"}
                     </button>
                     <button onClick={() => setConfirmDeleteId(null)} disabled={isPending}
-                      className="text-xs text-[#888] hover:text-[#ccc] transition-colors">
+                      className="text-xs text-mist hover:text-dust transition-colors">
                       Cancel
                     </button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-4 shrink-0">
                     <button onClick={() => isExpanded ? handleCancelEdit(item.id) : handleExpand(item)}
-                      className="text-xs tracking-widest uppercase text-[#aaa] hover:text-[#f0f0f0] transition-colors">
+                      className="text-xs tracking-widest uppercase text-mist hover:text-bone transition-colors">
                       {isExpanded ? "Close" : "Edit"}
                     </button>
                     <button onClick={() => setConfirmDeleteId(item.id)}
-                      className="text-xs tracking-widest uppercase text-[#555] hover:text-[#f07070] transition-colors">
+                      className="text-xs tracking-widest uppercase text-mist hover:text-error transition-colors">
                       Delete
                     </button>
                   </div>
@@ -320,25 +320,25 @@ export default function LookbookClient({ initialItems }: Props) {
 
               {/* 展開編集フォーム */}
               {isExpanded && state && (
-                <div className="border-t border-[#222] px-4 py-5 space-y-4">
+                <div className="border-t border-cinder px-4 py-5 space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Item ID</label>
+                      <label className="block text-xs tracking-label text-mist uppercase mb-2">Item ID</label>
                       <input type="text" value={state.item_id}
                         onChange={(e) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], item_id: e.target.value } }))}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
+                        className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-label text-[#999] uppercase mb-2">Order</label>
+                      <label className="block text-xs tracking-label text-mist uppercase mb-2">Order</label>
                       <input type="number" value={state.order_index} min={0}
                         onChange={(e) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], order_index: Number(e.target.value) } }))}
-                        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:border-[#505050]"
+                        className="w-full bg-void border border-cinder text-bone text-sm px-3 py-2.5 focus:border-iron"
                       />
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs tracking-label text-[#999] uppercase mb-2">Image</p>
+                    <p className="text-xs tracking-label text-mist uppercase mb-2">Image</p>
                     <ImageUpload
                       currentUrl={state.image_url || null}
                       onUrlChange={(url) => setEditStates((prev) => ({ ...prev, [item.id]: { ...prev[item.id], image_url: url } }))}
@@ -354,11 +354,11 @@ export default function LookbookClient({ initialItems }: Props) {
                   </div>
                   <div className="flex gap-3">
                     <button onClick={() => handleSaveEdit(item.id)} disabled={isPending}
-                      className="border border-[#444] text-xs tracking-widest uppercase px-5 py-2.5 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40">
+                      className="border border-iron text-xs tracking-widest uppercase px-5 py-2.5 text-dust hover:bg-ash hover:text-bone transition-colors disabled:opacity-40">
                       {isPending ? "Saving..." : "Save"}
                     </button>
                     <button onClick={() => handleCancelEdit(item.id)} disabled={isPending}
-                      className="border border-[#222] text-xs tracking-widest uppercase px-5 py-2.5 text-[#777] hover:text-[#aaa] transition-colors">
+                      className="border border-cinder text-xs tracking-widest uppercase px-5 py-2.5 text-mist hover:text-mist transition-colors">
                       Cancel
                     </button>
                   </div>
