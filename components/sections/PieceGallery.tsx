@@ -91,8 +91,7 @@ export default function PieceGallery({ images, alt }: Props) {
 
       {/* メイン画像 */}
       <div
-        className="relative flex-1 overflow-hidden bg-ash select-none"
-        style={{ minHeight: "60svh", maxHeight: "90svh" }}
+        className="relative flex-1 overflow-hidden bg-ash select-none aspect-[4/5] md:aspect-[3/4]"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -108,7 +107,7 @@ export default function PieceGallery({ images, alt }: Props) {
               fill
               priority={i === 0}
               sizes="(min-width: 768px) 55vw, 100vw"
-              className="object-contain object-center"
+              className="object-cover object-center"
               draggable={false}
             />
           </div>
@@ -156,7 +155,7 @@ export default function PieceGallery({ images, alt }: Props) {
                 type="button"
                 onClick={() => setIdx(i)}
                 aria-label={`Image ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${
+                className={`rounded-full transition-[width,background-color] duration-300 ${
                   i === idx
                     ? "w-[10px] h-[5px] bg-bone"
                     : "w-[5px] h-[5px] bg-bone/40 hover:bg-bone/70"

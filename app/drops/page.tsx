@@ -35,18 +35,11 @@ export default async function DropsPage() {
         </section>
 
         {current ? (
-          <section className="ss-release-ledger" aria-labelledby="current-drop-heading">
-            <div className="ss-release-rail" aria-hidden="true">
-              <span>{new Date(current.created_at).getFullYear()}</span>
-              <span>Season 01 / Current release</span>
-              <span>UB / MN</span>
-            </div>
-
-            <Link href={`/drops/${toSlug(current.label)}`} className="ss-editorial-image group">
+          <section className="ss-drop-feature" aria-labelledby="current-drop-heading">
+            <Link href={`/drops/${toSlug(current.label)}`} className="ss-drop-image group">
               {current.image_url && (
-                <Image src={current.image_url} alt={`${current.title_line1} ${current.title_line2}`} fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02]" />
+                <Image src={current.image_url} alt={`${current.title_line1} ${current.title_line2}`} fill priority sizes="(min-width: 900px) 65vw, 100vw" className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02]" />
               )}
-              <span className="absolute bottom-5 left-5 z-[2] ss-kicker text-bone/70">47.9180° N / 106.9177° E</span>
             </Link>
 
             <div className="ss-drop-copy">
@@ -55,6 +48,7 @@ export default async function DropsPage() {
                   <span className="ss-dot" />
                   <span className="ss-blue">{current.label}</span>
                   <span className="ss-signal">Live</span>
+                  <span>{new Date(current.created_at).getFullYear()}</span>
                 </div>
                 <h2 id="current-drop-heading" className="ss-drop-title">
                   {current.title_line1}<br />{current.title_line2}
@@ -63,13 +57,11 @@ export default async function DropsPage() {
               </div>
 
               <div>
-                <dl className="mb-7 grid grid-cols-2 border-y ss-rule text-xs uppercase tracking-[0.12em]">
-                  <div className="border-r ss-rule py-5 pr-4"><dt className="text-mist">Window</dt><dd className="mt-2 text-bone">Open now</dd></div>
-                  <div className="py-5 pl-4"><dt className="text-mist">Availability</dt><dd className="mt-2 text-bone">{current.pieces_left} pieces</dd></div>
-                  <div className="border-r border-t ss-rule py-5 pr-4"><dt className="text-mist">Production</dt><dd className="mt-2 text-bone">Small run</dd></div>
-                  <div className="border-t ss-rule py-5 pl-4"><dt className="text-mist">Made in</dt><dd className="mt-2 text-bone">Ulaanbaatar</dd></div>
+                <dl className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
+                  <div><dt className="ss-kicker">Availability</dt><dd className="ss-meta-value">{current.pieces_left} pieces left</dd></div>
+                  <div><dt className="ss-kicker">Made in</dt><dd className="ss-meta-value">Ulaanbaatar</dd></div>
                 </dl>
-                <Link href={`/drops/${toSlug(current.label)}`} className="ss-link w-full"><span>Enter drop</span><span>→</span></Link>
+                <Link href={`/drops/${toSlug(current.label)}`} className="ss-link w-full"><span>Enter drop</span><span aria-hidden="true">→</span></Link>
               </div>
             </div>
           </section>
@@ -80,12 +72,12 @@ export default async function DropsPage() {
         <section aria-labelledby="archive-heading">
           <div className="ss-section-label">
             <span id="archive-heading" className="ss-kicker">Archive</span>
-            <span className="ss-kicker">{String(archive.length).padStart(2, "0")} releases</span>
+            <span className="ss-kicker">{archive.length} {archive.length === 1 ? "release" : "releases"}</span>
           </div>
           <div className="ss-release-list">
             {archive.map((drop, index) => (
               <Link key={drop.id} href={`/drops/${toSlug(drop.label)}`} className="ss-release-row">
-                <span className="font-display text-xl text-bone/70">{String(index + 2).padStart(2, "0")}</span>
+                <span className="font-display text-xl text-bone/70 tabular-nums">{String(index + 2).padStart(2, "0")}</span>
                 <span><strong className="block font-display text-xl uppercase text-bone">{drop.title_line1} {drop.title_line2}</strong><span className="ss-kicker mt-1 block">{drop.label}</span></span>
                 <span className="ss-kicker">{new Date(drop.created_at).toLocaleDateString("en", { month: "short", year: "numeric" })}</span>
                 <span className="ss-kicker">Archived</span>

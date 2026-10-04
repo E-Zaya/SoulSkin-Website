@@ -23,10 +23,6 @@ export default async function AboutPage() {
           <div className="ss-about-photo">
             <Image src={settings.about_image_url || "/about.png"} alt="Soul Skin in Ulaanbaatar" fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-void/55 via-transparent to-void/10" />
-            <div className="absolute inset-x-0 bottom-0 z-[2] flex items-end justify-between p-[var(--ss-gutter)]">
-              <p className="ss-kicker text-bone/70">About / Field 01</p>
-              <p className="ss-kicker text-bone/70">47.9180° N<br />106.9177° E</p>
-            </div>
           </div>
 
           <div className="ss-about-copy">
@@ -42,7 +38,6 @@ export default async function AboutPage() {
               <ol>
                 <li><strong className="ss-blue">2021 — Ulaanbaatar</strong><br />Soul Skin is founded. The first pieces are made in small runs.</li>
                 <li><strong className="text-bone">Now — Process over hype</strong><br />Limited silhouettes, custom work and hand-finished production continue.</li>
-                <li><strong className="text-bone">Next — New chapters</strong><br />The same soul, carried into the next release.</li>
               </ol>
             </div>
           </div>

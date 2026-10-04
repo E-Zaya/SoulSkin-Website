@@ -4,45 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CustomOrder from "@/components/sections/CustomOrder";
-import NoiseAccent from "@/components/ui/NoiseAccent";
-import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import {
   getPublicDropBySlug,
   getPublicDrops,
 } from "@/lib/public-content";
 import { toSlug } from "@/lib/slug";
-
-const DOT_MAX = 10;
-
-function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
-  const filled = Math.min(piecesLeft, DOT_MAX);
-  const empty = DOT_MAX - filled;
-  return (
-    <div className="flex items-center gap-[5px]">
-      {Array.from({ length: filled }).map((_, i) => (
-        <span
-          key={`f-${i}`}
-          className="block rounded-full bg-ember"
-          style={{ width: 7, height: 7 }}
-        />
-      ))}
-      {Array.from({ length: empty }).map((_, i) => (
-        <span
-          key={`e-${i}`}
-          className="block rounded-full border border-iron/50"
-          style={{ width: 7, height: 7 }}
-        />
-      ))}
-      {piecesLeft > DOT_MAX && (
-        <span className="text-xs text-mist tracking-widest ml-1">
-          +{piecesLeft - DOT_MAX}
-        </span>
-      )}
-    </div>
-  );
-}
 
 export async function generateStaticParams() {
   const drops = await getPublicDrops();
@@ -60,10 +27,10 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const drop = await getPublicDropBySlug(slug);
-  if (!drop) return { title: "Drop not found — Soul Skin" };
+  if (!drop) return { title: "Drop not found" };
   const title = `${drop.title_line1} ${drop.title_line2} — ${drop.label}`;
   return {
-    title: `${title} — Soul Skin`,
+    title,
     description: drop.description,
     openGraph: {
       title: `${title} — Soul Skin`,
@@ -74,22 +41,6 @@ export async function generateMetadata(
   };
 }
 
-/**
- * 「メイン画像 + 詳細サブ画像」を全部含めたギャラリー配列を返す。
- * 詳細ページの大小交互エディトリアルで使う。
- */
-function buildGallery(
-  mainUrl: string | null,
-  images: { id: string; image_url: string }[]
-): { key: string; url: string }[] {
-  const gallery: { key: string; url: string }[] = [];
-  if (mainUrl) gallery.push({ key: "main", url: mainUrl });
-  for (const img of images) {
-    gallery.push({ key: img.id, url: img.image_url });
-  }
-  return gallery;
-}
-
 export default async function DropDetailPage(props: DropDetailProps) {
   const { slug } = await props.params;
 
@@ -97,255 +48,137 @@ export default async function DropDetailPage(props: DropDetailProps) {
   if (!drop) notFound();
 
   const isSoldOut = drop.pieces_left === 0;
-  const gallery = buildGallery(drop.image_url, drop.images);
+  // The cover is shown in the header, so the gallery only lists detail images.
+  const gallery = drop.images;
 
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: "var(--nav-h)" }}>
-        {/* Breadcrumb */}
-        <nav
-          className="bg-void border-b border-cinder/40"
-          aria-label="Breadcrumb"
-        >
-          <div className="container-base py-4 flex items-center gap-3 text-xs tracking-[0.2em] uppercase">
-            <Link
-              href="/drops"
-              className="text-mist hover:text-bone transition-colors"
-            >
-              ← All drops
-            </Link>
-            <span className="text-mist">/</span>
-            <span className="text-dust">{drop.label}</span>
-          </div>
+      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+        <nav className="ss-section-label" aria-label="Breadcrumb">
+          <Link href="/drops" className="ss-kicker transition-colors hover:text-bone">
+            All drops
+          </Link>
+          <span className="ss-kicker text-bone">{drop.label}</span>
         </nav>
 
-        {/* Drop hero */}
-        <section className="relative bg-ash overflow-hidden">
-          <div className="editorial-split flex flex-col md:flex-row">
-            <div className="relative md:w-[64%] aspect-[4/5] md:aspect-[16/13] shrink-0 overflow-hidden">
-              {drop.image_url && (
-                <Image
-                  src={drop.image_url}
-                  alt={`${drop.title_line1} ${drop.title_line2} — Soul Skin Drop`}
-                  fill
-                  priority
-                  sizes="(min-width: 768px) 64vw, 100vw"
-                  className={`object-cover object-center transition-all duration-700 ${
-                    isSoldOut ? "grayscale" : ""
-                  }`}
-                />
-              )}
-
-              {isSoldOut && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div
-                    className="px-6 py-3 rotate-[-6deg]"
-                    style={{
-                      borderWidth: 1,
-                      borderStyle: "solid",
-                      borderColor: "rgba(168, 69, 62, 0.65)",
-                      backgroundColor: "rgba(10,9,8,0.5)",
-                    }}
-                  >
-                    <span
-                      className="text-sm md:text-base tracking-[0.4em] uppercase"
-                      style={{ color: "rgba(232, 168, 162, 0.95)" }}
-                    >
-                      SOLD OUT
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              <NoiseAccent
-                inset="0 0 0 auto"
-                width="30%"
-                height="100%"
-                opacity={0.08}
-                tileSize="170px"
-                blendMode="overlay"
+        <section className="ss-drop-feature" aria-labelledby="drop-heading">
+          <div className="ss-drop-image">
+            {drop.image_url && (
+              <Image
+                src={drop.image_url}
+                alt={`${drop.title_line1} ${drop.title_line2}`}
+                fill
+                priority
+                sizes="(min-width: 900px) 65vw, 100vw"
+                className={`object-cover object-center ${isSoldOut ? "grayscale" : ""}`}
               />
-              <NoiseAccent
-                inset="auto auto 0 0"
-                width="40%"
-                height="35%"
-                opacity={0.05}
-                tileSize="200px"
-              />
+            )}
+            {isSoldOut && (
+              <span className="absolute left-5 top-5 z-[2] ss-kicker ss-signal">Sold out</span>
+            )}
+          </div>
+
+          <div className="ss-drop-copy">
+            <div>
+              <div className="ss-drop-status ss-kicker">
+                {!isSoldOut && <span className="ss-dot" />}
+                <span className="ss-blue">{drop.label}</span>
+                <span className={isSoldOut ? undefined : "ss-signal"}>
+                  {isSoldOut ? "Closed" : "Live"}
+                </span>
+              </div>
+              <h1 id="drop-heading" className="ss-drop-title">
+                {drop.title_line1}
+                <br />
+                {drop.title_line2}
+              </h1>
+              <p className="ss-body">{drop.description}</p>
             </div>
 
-            <div className="relative md:w-[36%] flex flex-col justify-center px-6 md:px-12 lg:px-14 section-pad-editorial">
-              <ScrollReveal delay={0}>
-                <p className="text-brand-label mb-5 md:mb-6 text-ember">
-                  {drop.label}
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={80}>
-                <h1 className="text-brand-display display-section mb-5 md:mb-6">
-                  {drop.title_line1}
-                  <br />
-                  {drop.title_line2}
-                </h1>
-              </ScrollReveal>
-
-              <ScrollReveal delay={160}>
-                <p className="body-copy text-dust mb-6 md:mb-7 text-measure-sm">
-                  {drop.description}
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={200}>
-                <div className="mb-7 md:mb-8">
-                  {isSoldOut ? (
-                    <div className="flex items-center gap-4">
-                      <span className="h-px bg-iron/40 w-12" />
-                      <p className="text-xs text-mist tracking-[0.3em] uppercase line-through">
-                        SOLD OUT
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2.5">
-                      <div className="flex items-center gap-4">
-                        <span className="h-px bg-iron/40 w-12" />
-                        <p className="text-brand-label !text-ember !font-bold">
-                          PIECES LEFT:{" "}
-                          <span className="tabular-nums">
-                            {String(drop.pieces_left).padStart(2, "0")}
-                          </span>
-                        </p>
-                      </div>
-                      <div className="pl-16">
-                        <ScarcityDots piecesLeft={drop.pieces_left} />
-                      </div>
-                    </div>
-                  )}
+            <div>
+              <dl className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
+                <div>
+                  <dt className="ss-kicker">Availability</dt>
+                  <dd className="ss-meta-value">
+                    {isSoldOut ? "Sold out" : `${drop.pieces_left} pieces left`}
+                  </dd>
                 </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={240}>
-                {isSoldOut ? (
-                  <span className="font-sans text-sm font-medium text-mist uppercase tracking-widest inline-flex items-center gap-2 cursor-not-allowed select-none">
-                    <span>{drop.cta}</span>
-                    <span>—</span>
-                  </span>
-                ) : (
-                  <Link
-                    href={siteContent.brand.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cta-link group"
-                  >
-                    <span className="link-underline-grow">{drop.cta}</span>
-                    <span className="transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                )}
-              </ScrollReveal>
+                <div>
+                  <dt className="ss-kicker">Made in</dt>
+                  <dd className="ss-meta-value">Ulaanbaatar</dd>
+                </div>
+              </dl>
+              {isSoldOut ? (
+                <p className="ss-kicker">This release is closed. Custom orders stay open.</p>
+              ) : (
+                <Link
+                  href={siteContent.brand.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ss-link w-full"
+                >
+                  <span>{drop.cta}</span>
+                  <span aria-hidden="true">↗</span>
+                </Link>
+              )}
             </div>
           </div>
         </section>
 
-        {/* Editorial gallery — main + detail images, 大小交互パターン */}
         {gallery.length > 0 && (
-          <section className="relative bg-void section-pad overflow-hidden">
-            <div className="container-base">
-              <ScrollReveal variant="fade-up">
-                <div className="flex items-center gap-5 mb-10 md:mb-14">
-                  <span className="text-brand-label !text-mist">Detail</span>
-                  <span className="h-px bg-iron/30 flex-1" />
-                  <span className="text-xs text-mist tracking-widest">
-                    {String(gallery.length).padStart(2, "0")} IMAGE
-                    {gallery.length !== 1 ? "S" : ""}
-                  </span>
-                </div>
-              </ScrollReveal>
-
-              {/* Saint Laurent 風: cycle of 3
-                    i % 3 === 0 → full width
-                    i % 3 === 1 → 60% 右寄せ
-                    i % 3 === 2 → 60% 左寄せ
-                  モバイルでは全部フルワイド単縦並び (overflow しないように)。
-              */}
-              <div className="space-y-6 md:space-y-12">
-                {gallery.map((img, i) => {
-                  const mod = i % 3;
-                  const isFull = mod === 0;
-                  const alignRight = mod === 1;
-                  // mod 2 → 左寄せ
-                  const wrapperClass = isFull
-                    ? "w-full"
-                    : alignRight
-                    ? "w-full md:w-[62%] md:ml-auto"
-                    : "w-full md:w-[62%] md:mr-auto";
-                  // 大は 4:5、小は 3:4 (より縦長) で雰囲気を変える
-                  const aspectClass = isFull
-                    ? "aspect-[4/5] md:aspect-[16/10]"
-                    : "aspect-[3/4]";
-
-                  return (
-                    <ScrollReveal
-                      key={img.key}
-                      delay={i * 60}
-                      variant={isFull ? "fade-up" : alignRight ? "fade-left" : "fade-up"}
-                    >
-                      <figure className={wrapperClass}>
-                        <div
-                          className={`relative ${aspectClass} overflow-hidden bg-ash`}
-                        >
-                          <Image
-                            src={img.url}
-                            alt={`${drop.title_line1} ${drop.title_line2} — image ${i + 1}`}
-                            fill
-                            sizes={
-                              isFull
-                                ? "(min-width: 1024px) 1200px, 100vw"
-                                : "(min-width: 768px) 62vw, 100vw"
-                            }
-                            className={`object-cover object-center ${
-                              isSoldOut ? "grayscale" : ""
-                            }`}
-                          />
-                        </div>
-                        <figcaption className="mt-3 flex items-center justify-between text-xs tracking-widest text-mist uppercase">
-                          <span>
-                            {drop.label} · {String(i + 1).padStart(2, "0")} /{" "}
-                            {String(gallery.length).padStart(2, "0")}
-                          </span>
-                          {i === 0 && <span>Cover</span>}
-                        </figcaption>
-                      </figure>
-                    </ScrollReveal>
-                  );
-                })}
-              </div>
+          <section aria-labelledby="gallery-heading">
+            <div className="ss-section-label">
+              <span id="gallery-heading" className="ss-kicker">Detail</span>
+              <span className="ss-kicker">
+                {gallery.length} {gallery.length === 1 ? "image" : "images"}
+              </span>
+            </div>
+            <div className="ss-gallery">
+              {gallery.map((img, i) => (
+                <figure key={img.id} className={i % 3 === 0 ? "ss-gallery-wide" : undefined}>
+                  <div className="relative overflow-hidden bg-ash">
+                    <Image
+                      src={img.image_url}
+                      alt={`${drop.title_line1} ${drop.title_line2} — detail ${i + 1}`}
+                      fill
+                      sizes={i % 3 === 0 ? "100vw" : "(min-width: 900px) 50vw, 100vw"}
+                      className={`object-cover object-center ${isSoldOut ? "grayscale" : ""}`}
+                    />
+                  </div>
+                </figure>
+              ))}
             </div>
           </section>
         )}
 
-        <CustomOrder variant="drop" />
-
-        {/* Back to all drops */}
-        <section className="bg-void section-pad-tight border-t border-cinder/40">
-          <div className="container-base flex items-center justify-between gap-4">
-            <Link
-              href="/drops"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span>←</span>
-              <span className="link-underline-grow">All drops</span>
-            </Link>
-            <Link
-              href="/lookbook"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span className="link-underline-grow">Lookbook</span>
-              <span>→</span>
+        <section className="ss-atelier-banner" aria-labelledby="atelier-heading">
+          <div className="ss-atelier-copy">
+            <p className="ss-kicker ss-blue">Custom</p>
+            <div>
+              <h2 id="atelier-heading" className="ss-display-sm">Make it yours.</h2>
+              <p className="ss-body mt-6">{siteContent.customOrder.dropVariant.description}</p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-between bg-bone !text-void">
+            <p className="text-xs uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
+            <Link href="/custom" className="group flex items-end justify-between gap-6">
+              <span className="font-display text-2xl leading-[0.86] uppercase">Start a project</span>
+              <span className="text-xl transition-transform group-hover:translate-x-2" aria-hidden="true">→</span>
             </Link>
           </div>
         </section>
+
+        <nav className="ss-pager" aria-label="More">
+          <Link href="/drops" className="ss-link">
+            <span aria-hidden="true">←</span>
+            <span>All drops</span>
+          </Link>
+          <Link href="/lookbook" className="ss-link">
+            <span>Lookbook</span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        </nav>
       </main>
       <Footer />
     </>

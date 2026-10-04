@@ -11,7 +11,7 @@ const navLinks: ReadonlyArray<{ name: string; href: string; index: string; note:
   { name: "Drops", href: "/drops", index: "02", note: "Current release" },
   { name: "Lookbook", href: "/lookbook", index: "03", note: "UB night files" },
   { name: "Pieces", href: "/pieces", index: "04", note: "Made to order" },
-  { name: "Custom", href: "/custom", index: "05", note: "Open / 3–4 weeks" },
+  { name: "Custom", href: "/custom", index: "05", note: "Orders open" },
   { name: "About", href: "/about", index: "06", note: "Ulaanbaatar / 2021" },
 ];
 

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PieceGallery from "@/components/sections/PieceGallery";
-import ScrollReveal from "@/components/ui/ScrollReveal";
 import { siteContent } from "@/data/siteContent";
 import {
   getPublicProductBySlug,
@@ -28,13 +27,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const product = await getPublicProductBySlug(slug);
-  if (!product) return { title: "Piece not found — Soul Skin" };
+  if (!product) return { title: "Piece not found" };
   const cover =
     product.images && product.images.length > 0
       ? product.images[0].image_url
       : product.image_url ?? undefined;
   return {
-    title: `${product.name} — Soul Skin`,
+    title: product.name,
     description: product.description,
     openGraph: {
       title: `${product.name} — Soul Skin`,
@@ -63,96 +62,65 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: "var(--nav-h)" }}>
-        {/* Breadcrumb */}
-        <nav
-          className="bg-void border-b border-cinder/40"
-          aria-label="Breadcrumb"
-        >
-          <div className="container-base py-4 flex items-center gap-3 text-xs tracking-[0.2em] uppercase">
-            <Link
-              href="/pieces"
-              className="text-mist hover:text-bone transition-colors"
-            >
-              ← All pieces
-            </Link>
-            <span className="text-mist">/</span>
-            <span className="text-dust">{product.sku}</span>
-          </div>
+      <main className="ss-public pt-[var(--nav-h)] md:pt-[var(--nav-h-md)]">
+        <nav className="ss-section-label" aria-label="Breadcrumb">
+          <Link href="/pieces" className="ss-kicker transition-colors hover:text-bone">
+            All pieces
+          </Link>
+          <span className="ss-kicker text-bone">{product.sku}</span>
         </nav>
 
-        <section className="bg-void">
-          <div className="container-base grid grid-cols-1 md:grid-cols-[1fr_380px] lg:grid-cols-[1fr_420px] gap-0 md:gap-10 lg:gap-16 items-start py-8 md:py-12">
-            {/* Gallery — 左に大きく */}
-            <div className="w-full">
-              <PieceGallery images={images} alt={product.name} />
+        <section className="ss-piece-detail" aria-labelledby="piece-heading">
+          <div className="ss-piece-gallery">
+            <PieceGallery images={images} alt={product.name} />
+          </div>
+
+          <aside className="ss-piece-panel">
+            <div>
+              <p className="ss-kicker">{product.sku}</p>
+              <h1 id="piece-heading" className="ss-display-sm mt-6">
+                {product.name}
+              </h1>
+              <p className="ss-body mt-8">{product.description}</p>
             </div>
 
-            {/* Detail column — sticky で画像スクロール中も見える */}
-            <aside className="flex flex-col pt-6 md:pt-0 md:sticky md:top-[calc(var(--nav-h)+2rem)]">
-              <ScrollReveal delay={0}>
-                <p className="text-xs text-mist tracking-[0.3em] uppercase mb-4">
-                  {product.sku}
-                </p>
-              </ScrollReveal>
-              <ScrollReveal delay={80}>
-                <h1 className="text-brand-display display-section mb-3">
-                  {product.name}
-                </h1>
-              </ScrollReveal>
-              <ScrollReveal delay={140}>
-                <p className="text-xs text-dust/60 uppercase tracking-widest mb-6">
-                  {product.material}
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={160}>
-                <div className="h-px bg-cinder/40 mb-6" />
-              </ScrollReveal>
-
-              <ScrollReveal delay={200}>
-                <p className="body-copy text-dust/80 mb-7 leading-relaxed">
-                  {product.description}
-                </p>
-              </ScrollReveal>
-              <ScrollReveal delay={240}>
-                <p className="text-sm text-bone tracking-widest mb-8">
-                  {product.price}
-                </p>
-              </ScrollReveal>
-              <ScrollReveal delay={300}>
-                <Link
-                  href={siteContent.brand.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 border border-cinder w-full px-6 py-4 text-xs tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors"
-                >
-                  <span>{siteContent.products.cta}</span>
-                  <span>→</span>
-                </Link>
-              </ScrollReveal>
-            </aside>
-          </div>
+            <div>
+              <dl className="mb-6 grid grid-cols-2 gap-4 border-y ss-rule py-5">
+                <div>
+                  <dt className="ss-kicker">Material</dt>
+                  <dd className="ss-meta-value">{product.material}</dd>
+                </div>
+                <div>
+                  <dt className="ss-kicker">Price</dt>
+                  <dd className="ss-meta-value">{product.price}</dd>
+                </div>
+              </dl>
+              <Link
+                href={siteContent.brand.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ss-link w-full"
+              >
+                <span>{siteContent.products.cta}</span>
+                <span aria-hidden="true">↗</span>
+              </Link>
+              <p className="ss-kicker mt-4">
+                Opens Instagram. Send the piece name and your size.
+              </p>
+            </div>
+          </aside>
         </section>
 
-        <section className="bg-void section-pad-tight border-t border-cinder/40">
-          <div className="container-base flex items-center justify-between gap-4">
-            <Link
-              href="/pieces"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span>←</span>
-              <span className="link-underline-grow">All pieces</span>
-            </Link>
-            <Link
-              href="/custom"
-              className="cta-link cta-link-sm text-dust hover:text-bone transition-colors"
-            >
-              <span className="link-underline-grow">Custom order</span>
-              <span>→</span>
-            </Link>
-          </div>
-        </section>
+        <nav className="ss-pager" aria-label="More">
+          <Link href="/pieces" className="ss-link">
+            <span aria-hidden="true">←</span>
+            <span>All pieces</span>
+          </Link>
+          <Link href="/custom" className="ss-link">
+            <span>Custom order</span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        </nav>
       </main>
       <Footer />
     </>
