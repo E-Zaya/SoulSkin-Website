@@ -4,79 +4,76 @@
 
 ![Soul Skin Brand Lookbook](https://soul-skin-website.vercel.app/_next/image?url=https%3A%2F%2Fwtxgqkotckxcqzjhnfle.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsoul-skin-images%2Fsite%2F1778424909734-bcc9355c-f124-452d-a831-e22d99d1fd0c.png&w=3840&q=75)
 
-**[Live Site](https://soul-skin-website.vercel.app/)** | **[Case Study](https://ezaya.dev/blog)** | **[Instagram @yoursoulskin](https://www.instagram.com/yoursoulskin)**
+**[Live Site](https://soul-skin-website.vercel.app/)** | **[Instagram @yoursoulskin](https://www.instagram.com/yoursoulskin)**
 
 ---
 
 ## Overview
 
-Soul Skin は Instagram DM のみで展開してきたストリートウェアレーベルが、**ブランドの世界観を適切に表現するために** 構築したデジタル体験です。
+Soul Skin は Instagram DM だけで展開してきたストリートウェアレーベルです。このサイトは商品を「売る」ためではなく、**ウランバートルの街と草原の空気を写真と余白で見せ、訪問者をブランドの世界に入らせる**ために作りました。
 
-このサイトは「商品を売る」のではなく、**ウランバートルという街のテクスチャそのものを色と映像で表現し、訪問者をブランドの世界に没入させる** ことを目的としています。
-
-### Why This Project
-
-- Instagram だけではブランドの全体像が伝わらない
-- 限定ドロップ、Lookbook、過去の作品を一元管理したい
-- スマートフォンでも映像的な体験を損なわない設計が必要
+- Instagram だけでは伝わらないブランドの全体像を 1 か所に
+- 限定ドロップ、Lookbook、ピース、カスタムオーダーの窓口を一元管理
+- スマートフォンでも写真の迫力を落とさない
 
 ---
 
-## Design Philosophy
+## Design: UB RAW PRECISION
 
-### ウランバートルの街を色に
+草原の静けさとウランバートルの夜の緊張感を、1px の罫線で組んだエディトリアル・グリッドにのせています。装飾ではなく、写真・余白・実際の情報だけで高級感を作る方針です。
 
-カラーパレットは決して派手ではなく、街そのものから拾った色たちです。
+### 色
 
-- **灰（Gray）** — 冬の空、コンクリート、雪に埋もれた街
-- **骨（Bone）** — 風化した建材、砂漠の光
-- **錆（Rust）** — 古い鉄製品、時間の経過
+- **Void** `#0a0908` — 背景
+- **Bone** `#ede8e1` — 文字、反転面
+- **Mist** `#9b9892` — 補助文字（本文コントラスト 7.5:1）
+- **Ember** `#174cff` — 唯一のアクセント。現在地・リンク・選択状態だけ
+- **Rust** `#c54b37` — 状態表示だけ（LIVE / REC / Open）
 
-### 静けさの中の緊張感
+### 文字
 
-完璧に整理された、洗練されたデザインは Soul Skin らしくありません。そこで意識的に **「ノイズ」を仕込みました**。
+- 書体は 2 つだけ。**Bebas Neue**（見出し）と **Inter**（本文・ラベル）
+- サイズは 7 段に固定（12 / 14 / 16 / 20 / 28 / 36–56 / 48–96 px）。12px 未満は使わない
+- トークンはすべて `app/globals.css` の `@theme` に集約。コンポーネント側に任意値（`text-[13px]` や生の hex）は書かない
 
-- **商品の配置ずらし** — Pieces セクションで上下に微妙にずらす
-- **揺れるテキスト** — Hero の「Choose Your Skin」がロード時に微かに揺れる
-- **流れるテープ** — Custom Order セクションに「MADE IN ULAANBAATAR - WEAR YOUR SOUL」が流れ続ける
-- **映画的な Lookbook** — フィルムのような表現で没入感を最大化
+### 動き
 
-### Information is Visual
+- Hero は 5 コマの写真を 2 秒ごとに切り替える「フィルム」。Pause / Play ボタンと `prefers-reduced-motion` で止められる
+- スクロール連動の表示は Home の Manifesto 1 か所だけ
+- 自動で動く装飾（ノイズ、マーキー、グリッチ）は置かない
 
-テキストは最小限。ロゴ、写真、配置そのものでブランドを語ります。
+### アクセシビリティ
+
+- 共通の `:focus-visible` リング、Skip to content リンク、全ページに `<main id="main">`
+- タップ領域は 44px 以上。横スクロールなし
+- 画像は WebP（`public/` 合計 2.1MB）。OG 画像は 1200×630
+
+デザインの判断記録と計測結果は [`design/`](design/) にあります（`SOULSKIN_REDESIGN_PROPOSAL.md` が方針、`SCAN_2026-10-03.md` が監査と各フェーズの結果）。
 
 ---
 
-## Technical Highlights
+## Pages
 
-### Dynamic Content Management
+| Path | Role |
+|---|---|
+| `/` | Hero フィルム、Manifesto、現在のドロップ、ピース、Lookbook、Atelier |
+| `/drops` と `/drops/[slug]` | リリースの記録。現在のドロップとアーカイブ、残数、Instagram への注文導線 |
+| `/pieces` と `/pieces/[slug]` | 受注生産のピース。素材・価格・ギャラリー |
+| `/lookbook` | 写真アーカイブ。キーボード・スワイプ・サムネイルで移動 |
+| `/custom` | カスタムオーダーの流れ（Brief / Build / Finish）と DM の窓口 |
+| `/about` | ブランドの来歴 |
+| `/admin` | パスワード式の管理画面。ドロップ・ピース・Lookbook・サイト設定の編集と画像アップロード |
 
-すべてのドロップ、ピース、テキストは **Supabase から動的に管理**。
+---
 
-```
-管理画面から以下を更新可能：
-✓ Hero セクションの画像・テキスト
-✓ About セクションの内容
-✓ 新しいドロップ / ピースの追加
-✓ 最大 5 枚までの商品画像
-```
+## Content
 
-### React Page Rendering
+公開ページの内容は **Supabase から読む** か、**同梱のローカル内容を使う** かを環境変数で切り替えます。
 
-サイト全体のテキストを Data フォルダから一元管理し、重複コードを最小化。後からの修正・拡張が容易です。
+- 既定はローカル内容（`data/localContent.ts` と `public/` の画像）。Supabase を止めていてもサイト全体が表示できます
+- `SITE_CONTENT_SOURCE=database` で Supabase を優先。取得できないテーブルや空のテーブルは自動でローカル内容に戻ります
 
-### Mobile-First Experience
-
-スマートフォンでの体験を最優先設計：
-
-- **Pieces Display** — 2 列 3 行で整然と表示
-- **Detail Popup** — タップで詳細表示（別ページ遷移なし）
-- **Smart Navigation** — 一般的な 3 本線ではなく 2 本線。開くと「X」に
-- **Smooth Interactions** — すべての操作が指一本で直感的に
-
-### Image Optimization
-
-複数画像対応、Next.js Image Optimization により、高速で美しい表示を実現。
+管理画面からの書き込みは常に Supabase（`supabase/schema.sql` のテーブルと `soul-skin-images` バケット）へ行きます。
 
 ---
 
@@ -84,146 +81,77 @@ Soul Skin は Instagram DM のみで展開してきたストリートウェア�
 
 | Layer | Technology |
 |-------|-----------|
-| **Framework** | Next.js 14+ |
-| **Language** | TypeScript |
-| **Styling** | Tailwind CSS |
-| **Database** | Supabase (PostgreSQL) |
-| **Hosting** | Vercel |
-| **Image Storage** | Supabase Storage |
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4（`@theme` トークン）+ `app/editorial.css` |
+| Database / Storage | Supabase (PostgreSQL, Storage) |
+| Hosting | Vercel |
 
 ---
 
 ## Project Structure
 
 ```
-soul-skin-website/
+soul-skin/
 ├── app/
-│   ├── page.tsx                 # Home / Hero
-│   ├── drops/
-│   │   └── page.tsx             # Drops listing
+│   ├── page.tsx                 # Home
+│   ├── drops/                   # /drops, /drops/[slug]
+│   ├── pieces/                  # /pieces, /pieces/[slug]
 │   ├── lookbook/
-│   │   └── page.tsx             # Film-like lookbook
-│   ├── pieces/
-│   │   └── page.tsx             # Product gallery
 │   ├── custom/
-│   │   └── page.tsx             # Custom order info
-│   └── about/
-│       └── page.tsx             # Brand story
+│   ├── about/
+│   ├── admin/                   # 管理画面と server actions
+│   ├── api/admin/               # login / logout / upload
+│   ├── globals.css              # トークン（@theme）と共通スタイル
+│   └── editorial.css            # ss-* レイアウト
 ├── components/
-│   ├── Hero.tsx
-│   ├── Lookbook.tsx
-│   ├── ProductCard.tsx
-│   ├── Navigation.tsx
-│   └── ...
+│   ├── layout/                  # Navbar, Footer, PageTransition
+│   ├── sections/                # Hero, Lookbook, PieceGallery
+│   └── ui/                      # ScrollReveal
 ├── data/
-│   ├── navigation.ts            # Menu items
-│   ├── copywriting.ts           # All text content
-│   └── ...
+│   ├── siteContent.ts           # 文言
+│   └── localContent.ts          # Supabase 停止時の内容
 ├── lib/
-│   └── supabase.ts              # Database client
+│   ├── db.ts                    # 型とクエリ
+│   ├── public-content.ts        # DB / ローカルの切り替え
+│   └── supabase.ts              # クライアント
+├── design/                      # 設計書と監査
+├── supabase/                    # schema.sql, migrations
+├── proxy.ts                     # /admin の保護
 └── public/
-    └── images/
 ```
-
----
-
-## Key Features
-
-### 1. Drops Management
-新しいドロップをリアルタイムで告知。各ドロップは Supabase から自動で反映されます。
-
-### 2. Dynamic Lookbook
-映画のようなビジュアル体験。スクロールすることでブランドの世界観に没入します。
-
-### 3. Product Gallery
-Pieces を 2 列表示。各商品は最大 5 枚の画像に対応し、スマホでもストレスなくスライド操作できます。
-
-### 4. Custom Order Flow
-Instagram への導線が自然に。「カスタムオーダーしたい」というユーザーの動きをサポート。
-
-### 5. Responsive Design
-スマートフォン中心の設計。すべてのインタラクションが快適に動作します。
-
----
-
-## Performance
-
-- **Lighthouse Score**: 90+
-- **Core Web Vitals**: All Green
-- **Image Optimization**: Next.js Image + Supabase CDN
-- **Dynamic Rendering**: React Page Rendering で効率化
-
----
-
-## What I Learned
-
-このプロジェクトを通じて：
-
-✓ **DB 設計と Supabase 操作** を実践的に習得  
-✓ **デザイン × 開発の統合** — ビジュアルと機能が相互補完する関係を体感  
-✓ **スマートフォン UX の深さ** — 指一本でいかに楽しい体験を作るか  
-✓ **ブランドの「空気感」を Web で表現する難しさと面白さ**
-
----
-
-## Future Enhancements
-
-- [ ] E-commerce integration (checkout flow)
-- [ ] Newsletter signup
-- [ ] Internationalization (MN / EN / JP)
-- [ ] Animation refinements
-- [ ] Analytics dashboard
 
 ---
 
 ## How to Run Locally
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/soul-skin-website.git
-cd soul-skin-website
-
-# Install dependencies
+git clone https://github.com/E-Zaya/SoulSkin-Website.git
+cd SoulSkin-Website
 npm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Add your Supabase URL and API key
-
-# Run development server
-npm run dev
-
-# Open http://localhost:3000
+# .env.local を作り、下記の環境変数を入れる
+npm run dev                  # http://localhost:3000
 ```
+
+その他のスクリプト: `npm run build`、`npm run start`、`npm run lint`
 
 ---
 
 ## Environment Variables
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Optional: use Supabase for public content. The default is bundled local content.
-SITE_CONTENT_SOURCE=database
+NEXT_PUBLIC_SUPABASE_URL=       # Supabase project URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=  # 公開キー（読み取り）
+SUPABASE_SERVICE_ROLE_KEY=      # サーバー専用。管理画面の書き込みに使う
+ADMIN_PASSWORD=                 # /admin のログインパスワード
+ADMIN_TOKEN=                    # ログイン後に Cookie へ入れる固定トークン
+SITE_CONTENT_SOURCE=            # "database" で Supabase を優先。未設定ならローカル内容
 ```
 
-The public site defaults to the images and editorial content in `public/` and
-`data/localContent.ts`, so it remains fully browsable while Supabase is paused.
-When `SITE_CONTENT_SOURCE=database` is set, Supabase is preferred and the same
-local content is used automatically if a public query is unavailable or empty.
+`SUPABASE_SERVICE_ROLE_KEY` と `ADMIN_TOKEN` はクライアントに出しません。トークンが漏れた場合は値を変えれば全セッションが無効になります。
 
 ---
 
 ## License
 
 © 2026 Soul Skin. All rights reserved.
-
----
-
-## Contact
-
-- **Website**: [soul-skin-website.vercel.app](https://soul-skin-website.vercel.app/)
-- **Instagram**: [@yoursoulskin](https://www.instagram.com/yoursoulskin)
-- **Email**: Get in touch via Instagram DM
