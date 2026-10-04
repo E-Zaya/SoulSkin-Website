@@ -109,7 +109,7 @@ export default function CustomOrder({ variant = "default" }: Props) {
             <span className="transition-colors duration-300 group-hover:text-void">
               {content.cta}
             </span>
-            <span className="text-[16px] transition-all duration-300 group-hover:text-void group-hover:translate-x-1">
+            <span className="text-base transition-all duration-300 group-hover:text-void group-hover:translate-x-1">
               →
             </span>
           </Link>

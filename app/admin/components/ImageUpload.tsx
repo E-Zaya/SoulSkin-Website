@@ -94,12 +94,12 @@ export default function ImageUpload({
             <img src={preview} alt="preview" className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-[#555] text-[10px] font-mono">No img</span>
+              <span className="text-[#555] text-xs">No img</span>
             </div>
           )}
           {uploading && (
             <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-              <span className="text-[10px] text-white font-mono">...</span>
+              <span className="text-xs text-white">...</span>
             </div>
           )}
         </div>
@@ -111,20 +111,20 @@ export default function ImageUpload({
             value={url}
             onChange={handleUrlInput}
             placeholder="/product.png or Supabase Storage URL"
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2 focus:outline-none focus:border-[#505050] font-mono placeholder:text-[#444]"
+            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:outline-none focus:border-[#505050] placeholder:text-[#444]"
           />
           <div className="flex items-center gap-3 flex-wrap">
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={uploading}
-              className="text-[11px] tracking-widest uppercase font-mono border border-[#282828] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#505050] transition-colors disabled:opacity-40 whitespace-nowrap"
+              className="text-xs tracking-widest uppercase border border-[#282828] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#505050] transition-colors disabled:opacity-40 whitespace-nowrap"
             >
               {uploading ? "Uploading..." : "Upload Image"}
             </button>
-            <span className="text-[10px] text-[#555] font-mono">JPG / PNG / WEBP · Max 5MB</span>
+            <span className="text-xs text-[#555]">JPG / PNG / WEBP · Max 5MB</span>
           </div>
-          {error && <p className="text-[11px] text-[#e05252] font-mono">{error}</p>}
+          {error && <p className="text-xs text-[#e05252]">{error}</p>}
         </div>
       </div>
 

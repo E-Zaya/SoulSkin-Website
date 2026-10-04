@@ -31,7 +31,7 @@ export default async function AboutPage() {
 
           <div className="ss-about-copy">
             <div>
-              <div className="flex items-center justify-between gap-4"><p className="ss-kicker">The story</p><p className="ss-kicker ss-signal">UB raw precision</p></div>
+              <div className="flex items-center justify-between gap-4"><p className="ss-kicker">The story</p><p className="ss-kicker">UB raw precision</p></div>
               <h1 id="about-heading" className="ss-display-sm mt-10">Choose<br />your skin.</h1>
               <p className="ss-body mt-10">{settings.about_description || siteContent.about.descriptionFallback}</p>
               <p className="ss-body mt-5">Built in Mongolia. Inspired by the steppe, the city and the people who move between them.</p>
@@ -67,8 +67,8 @@ export default async function AboutPage() {
             <h2 className="ss-display-sm mt-14">From UB,<br />for everywhere.</h2>
           </div>
           <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="group flex min-w-[36vw] items-end justify-between gap-8 bg-bone p-[var(--ss-gutter)] text-void">
-            <span className="font-display text-[clamp(3rem,6vw,6rem)] leading-none uppercase">Instagram</span>
-            <span className="text-3xl transition-transform group-hover:translate-x-2">↗</span>
+            <span className="font-display text-2xl leading-none uppercase">Instagram</span>
+            <span className="text-xl transition-transform group-hover:translate-x-2">↗</span>
           </Link>
         </section>
       </main>

@@ -63,17 +63,17 @@ export default function SiteClient({ initialSettings }: Props) {
   return (
     <div>
       {/* Header */}
-      <h1 className="text-[13px] tracking-[0.25em] text-[#aaa] uppercase font-mono mb-8">
+      <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase mb-8">
         Site Settings
       </h1>
 
       {error && (
-        <div className="mb-5 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-[13px] text-[#f07070] font-mono">
+        <div className="mb-5 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-sm text-[#f07070]">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-5 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-[13px] text-[#5dd49a] font-mono">
+        <div className="mb-5 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-sm text-[#5dd49a]">
           {success}
         </div>
       )}
@@ -82,10 +82,10 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* Hero 画像 */}
         <section>
-          <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-1">
+          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
             Hero
           </p>
-          <p className="text-[12px] text-[#555] font-mono mb-4">
+          <p className="text-xs text-[#555] mb-4">
             Full-screen background image for the home page
           </p>
           <ImageUpload
@@ -105,10 +105,10 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* About 画像 */}
         <section>
-          <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-1">
+          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
             About - Image
           </p>
-          <p className="text-[12px] text-[#555] font-mono mb-4">
+          <p className="text-xs text-[#555] mb-4">
             Image shown in the right column of the About section
           </p>
           <ImageUpload
@@ -128,17 +128,17 @@ export default function SiteClient({ initialSettings }: Props) {
 
         {/* About テキスト */}
         <section>
-          <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-1">
+          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-1">
             About - Text
           </p>
-          <p className="text-[12px] text-[#555] font-mono mb-4">
+          <p className="text-xs text-[#555] mb-4">
             Intro text shown in the About section
           </p>
           <textarea
             value={aboutDesc}
             onChange={(e) => setAboutDesc(e.target.value)}
             rows={4}
-            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none font-mono leading-relaxed placeholder:text-[#444]"
+            className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
             placeholder="Enter About text..."
           />
         </section>
@@ -147,7 +147,7 @@ export default function SiteClient({ initialSettings }: Props) {
         <button
           onClick={handleSave}
           disabled={isPending}
-          className="w-full border border-[#444] text-[13px] font-mono tracking-widest uppercase py-3 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full border border-[#444] text-sm tracking-widest uppercase py-3 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isPending ? "Saving..." : "Save"}
         </button>

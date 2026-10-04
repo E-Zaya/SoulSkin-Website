@@ -142,7 +142,7 @@ export default function PieceGallery({ images, alt }: Props) {
 
         {/* カウンター */}
         {total > 1 && (
-          <div className="absolute bottom-3 right-3 z-10 font-mono text-[10px] tracking-widest text-bone/50">
+          <div className="absolute bottom-3 right-3 z-10 text-xs tracking-widest text-bone/50">
             {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </div>
         )}

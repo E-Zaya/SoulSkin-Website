@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import {
-  Bebas_Neue,
-  Inter,
-  Playfair_Display,
-  Space_Mono,
-} from "next/font/google";
+import { Bebas_Neue, Inter } from "next/font/google";
 import PageTransition from "@/components/layout/PageTransition";
 import "./globals.css";
 import "./editorial.css";
 
+// Two families only: Bebas Neue for display, Inter for everything else.
+// Monospace falls back to the system font and is reserved for numeric data.
 const bebasNeue = Bebas_Neue({
   weight: "400",
   variable: "--font-bebas-neue",
@@ -17,23 +14,8 @@ const bebasNeue = Bebas_Neue({
 });
 
 const inter = Inter({
+  weight: ["400", "500", "700"],
   variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// Editorial italic accent — used sparingly for tags, captions, pull quotes.
-const playfair = Playfair_Display({
-  weight: ["400", "500"],
-  style: ["italic"],
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const spaceMono = Space_Mono({
-  weight: ["400", "700"],
-  variable: "--font-space-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -82,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${inter.variable} ${playfair.variable} ${spaceMono.variable}`}
+      className={`${bebasNeue.variable} ${inter.variable}`}
     >
       <body className="bg-void text-bone font-sans overflow-x-hidden">
         <script

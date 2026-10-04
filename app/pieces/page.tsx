@@ -46,16 +46,16 @@ export default async function PiecesPage() {
                   <div className="ss-catalog-media">
                     {image && <Image src={image} alt={product.name} fill sizes="(min-width: 900px) 40vw, 100vw" className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.025]" />}
                     <span className="absolute left-4 top-4 z-[2] ss-kicker text-bone/70">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="absolute right-4 top-4 z-[2] ss-kicker ss-signal">Made to order</span>
+                    <span className="absolute right-4 top-4 z-[2] ss-kicker text-bone/70">Made to order</span>
                   </div>
                   <div className="ss-catalog-copy">
                     <div className="flex items-start justify-between gap-5">
                       <div><h2 className="ss-product-name">{product.name}</h2><p className="ss-kicker mt-2">{product.sku}</p></div>
                       <span className="text-xl transition-transform group-hover:translate-x-1" aria-hidden="true">↗</span>
                     </div>
-                    <dl className="mt-6 grid grid-cols-2 gap-4 border-t ss-rule pt-4 font-mono text-[9px] uppercase tracking-[0.12em]">
-                      <div><dt className="text-iron">Material</dt><dd className="mt-2 text-dust">{product.material}</dd></div>
-                      <div><dt className="text-iron">Edition</dt><dd className="mt-2 text-dust">SS 24 — {String(index + 1).padStart(2, "0")}</dd></div>
+                    <dl className="mt-6 grid grid-cols-2 gap-4 border-t ss-rule pt-4 text-xs uppercase tracking-[0.12em]">
+                      <div><dt className="text-mist">Material</dt><dd className="mt-2 text-dust">{product.material}</dd></div>
+                      <div><dt className="text-mist">Edition</dt><dd className="mt-2 text-dust">SS 24 — {String(index + 1).padStart(2, "0")}</dd></div>
                     </dl>
                   </div>
                 </Link>

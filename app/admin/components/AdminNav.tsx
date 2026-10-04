@@ -27,7 +27,7 @@ export default function AdminNav() {
   return (
     <nav className="border-b border-[#1e1e1e] bg-[#0c0c0c]">
       <div className="max-w-4xl mx-auto px-4 flex items-center justify-between h-12">
-        <span className="text-[12px] tracking-[0.2em] text-[#666] uppercase font-mono">
+        <span className="text-xs tracking-[0.2em] text-[#666] uppercase">
           SOUL SKIN / ADMIN
         </span>
 
@@ -35,14 +35,14 @@ export default function AdminNav() {
         <div className="hidden sm:flex items-center gap-6">
           {links.map((link) => (
             <Link key={link.href} href={link.href}
-              className={`text-[12px] tracking-widest uppercase font-mono transition-colors ${
+              className={`text-xs tracking-widest uppercase transition-colors ${
                 pathname.startsWith(link.href) ? "text-[#f0f0f0]" : "text-[#777] hover:text-[#ccc]"
               }`}>
               {link.label}
             </Link>
           ))}
           <button onClick={handleLogout}
-            className="text-[12px] tracking-widest uppercase font-mono text-[#555] hover:text-[#f07070] transition-colors ml-2">
+            className="text-xs tracking-widest uppercase text-[#555] hover:text-[#f07070] transition-colors ml-2">
             Logout
           </button>
         </div>
@@ -60,14 +60,14 @@ export default function AdminNav() {
         <div className="sm:hidden border-t border-[#1e1e1e] bg-[#0e0e0e] px-4 py-4 flex flex-col gap-4">
           {links.map((link) => (
             <Link key={link.href} href={link.href} onClick={() => setOpen(false)}
-              className={`text-[14px] tracking-widest uppercase font-mono transition-colors ${
+              className={`text-sm tracking-widest uppercase transition-colors ${
                 pathname.startsWith(link.href) ? "text-[#f0f0f0]" : "text-[#888]"
               }`}>
               {link.label}
             </Link>
           ))}
           <button onClick={handleLogout}
-            className="text-[14px] tracking-widest uppercase font-mono text-[#666] hover:text-[#f07070] transition-colors text-left">
+            className="text-sm tracking-widest uppercase text-[#666] hover:text-[#f07070] transition-colors text-left">
             Logout
           </button>
         </div>

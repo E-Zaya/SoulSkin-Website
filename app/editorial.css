@@ -1,19 +1,12 @@
 /* Soul Skin public-site redesign: UB RAW PRECISION */
 
 :root {
-  --ss-ink: #090908;
-  --ss-bone: #eee9e2;
-  --ss-iron: #242321;
-  --ss-mist: #9b9892;
-  --ss-blue: #174cff;
-  --ss-signal: #c54b37;
-  --ss-rule: rgba(238, 233, 226, 0.13);
   --ss-gutter: clamp(1.25rem, 3vw, 3rem);
 }
 
 .ss-public {
   min-height: 100svh;
-  background: var(--ss-ink);
+  background: var(--color-void);
 }
 
 .ss-public * {
@@ -25,51 +18,52 @@
 }
 
 .ss-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   line-height: 1.4;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--ss-mist);
+  color: var(--color-mist);
 }
 
 .ss-display {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 10vw, 9rem);
+  font-size: var(--text-3xl);
   font-weight: 400;
   line-height: 0.82;
   letter-spacing: -0.025em;
   text-transform: uppercase;
-  color: var(--ss-bone);
+  color: var(--color-bone);
 }
 
 .ss-display-sm {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 6vw, 6rem);
+  font-size: var(--text-2xl);
   font-weight: 400;
   line-height: 0.88;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--ss-bone);
+  color: var(--color-bone);
 }
 
 .ss-body {
   max-width: 42rem;
-  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  font-size: var(--text-base);
   line-height: 1.65;
-  color: color-mix(in srgb, var(--ss-bone) 72%, transparent);
+  color: color-mix(in srgb, var(--color-bone) 72%, transparent);
 }
 
 .ss-rule {
-  border-color: var(--ss-rule);
+  border-color: var(--color-rule);
 }
 
 .ss-blue {
-  color: var(--ss-blue);
+  color: var(--color-ember);
 }
 
 .ss-signal {
-  color: var(--ss-signal);
+  color: var(--color-rust);
 }
 
 .ss-dot {
@@ -78,7 +72,7 @@
   height: 0.38rem;
   flex: none;
   border-radius: 999px;
-  background: var(--ss-signal);
+  background: var(--color-rust);
 }
 
 .ss-link {
@@ -87,20 +81,21 @@
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  border: 1px solid var(--ss-rule);
+  border: 1px solid var(--color-rule);
   padding: 0.75rem 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ss-bone);
+  color: var(--color-bone);
   transition: color 220ms ease, border-color 220ms ease, background-color 220ms ease;
 }
 
 .ss-link:hover,
 .ss-link:focus-visible {
-  border-color: var(--ss-blue);
-  background: var(--ss-blue);
+  border-color: var(--color-ember);
+  background: var(--color-ember);
   color: white;
 }
 
@@ -108,7 +103,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
   padding: 0.9rem var(--ss-gutter);
 }
 
@@ -116,19 +111,19 @@
   height: 1px;
   flex: 1;
   content: "";
-  background: var(--ss-rule);
+  background: var(--color-rule);
 }
 
 .ss-meta-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-block: 1px solid var(--ss-rule);
+  border-block: 1px solid var(--color-rule);
 }
 
 .ss-meta-cell {
   min-height: 6rem;
   padding: 1.25rem var(--ss-gutter);
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-meta-cell:last-child {
@@ -137,10 +132,11 @@
 
 .ss-meta-value {
   margin-top: 0.65rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
-  color: var(--ss-bone);
+  color: var(--color-bone);
 }
 
 /* Home */
@@ -148,7 +144,7 @@
 .ss-home-index {
   display: grid;
   grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr) minmax(12rem, 0.85fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-home-chapters,
@@ -159,7 +155,7 @@
 
 .ss-home-chapters,
 .ss-home-manifesto {
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-home-chapters ol {
@@ -170,21 +166,22 @@
   display: flex;
   gap: 0.9rem;
   padding-block: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ss-mist);
+  color: var(--color-mist);
 }
 
 .ss-home-chapters li:first-child {
-  color: var(--ss-blue);
+  color: var(--color-ember);
 }
 
 .ss-home-manifesto h2 {
   max-width: 15ch;
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5.5vw, 5.8rem);
+  font-size: var(--text-2xl);
   line-height: 0.9;
   text-transform: uppercase;
 }
@@ -199,7 +196,7 @@
   display: grid;
   min-height: min(800px, 88svh);
   grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.75fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-drop-image,
@@ -207,11 +204,11 @@
   position: relative;
   min-height: 35rem;
   overflow: hidden;
-  background: var(--ss-iron);
+  background: var(--color-ash);
 }
 
 .ss-drop-image {
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-drop-image::after,
@@ -239,7 +236,7 @@
 .ss-drop-title {
   margin-block: 1.25rem;
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 7vw, 7rem);
+  font-size: var(--text-2xl);
   line-height: 0.84;
   text-transform: uppercase;
 }
@@ -263,7 +260,7 @@
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: var(--ss-iron);
+  background: var(--color-ash);
 }
 
 .ss-product-media img,
@@ -285,7 +282,7 @@
 
 .ss-product-name {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.4vw, 2.5rem);
+  font-size: var(--text-xl);
   line-height: 0.9;
   text-transform: uppercase;
 }
@@ -293,15 +290,15 @@
 .ss-lookbook-home {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-block: 1px solid var(--ss-rule);
+  border-block: 1px solid var(--color-rule);
 }
 
 .ss-lookbook-frame {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-right: 1px solid var(--ss-rule);
-  background: var(--ss-iron);
+  border-right: 1px solid var(--color-rule);
+  background: var(--color-ash);
 }
 
 .ss-lookbook-frame:last-child {
@@ -318,7 +315,7 @@
 .ss-atelier-banner {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-atelier-banner > div {
@@ -330,7 +327,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 /* Drops */
@@ -338,7 +335,7 @@
 .ss-page-head {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.7fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-page-head > div {
@@ -346,13 +343,13 @@
 }
 
 .ss-page-head > div:first-child {
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-release-ledger {
   display: grid;
   grid-template-columns: 5.5rem minmax(0, 1.3fr) minmax(22rem, 0.9fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-release-rail {
@@ -361,20 +358,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 2rem 1rem;
-  border-right: 1px solid var(--ss-rule);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+  border-right: 1px solid var(--color-rule);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   letter-spacing: 0.18em;
-  color: var(--ss-mist);
+  color: var(--color-mist);
 }
 
 .ss-release-rail span:nth-child(2) {
-  color: var(--ss-blue);
+  color: var(--color-ember);
   writing-mode: vertical-rl;
 }
 
 .ss-release-list {
-  border-top: 1px solid var(--ss-rule);
+  border-top: 1px solid var(--color-rule);
 }
 
 .ss-release-row {
@@ -384,14 +382,14 @@
   gap: 1rem;
   min-height: 6.5rem;
   padding: 1rem var(--ss-gutter);
-  border-bottom: 1px solid var(--ss-rule);
-  color: var(--ss-mist);
+  border-bottom: 1px solid var(--color-rule);
+  color: var(--color-mist);
   transition: color 220ms ease, background-color 220ms ease;
 }
 
 .ss-release-row:hover {
   background: rgba(238, 233, 226, 0.025);
-  color: var(--ss-bone);
+  color: var(--color-bone);
 }
 
 /* Pieces */
@@ -407,24 +405,24 @@
 }
 
 .ss-pieces-rail {
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-pieces-filter {
-  border-left: 1px solid var(--ss-rule);
+  border-left: 1px solid var(--color-rule);
 }
 
 .ss-pieces-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  background: var(--ss-rule);
+  background: var(--color-rule);
 }
 
 .ss-catalog-card {
   display: grid;
   min-width: 0;
-  background: var(--ss-ink);
+  background: var(--color-void);
 }
 
 .ss-catalog-card:nth-child(3n + 1) {
@@ -435,7 +433,7 @@
   position: relative;
   min-height: 36rem;
   overflow: hidden;
-  background: var(--ss-iron);
+  background: var(--color-ash);
 }
 
 .ss-catalog-card:nth-child(3n + 1) .ss-catalog-media {
@@ -444,21 +442,22 @@
 
 .ss-catalog-copy {
   padding: 1.25rem;
-  border-top: 1px solid var(--ss-rule);
+  border-top: 1px solid var(--color-rule);
 }
 
 .ss-filter-group {
   padding-block: 1rem;
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-filter-group li {
   margin-top: 0.7rem;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ss-mist);
+  color: var(--color-mist);
 }
 
 /* Lookbook */
@@ -469,14 +468,14 @@
   align-items: center;
   min-height: 4.5rem;
   padding-inline: var(--ss-gutter);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-lookbook-stage {
   display: grid;
   min-height: calc(100svh - var(--nav-h-md) - 4.5rem);
   grid-template-columns: minmax(16rem, 0.68fr) minmax(0, 1.55fr) minmax(17rem, 0.72fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-lookbook-copy,
@@ -488,21 +487,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-lookbook-main {
   position: relative;
   min-height: 42rem;
   overflow: hidden;
-  background: var(--ss-iron);
+  background: var(--color-ash);
 }
 
 .ss-lookbook-side {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-left: 1px solid var(--ss-rule);
+  border-left: 1px solid var(--color-rule);
 }
 
 .ss-filmstrip {
@@ -521,7 +520,7 @@
 }
 
 .ss-film-thumb.is-active {
-  border-color: var(--ss-blue);
+  border-color: var(--color-ember);
   opacity: 1;
 }
 
@@ -531,7 +530,7 @@
   display: grid;
   min-height: min(780px, calc(100svh - var(--nav-h-md)));
   grid-template-columns: minmax(20rem, 0.78fr) minmax(0, 1.35fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-custom-copy {
@@ -539,26 +538,26 @@
   flex-direction: column;
   justify-content: space-between;
   padding: clamp(2.5rem, 6vw, 6rem) var(--ss-gutter);
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-custom-image {
   position: relative;
   min-height: 40rem;
   overflow: hidden;
-  background: var(--ss-iron);
+  background: var(--color-ash);
 }
 
 .ss-process-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-process-card {
   min-height: 16rem;
   padding: 2rem var(--ss-gutter);
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-process-card:last-child {
@@ -567,20 +566,20 @@
 
 .ss-process-no {
   font-family: var(--font-display);
-  font-size: 4rem;
+  font-size: var(--text-xl);
   line-height: 1;
 }
 
 .ss-material-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr 0.8fr;
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-material-grid > div {
   min-height: 28rem;
   padding: clamp(2rem, 4vw, 4rem) var(--ss-gutter);
-  border-right: 1px solid var(--ss-rule);
+  border-right: 1px solid var(--color-rule);
 }
 
 .ss-material-grid > div:last-child {
@@ -592,15 +591,15 @@
 .ss-about-story {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(25rem, 0.92fr);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 
 .ss-about-photo {
   position: relative;
   min-height: min(900px, 88svh);
   overflow: hidden;
-  border-right: 1px solid var(--ss-rule);
-  background: var(--ss-iron);
+  border-right: 1px solid var(--color-rule);
+  background: var(--color-ash);
 }
 
 .ss-about-copy {
@@ -613,23 +612,24 @@
 .ss-timeline {
   margin-top: 3rem;
   padding-left: 1.5rem;
-  border-left: 1px solid var(--ss-rule);
+  border-left: 1px solid var(--color-rule);
 }
 
 .ss-timeline li {
   margin-bottom: 1.2rem;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-xs);
   line-height: 1.6;
   letter-spacing: 0.06em;
-  color: var(--ss-mist);
+  color: var(--color-mist);
 }
 
 .ss-quote {
   padding: clamp(3rem, 7vw, 7rem) var(--ss-gutter);
-  border-bottom: 1px solid var(--ss-rule);
+  border-bottom: 1px solid var(--color-rule);
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: var(--text-2xl);
   line-height: 0.86;
   text-transform: uppercase;
 }
@@ -651,7 +651,7 @@
   .ss-custom-copy,
   .ss-about-photo {
     border-right: 0;
-    border-bottom: 1px solid var(--ss-rule);
+    border-bottom: 1px solid var(--color-rule);
   }
   .ss-home-index {
     display: block;
@@ -664,7 +664,7 @@
   }
   .ss-release-ledger .ss-drop-copy {
     grid-column: 1 / -1;
-    border-top: 1px solid var(--ss-rule);
+    border-top: 1px solid var(--color-rule);
   }
   .ss-pieces-shell {
     grid-template-columns: minmax(0, 1fr);
@@ -682,11 +682,11 @@
   }
   .ss-lookbook-copy {
     min-height: 20rem;
-    border-bottom: 1px solid var(--ss-rule);
+    border-bottom: 1px solid var(--color-rule);
   }
   .ss-lookbook-side {
     gap: 2rem;
-    border-top: 1px solid var(--ss-rule);
+    border-top: 1px solid var(--color-rule);
   }
   .ss-process-grid,
   .ss-material-grid,
@@ -698,7 +698,7 @@
     border-right: 0;
   }
   .ss-material-grid > div {
-    border-bottom: 1px solid var(--ss-rule);
+    border-bottom: 1px solid var(--color-rule);
   }
 }
 
@@ -719,9 +719,6 @@
     max-width: 100vw;
     overflow: hidden;
   }
-  .ss-display {
-    font-size: clamp(4rem, 22vw, 6rem);
-  }
   .ss-products-home,
   .ss-pieces-grid,
   .ss-lookbook-home,
@@ -741,7 +738,7 @@
   .ss-meta-cell,
   .ss-material-grid > div {
     border-right: 0;
-    border-bottom: 1px solid var(--ss-rule);
+    border-bottom: 1px solid var(--color-rule);
   }
   .ss-lookbook-frame {
     aspect-ratio: 4 / 5;

@@ -1,23 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Colors ── */
-  --color-void: #0a0908;
-  --color-ash: #1c1a18;
-  --color-cinder: #2e2b28;
-  --color-iron: #5c5650;
-  --color-bone: #ede8e1;
-  --color-dust: #c8c0b6;
-  /* slightly brighter for better hierarchy */
-  --color-ember: #174cff;
-  /* electric cobalt — active navigation and high-intent moments */
-  --color-rust: #c54b37;
-  /* signal red — LIVE / REC / SOLD OUT only */
-  /* ── Fonts: must match app/layout.tsx font variables ── */
-  --font-display: var(--font-bebas-neue), sans-serif;
-  --font-sans: var(--font-inter), sans-serif;
-  --font-serif: var(--font-playfair), Georgia, serif;
-  --font-mono: var(--font-space-mono), monospace;
+  /* ── Colors (single source; roles in comments) ── */
+  --color-void: #0a0908;   /* page background */
+  --color-ash: #1c1a18;    /* surface: image placeholders, panels */
+  --color-cinder: #2e2b28; /* raised surface, strong rule */
+  --color-iron: #5c5650;   /* decoration only: rules, dots. Fails 4.5:1 as text */
+  --color-mist: #9b9892;   /* muted text, labels (7.5:1 on void) */
+  --color-dust: #c8c0b6;   /* secondary text */
+  --color-bone: #ede8e1;   /* primary text, inverted surfaces */
+  --color-ember: #174cff;  /* the one accent: active nav, links, selection */
+  --color-rust: #c54b37;   /* signal only: LIVE / REC / SOLD OUT / open status */
+  --color-rule: color-mix(in srgb, #ede8e1 13%, transparent);
+
+  /* ── Fonts: two families. Mono is system-only, for numbers/data ── */
+  --font-display: var(--font-bebas-neue), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ── Type scale: 7 steps, nothing below 12px ── */
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.4;
+  --text-xl: 1.75rem;
+  --text-xl--line-height: 1.1;
+  --text-2xl: clamp(2.25rem, 4vw, 3.5rem);
+  --text-2xl--line-height: 0.95;
+  --text-3xl: clamp(3rem, 7vw, 6rem);
+  --text-3xl--line-height: 0.88;
+
   /* ── Tracking Tokens ── */
   --tracking-brand-wide: 0.3em;
   --tracking-brand-nav: 0.2em;
@@ -50,20 +67,6 @@
   --hero-content-top: calc(var(--nav-h) + 2.5rem);
   --hero-content-bottom-md: 5rem;
   --hero-content-x-md: 2.5rem;
-  /* ── Typography Tokens ── */
-  --text-label: 0.6875rem;
-  --text-nav: 0.75rem;
-  --text-body-sm: 0.8125rem;
-  --text-body: 0.9375rem;
-  --text-body-md: 1rem;
-  --text-product-title: 1.375rem;
-  --display-hero: clamp(3.625rem, 16vw, 4.75rem);
-  --display-hero-md: clamp(7.5rem, 11vw, 10.625rem);
-  --display-section: clamp(2.875rem, 14vw, 3.5rem);
-  --display-section-md: 4.5rem;
-  --display-cta: clamp(3rem, 14vw, 3.75rem);
-  --display-cta-md: clamp(6rem, 8vw, 7.5rem);
-  --display-lookbook: clamp(2.25rem, 9vw, 2.625rem);
   /* ── Effect Tokens ── */
   --noise-global-opacity: 0.035;
   --overlay-hero: linear-gradient(
@@ -97,8 +100,8 @@
   --cta-bg: var(--color-void);
   --cta-bg-soft: #100e12;
   --cta-accent: var(--color-ember);
-  --cta-accent-soft: rgba(90, 72, 214, 0.3);
-  --cta-accent-faint: rgba(90, 72, 214, 0.12);
+  --cta-accent-soft: color-mix(in srgb, var(--color-ember) 30%, transparent);
+  --cta-accent-faint: color-mix(in srgb, var(--color-ember) 12%, transparent);
   --shadow-hero-title: 0 2px 30px rgba(10, 9, 8, 0.38);
 }
 
@@ -296,8 +299,9 @@ body::-webkit-scrollbar {
   }
   .hero-film-counter {
     font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.26em;
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2em;
   }
   .hero-film-tick {
     position: relative;
@@ -325,34 +329,29 @@ body::-webkit-scrollbar {
   }
   /* Typography Utilities */
   .text-brand-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-label);
-    color: var(--color-iron);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-mist);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-brand-wide);
+    letter-spacing: var(--tracking-brand-nav);
   }
   .text-brand-display {
     font-family: var(--font-display);
     color: var(--color-bone);
     line-height: 0.9;
   }
-  /* Editorial italic — Playfair, used sparingly for tags / pull quotes / season labels */
   .display-section {
-    font-size: var(--display-section);
+    font-size: var(--text-2xl);
     letter-spacing: var(--tracking-brand-tight);
   }
   .display-cta {
-    font-size: var(--display-cta);
+    font-size: var(--text-3xl);
     letter-spacing: var(--tracking-brand-tight);
   }
-  .body-copy {
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: 1.7;
-  }
+  .body-copy,
   .body-copy-md {
     font-family: var(--font-sans);
-    font-size: var(--text-body-md);
+    font-size: var(--text-base);
     line-height: 1.7;
   }
   /* Image Ratio Utilities */
@@ -401,7 +400,7 @@ body::-webkit-scrollbar {
     gap: 0.5rem;
     color: var(--color-bone);
     font-family: var(--font-sans);
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -413,7 +412,7 @@ body::-webkit-scrollbar {
     transform: translateX(0.2rem);
   }
   .cta-link-sm {
-    font-size: 0.6875rem;
+    font-size: var(--text-xs);
     letter-spacing: 0.2em;
   }
   /* ── Lookbook ── */
@@ -434,7 +433,7 @@ body::-webkit-scrollbar {
     background-color: var(--color-void);
     color: var(--color-bone);
     font-family: var(--font-sans);
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -517,14 +516,7 @@ body::-webkit-scrollbar {
       right: var(--hero-content-x-md);
       bottom: var(--hero-content-bottom-md);
     }
-    .display-section {
-      font-size: var(--display-section-md);
-    }
-    .display-cta {
-      font-size: var(--display-cta-md);
-    }
     .cta-button {
-      font-size: 0.875rem;
       padding: 1.25rem 3rem;
     }
   }

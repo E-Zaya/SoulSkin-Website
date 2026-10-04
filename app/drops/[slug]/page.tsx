@@ -36,7 +36,7 @@ function ScarcityDots({ piecesLeft }: { piecesLeft: number }) {
         />
       ))}
       {piecesLeft > DOT_MAX && (
-        <span className="font-mono text-[10px] text-iron/60 tracking-widest ml-1">
+        <span className="text-xs text-mist tracking-widest ml-1">
           +{piecesLeft - DOT_MAX}
         </span>
       )}
@@ -108,14 +108,14 @@ export default async function DropDetailPage(props: DropDetailProps) {
           className="bg-void border-b border-cinder/40"
           aria-label="Breadcrumb"
         >
-          <div className="container-base py-4 flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+          <div className="container-base py-4 flex items-center gap-3 text-xs tracking-[0.2em] uppercase">
             <Link
               href="/drops"
-              className="text-iron/70 hover:text-bone transition-colors"
+              className="text-mist hover:text-bone transition-colors"
             >
               ← All drops
             </Link>
-            <span className="text-iron/40">/</span>
+            <span className="text-mist">/</span>
             <span className="text-dust">{drop.label}</span>
           </div>
         </nav>
@@ -149,7 +149,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
                     }}
                   >
                     <span
-                      className="font-mono text-[13px] md:text-[15px] tracking-[0.4em] uppercase"
+                      className="text-sm md:text-base tracking-[0.4em] uppercase"
                       style={{ color: "rgba(232, 168, 162, 0.95)" }}
                     >
                       SOLD OUT
@@ -201,7 +201,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
                   {isSoldOut ? (
                     <div className="flex items-center gap-4">
                       <span className="h-px bg-iron/40 w-12" />
-                      <p className="font-mono text-[11px] text-iron/60 tracking-[0.3em] uppercase line-through">
+                      <p className="text-xs text-mist tracking-[0.3em] uppercase line-through">
                         SOLD OUT
                       </p>
                     </div>
@@ -226,7 +226,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
 
               <ScrollReveal delay={240}>
                 {isSoldOut ? (
-                  <span className="font-sans text-[13px] font-medium text-iron/40 uppercase tracking-widest inline-flex items-center gap-2 cursor-not-allowed select-none">
+                  <span className="font-sans text-sm font-medium text-mist uppercase tracking-widest inline-flex items-center gap-2 cursor-not-allowed select-none">
                     <span>{drop.cta}</span>
                     <span>—</span>
                   </span>
@@ -254,9 +254,9 @@ export default async function DropDetailPage(props: DropDetailProps) {
             <div className="container-base">
               <ScrollReveal variant="fade-up">
                 <div className="flex items-center gap-5 mb-10 md:mb-14">
-                  <span className="text-brand-label !text-iron">Detail</span>
+                  <span className="text-brand-label !text-mist">Detail</span>
                   <span className="h-px bg-iron/30 flex-1" />
-                  <span className="font-mono text-[11px] text-iron/50 tracking-widest">
+                  <span className="text-xs text-mist tracking-widest">
                     {String(gallery.length).padStart(2, "0")} IMAGE
                     {gallery.length !== 1 ? "S" : ""}
                   </span>
@@ -309,7 +309,7 @@ export default async function DropDetailPage(props: DropDetailProps) {
                             }`}
                           />
                         </div>
-                        <figcaption className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest text-iron/50 uppercase">
+                        <figcaption className="mt-3 flex items-center justify-between text-xs tracking-widest text-mist uppercase">
                           <span>
                             {drop.label} · {String(i + 1).padStart(2, "0")} /{" "}
                             {String(gallery.length).padStart(2, "0")}

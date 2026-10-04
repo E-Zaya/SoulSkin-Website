@@ -44,13 +44,13 @@ export default function CustomPage() {
           {process.map((step) => (
             <article key={step.no} className="ss-process-card">
               <span className="ss-process-no">{step.no}</span>
-              <h2 className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-bone">{step.title}</h2>
+              <h2 className="mt-6 text-xs uppercase tracking-[0.18em] text-bone">{step.title}</h2>
               <p className="mt-4 text-sm leading-relaxed text-dust/70">{step.body}</p>
             </article>
           ))}
           <article className="ss-process-card bg-bone !text-void">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-void/55">Lead time</p>
-            <p className="mt-6 font-display text-5xl leading-none">3–4 weeks</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-void/55">Lead time</p>
+            <p className="mt-6 font-display text-2xl leading-none">3–4 weeks</p>
             <p className="mt-5 text-sm leading-relaxed text-void/65">Rush availability depends on current studio capacity.</p>
           </article>
         </section>
@@ -70,7 +70,7 @@ export default function CustomPage() {
             <div className="relative aspect-[16/10] overflow-hidden bg-ash">
               <Image src="/lookbook-03.png" alt="Soul Skin custom project" fill sizes="(min-width: 900px) 40vw, 100vw" className="object-cover" />
             </div>
-            <dl className="mt-5 grid grid-cols-2 gap-y-2 font-mono text-[9px] uppercase tracking-[0.12em] text-dust/70">
+            <dl className="mt-5 grid grid-cols-2 gap-y-2 text-xs uppercase tracking-[0.12em] text-dust/70">
               <dt>Fabric</dt><dd>Heavy cotton</dd><dt>Finish</dt><dd>Screen / Discharge</dd><dt>Run</dt><dd>1 of 1</dd>
             </dl>
           </div>
@@ -78,7 +78,7 @@ export default function CustomPage() {
           <div className="flex flex-col justify-between bg-ash">
             <p className="ss-kicker ss-blue">Ready to build?</p>
             <div>
-              <h2 className="ss-display-sm !text-[clamp(3rem,5vw,5rem)]">Start a custom</h2>
+              <h2 className="ss-display-sm !text-2xl">Start a custom</h2>
               <p className="ss-body mt-6">Send the item, size, references and desired timing. We reply with the next step.</p>
               <Link href={siteContent.brand.url} target="_blank" rel="noopener noreferrer" className="ss-link mt-8 w-full"><span>DM on Instagram</span><span>↗</span></Link>
             </div>
@@ -87,7 +87,7 @@ export default function CustomPage() {
 
         <div className="flex items-center justify-between gap-4 border-b ss-rule px-[var(--ss-gutter)] py-5">
           <p className="ss-kicker">Lead time &nbsp; <span className="text-bone">3–4 weeks</span></p>
-          <p className="ss-kicker"><span className="ss-signal">●</span> Reply within 48h</p>
+          <p className="ss-kicker">Reply within 48h</p>
         </div>
       </main>
       <Footer />

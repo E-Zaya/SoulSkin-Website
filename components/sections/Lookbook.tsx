@@ -49,7 +49,7 @@ export default function Lookbook({ data = [] }: Props) {
             <p className="ss-kicker mb-7">Archive / 2021—present</p>
             <h1 className="ss-display-sm">UB<br />Night<br />Files</h1>
           </div>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-2 font-mono text-[9px] uppercase tracking-[0.12em] text-dust/65">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs uppercase tracking-[0.12em] text-dust/65">
             <dt>Location</dt><dd>Zaisan Hill</dd>
             <dt>Time</dt><dd>23:41</dd>
             <dt>Temp</dt><dd>−18°C</dd>
@@ -74,7 +74,7 @@ export default function Lookbook({ data = [] }: Props) {
         >
           <Image key={item.id} src={item.image_url || "/lookbook-01.png"} alt={`Soul Skin lookbook ${item.item_id}`} fill priority sizes="(min-width: 900px) 55vw, 100vw" className="object-cover animate-lookbook-slide" />
           <div className="absolute inset-0 bg-gradient-to-t from-void/35 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[2] flex items-center justify-between border-t ss-rule p-4 font-mono text-[9px] uppercase tracking-[0.12em] text-bone/70">
+          <div className="absolute inset-x-0 bottom-0 z-[2] flex items-center justify-between border-t ss-rule p-4 text-xs uppercase tracking-[0.12em] text-bone/70">
             <span>35mm</span><span>ISO 3200</span><span>1/125</span><span>F2.8</span><span>5600K</span>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function Lookbook({ data = [] }: Props) {
             </div>
             <div className="mt-8 border-l border-ember pl-5">
               <p className="ss-kicker ss-blue">{item.item_id}</p>
-              <p className="mt-4 font-mono text-[10px] uppercase leading-7 tracking-[0.1em] text-dust/70">Delivered in darkness.<br />Built for movement.<br />Made in Ulaanbaatar.</p>
+              <p className="mt-4 text-xs uppercase leading-7 tracking-[0.1em] text-dust/70">Delivered in darkness.<br />Built for movement.<br />Made in Ulaanbaatar.</p>
               <p className="mt-6 flex items-center gap-2 ss-kicker ss-signal"><span className="ss-dot" /> REC</p>
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function Lookbook({ data = [] }: Props) {
           <div className="border ss-rule p-5">
             <p className="ss-kicker ss-blue">Next frame</p>
             <div className="mt-4 flex items-end justify-between">
-              <span className="font-display text-6xl leading-none">{String(((active + 1) % count) + 1).padStart(3, "0")}</span>
+              <span className="font-display text-2xl leading-none">{String(((active + 1) % count) + 1).padStart(3, "0")}</span>
               <div className="flex gap-2">
                 <button type="button" onClick={previous} className="ss-link !min-h-10 !px-3" aria-label="Previous frame">←</button>
                 <button type="button" onClick={next} className="ss-link !min-h-10 !px-3" aria-label="Next frame">→</button>

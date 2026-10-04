@@ -128,7 +128,7 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="brand-navigation"
           onClick={() => setMenuOpen((v) => !v)}
-          className="absolute left-[var(--container-x)] inline-flex h-10 items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:left-[var(--container-x-md)]"
+          className="absolute left-[var(--container-x)] inline-flex h-10 items-center gap-3 text-xs uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:left-[var(--container-x-md)]"
         >
           <span className="relative flex h-3.5 w-5 items-center" aria-hidden="true">
             <span
@@ -151,7 +151,7 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={handleBrandClick}
-          className="select-none font-display text-[1.75rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity duration-300 hover:opacity-75 md:text-[2.25rem]"
+          className="select-none font-display text-xl uppercase leading-none tracking-[0.08em] text-bone transition-opacity duration-300 hover:opacity-75"
           aria-label={siteContent.brand.name}
         >
           {siteContent.brand.name}
@@ -161,7 +161,7 @@ export default function Navbar() {
           href={siteContent.brand.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute right-[var(--container-x)] inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:right-[var(--container-x-md)]"
+          className="absolute right-[var(--container-x)] inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-bone transition-opacity duration-300 hover:opacity-65 md:right-[var(--container-x-md)]"
           aria-label={`Instagram ${siteContent.brand.handle}`}
         >
           <span>IG</span>
@@ -191,7 +191,7 @@ export default function Navbar() {
           <div
             className="pointer-events-none absolute right-[-0.08em] top-[calc(var(--nav-h)+1rem)] z-0 text-right font-display uppercase leading-[0.78] tracking-[-0.03em] text-bone/[0.035] md:top-[calc(var(--nav-h-md)+1rem)]"
             style={{
-              fontSize: "clamp(5rem, 18svh, 16rem)",
+              fontSize: "var(--text-3xl)",
               transform: menuOpen ? "translateX(0)" : "translateX(24px)",
               opacity: menuOpen ? 1 : 0,
               transition:
@@ -208,7 +208,7 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={handleBrandClick}
-            className="relative z-10 mb-6 block w-fit font-display text-[3.5rem] uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-10 md:text-[5.5rem]"
+            className="relative z-10 mb-6 block w-fit font-display text-2xl uppercase leading-none tracking-[0.08em] text-bone transition-opacity hover:opacity-75 md:mb-10"
             style={{
               transform: menuOpen ? "translateY(0)" : "translateY(14px)",
               opacity: menuOpen ? 1 : 0,
@@ -246,14 +246,14 @@ export default function Navbar() {
                         "cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   >
-                    <span className="w-10 shrink-0 font-mono text-[0.75rem] tracking-[0.18em] text-bone/45 md:w-14 md:text-[0.875rem]">
+                    <span className="w-10 shrink-0 text-xs tracking-[0.18em] text-bone/45 md:w-14">
                       {link.index}
                     </span>
                     <span className="flex min-w-0 flex-1 items-end justify-between gap-4">
-                      <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "clamp(2.25rem, 7svh, 5.75rem)" }}>
+                      <span className="font-display uppercase leading-none tracking-[0.02em] transition-transform duration-300 group-hover:translate-x-3" style={{ fontSize: "var(--text-2xl)" }}>
                         {link.name}
                       </span>
-                      <span className={`hidden pb-1 font-mono text-[9px] uppercase tracking-[0.18em] md:block ${active ? "text-ember" : "text-iron"}`}>
+                      <span className={`hidden pb-1 text-xs uppercase tracking-[0.18em] md:block ${active ? "text-ember" : "text-mist"}`}>
                         {link.note}
                       </span>
                     </span>
@@ -269,12 +269,12 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}
-              className="inline-flex w-fit items-center gap-2 font-mono text-[12px] uppercase tracking-[0.2em] text-bone transition-opacity hover:opacity-70"
+              className="inline-flex w-fit items-center gap-2 text-xs uppercase tracking-[0.2em] text-bone transition-opacity hover:opacity-70"
             >
               <span>Instagram / {siteContent.brand.handle}</span>
               <InstagramIcon size={14} strokeWidth={1.5} aria-hidden="true" />
             </Link>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-iron/60">
+            <span className="text-xs uppercase tracking-widest text-mist">
               {siteContent.brand.location}
             </span>
           </div>

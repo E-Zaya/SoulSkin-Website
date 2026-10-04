@@ -63,11 +63,11 @@ export default async function DropsPage() {
               </div>
 
               <div>
-                <dl className="mb-7 grid grid-cols-2 border-y ss-rule font-mono text-[10px] uppercase tracking-[0.12em]">
-                  <div className="border-r ss-rule py-5 pr-4"><dt className="text-iron">Window</dt><dd className="mt-2 text-bone">Open now</dd></div>
-                  <div className="py-5 pl-4"><dt className="text-iron">Availability</dt><dd className="mt-2 text-bone">{current.pieces_left} pieces</dd></div>
-                  <div className="border-r border-t ss-rule py-5 pr-4"><dt className="text-iron">Production</dt><dd className="mt-2 text-bone">Small run</dd></div>
-                  <div className="border-t ss-rule py-5 pl-4"><dt className="text-iron">Made in</dt><dd className="mt-2 text-bone">Ulaanbaatar</dd></div>
+                <dl className="mb-7 grid grid-cols-2 border-y ss-rule text-xs uppercase tracking-[0.12em]">
+                  <div className="border-r ss-rule py-5 pr-4"><dt className="text-mist">Window</dt><dd className="mt-2 text-bone">Open now</dd></div>
+                  <div className="py-5 pl-4"><dt className="text-mist">Availability</dt><dd className="mt-2 text-bone">{current.pieces_left} pieces</dd></div>
+                  <div className="border-r border-t ss-rule py-5 pr-4"><dt className="text-mist">Production</dt><dd className="mt-2 text-bone">Small run</dd></div>
+                  <div className="border-t ss-rule py-5 pl-4"><dt className="text-mist">Made in</dt><dd className="mt-2 text-bone">Ulaanbaatar</dd></div>
                 </dl>
                 <Link href={`/drops/${toSlug(current.label)}`} className="ss-link w-full"><span>Enter drop</span><span>→</span></Link>
               </div>
@@ -85,10 +85,10 @@ export default async function DropsPage() {
           <div className="ss-release-list">
             {archive.map((drop, index) => (
               <Link key={drop.id} href={`/drops/${toSlug(drop.label)}`} className="ss-release-row">
-                <span className="font-display text-4xl text-bone/70">{String(index + 2).padStart(2, "0")}</span>
-                <span><strong className="block font-display text-2xl uppercase text-bone">{drop.title_line1} {drop.title_line2}</strong><span className="ss-kicker mt-1 block">{drop.label}</span></span>
+                <span className="font-display text-xl text-bone/70">{String(index + 2).padStart(2, "0")}</span>
+                <span><strong className="block font-display text-xl uppercase text-bone">{drop.title_line1} {drop.title_line2}</strong><span className="ss-kicker mt-1 block">{drop.label}</span></span>
                 <span className="ss-kicker">{new Date(drop.created_at).toLocaleDateString("en", { month: "short", year: "numeric" })}</span>
-                <span className="ss-kicker ss-signal">Archived</span>
+                <span className="ss-kicker">Archived</span>
                 <span aria-hidden="true">↗</span>
               </Link>
             ))}

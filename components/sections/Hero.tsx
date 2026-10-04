@@ -218,7 +218,7 @@ export default function Hero({ imageUrl }: Props) {
       {/* Hero copy */}
       <div key={entranceKey} className="absolute hero-content-position z-10 max-w-[58%] md:max-w-none">
         <p
-          className="mb-4 font-mono text-[10px] uppercase tracking-[0.32em] text-bone/28 md:mb-5 md:text-[11px]"
+          className="mb-4 text-xs uppercase tracking-[0.32em] text-bone/28 md:mb-5"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateX(0)" : "translateX(-12px)",
@@ -238,7 +238,7 @@ export default function Hero({ imageUrl }: Props) {
               "opacity 900ms cubic-bezier(0.16,1,0.3,1) 600ms, transform 900ms cubic-bezier(0.16,1,0.3,1) 600ms",
           }}
         >
-          <h1 className="text-brand-display text-[4.75rem] leading-[0.86] tracking-normal [text-shadow:var(--shadow-hero-title)] md:text-[6.5rem] lg:text-[8rem] xl:text-[7.75rem]">
+          <h1 className="text-brand-display text-3xl leading-[0.86] tracking-normal [text-shadow:var(--shadow-hero-title)]">
             {siteContent.hero.titleLine1}
             <br />
             {siteContent.hero.titleLine2}
@@ -256,13 +256,13 @@ export default function Hero({ imageUrl }: Props) {
         >
           <Link
             href="/drops"
-            className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-void transition-colors hover:bg-transparent hover:text-bone"
+            className="inline-flex min-h-11 items-center border border-bone/60 bg-bone px-5 text-xs uppercase tracking-[0.22em] text-void transition-colors hover:bg-transparent hover:text-bone"
           >
             {siteContent.hero.ctaPrimary}
           </Link>
           <Link
             href="/lookbook"
-            className="inline-flex min-h-11 items-center border border-bone/25 px-5 font-mono text-[10px] uppercase tracking-[0.22em] text-bone transition-colors hover:border-bone/60"
+            className="inline-flex min-h-11 items-center border border-bone/25 px-5 text-xs uppercase tracking-[0.22em] text-bone transition-colors hover:border-bone/60"
           >
             {siteContent.hero.ctaSecondary}
           </Link>

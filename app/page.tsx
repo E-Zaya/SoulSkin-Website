@@ -64,7 +64,7 @@ export default async function Home() {
           <div className="ss-home-note">
             <p className="ss-kicker">Field note / UB</p>
             <div>
-              <p className="font-serif text-2xl italic leading-tight text-bone/90">
+              <p className="font-sans text-lg italic leading-tight text-bone/90">
                 “Clothing should feel lived in before the first night out.”
               </p>
               <p className="ss-kicker mt-6">47.9180° N · 106.9177° E</p>
@@ -185,10 +185,10 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex flex-col justify-between bg-bone !text-void">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-void/55">Custom orders / Open</p>
             <Link href="/custom" className="group flex items-end justify-between gap-6">
-              <span className="font-display text-[clamp(3rem,6vw,6rem)] leading-[0.86] uppercase">Start a project</span>
-              <span className="text-3xl transition-transform group-hover:translate-x-2">→</span>
+              <span className="font-display text-lg leading-[0.86] uppercase">Start a project</span>
+              <span className="text-xl transition-transform group-hover:translate-x-2">→</span>
             </Link>
           </div>
         </section>

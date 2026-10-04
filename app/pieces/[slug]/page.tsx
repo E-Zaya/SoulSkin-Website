@@ -69,14 +69,14 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
           className="bg-void border-b border-cinder/40"
           aria-label="Breadcrumb"
         >
-          <div className="container-base py-4 flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+          <div className="container-base py-4 flex items-center gap-3 text-xs tracking-[0.2em] uppercase">
             <Link
               href="/pieces"
-              className="text-iron/70 hover:text-bone transition-colors"
+              className="text-mist hover:text-bone transition-colors"
             >
               ← All pieces
             </Link>
-            <span className="text-iron/40">/</span>
+            <span className="text-mist">/</span>
             <span className="text-dust">{product.sku}</span>
           </div>
         </nav>
@@ -91,7 +91,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
             {/* Detail column — sticky で画像スクロール中も見える */}
             <aside className="flex flex-col pt-6 md:pt-0 md:sticky md:top-[calc(var(--nav-h)+2rem)]">
               <ScrollReveal delay={0}>
-                <p className="font-mono text-[10px] text-iron/60 tracking-[0.3em] uppercase mb-4">
+                <p className="text-xs text-mist tracking-[0.3em] uppercase mb-4">
                   {product.sku}
                 </p>
               </ScrollReveal>
@@ -101,7 +101,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
                 </h1>
               </ScrollReveal>
               <ScrollReveal delay={140}>
-                <p className="font-mono text-[11px] text-dust/60 uppercase tracking-widest mb-6">
+                <p className="text-xs text-dust/60 uppercase tracking-widest mb-6">
                   {product.material}
                 </p>
               </ScrollReveal>
@@ -116,7 +116,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={240}>
-                <p className="font-mono text-[13px] text-bone tracking-widest mb-8">
+                <p className="text-sm text-bone tracking-widest mb-8">
                   {product.price}
                 </p>
               </ScrollReveal>
@@ -125,7 +125,7 @@ export default async function PieceDetailPage(props: PieceDetailProps) {
                   href={siteContent.brand.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 border border-cinder w-full px-6 py-4 font-mono text-[11px] tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors"
+                  className="inline-flex items-center justify-center gap-2 border border-cinder w-full px-6 py-4 text-xs tracking-widest uppercase text-dust hover:text-bone hover:border-iron transition-colors"
                 >
                   <span>{siteContent.products.cta}</span>
                   <span>→</span>

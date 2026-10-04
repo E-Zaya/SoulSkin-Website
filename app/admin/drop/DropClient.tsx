@@ -109,7 +109,7 @@ function DropImagesEditor({
 
   return (
     <div>
-      <p className="text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-3">
+      <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-3">
         Detail Images
         <span className="text-[#555] ml-2 normal-case tracking-normal">
           ({images.length}) — shown in the drop detail page gallery
@@ -132,31 +132,31 @@ function DropImagesEditor({
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="font-mono text-[11px] text-[#555] w-4 shrink-0">
+              <span className="text-xs text-[#555] w-4 shrink-0">
                 {i + 1}
               </span>
-              <span className="font-mono text-[11px] text-[#888] flex-1 truncate">
+              <span className="text-xs text-[#888] flex-1 truncate">
                 {img.image_url.split("/").pop()}
               </span>
               <div className="flex gap-1 shrink-0">
                 <button
                   onClick={() => handleMove(img, -1)}
                   disabled={i === 0}
-                  className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-[11px] px-1"
+                  className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-xs px-1"
                 >
                   ▲
                 </button>
                 <button
                   onClick={() => handleMove(img, 1)}
                   disabled={i === images.length - 1}
-                  className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-[11px] px-1"
+                  className="text-[#555] hover:text-[#ccc] disabled:text-[#2a2a2a] transition-colors text-xs px-1"
                 >
                   ▼
                 </button>
               </div>
               <button
                 onClick={() => handleRemove(img)}
-                className="font-mono text-[11px] text-[#555] hover:text-[#f07070] transition-colors shrink-0 ml-1"
+                className="text-xs text-[#555] hover:text-[#f07070] transition-colors shrink-0 ml-1"
               >
                 ✕
               </button>
@@ -167,7 +167,7 @@ function DropImagesEditor({
 
       {/* 新規追加 */}
       <div className="border border-dashed border-[#282828] p-3 bg-[#090909]">
-        <p className="font-mono text-[11px] text-[#555] mb-2">Add image</p>
+        <p className="text-xs text-[#555] mb-2">Add image</p>
         <ImageUpload
           currentUrl={null}
           onUrlChange={setNewUrl}
@@ -189,7 +189,7 @@ function DropImagesEditor({
               setNewUrl("");
             }}
             disabled={uploading}
-            className="mt-2 font-mono text-[11px] tracking-widest uppercase border border-[#333] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
+            className="mt-2 text-xs tracking-widest uppercase border border-[#333] px-3 py-1.5 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
           >
             {uploading ? "Adding..." : "+ Add"}
           </button>
@@ -428,11 +428,11 @@ export default function DropClient({ initialDrops }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-[13px] tracking-[0.25em] text-[#aaa] uppercase font-mono">
+          <h1 className="text-sm tracking-[0.25em] text-[#aaa] uppercase">
             Drop Manager
           </h1>
           <span
-            className={`text-[10px] tracking-widest font-mono px-2 py-1 border ${
+            className={`text-xs tracking-widest px-2 py-1 border ${
               atLimit
                 ? "text-[#f0a070] border-[#4a3018] bg-[#1a1208]"
                 : "text-[#5dd49a] border-[#1a3d2a] bg-[#0d1a14]"
@@ -444,19 +444,19 @@ export default function DropClient({ initialDrops }: Props) {
         <button
           onClick={handleNew}
           disabled={isPending}
-          className="text-[12px] tracking-widest uppercase font-mono border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
+          className="text-xs tracking-widest uppercase border border-[#333] px-4 py-2 text-[#aaa] hover:text-[#f0f0f0] hover:border-[#555] transition-colors disabled:opacity-40"
         >
           {isPending ? "..." : "+ New Drop"}
         </button>
       </div>
 
       {error && (
-        <div className="mb-5 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-[13px] text-[#f07070] font-mono">
+        <div className="mb-5 border border-[#4a1a1a] bg-[#1a0f0f] px-4 py-3 text-sm text-[#f07070]">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-5 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-[13px] text-[#5dd49a] font-mono">
+        <div className="mb-5 border border-[#1a3d2a] bg-[#0d1a14] px-4 py-3 text-sm text-[#5dd49a]">
           {success}
         </div>
       )}
@@ -464,11 +464,11 @@ export default function DropClient({ initialDrops }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Drop リスト */}
         <div className="md:col-span-1 space-y-2">
-          <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-3">
+          <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-3">
             All Drops
           </p>
           {drops.length === 0 && (
-            <p className="text-[13px] text-[#666] font-mono py-4">
+            <p className="text-sm text-[#666] py-4">
               No drops yet — add one to start.
             </p>
           )}
@@ -491,7 +491,7 @@ export default function DropClient({ initialDrops }: Props) {
                       <button
                         onClick={() => handleReorder(drop.id, -1)}
                         disabled={isPending || idx === 0}
-                        className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-[12px] px-0.5"
+                        className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-xs px-0.5"
                         title="Move up"
                       >
                         ▲
@@ -499,7 +499,7 @@ export default function DropClient({ initialDrops }: Props) {
                       <button
                         onClick={() => handleReorder(drop.id, 1)}
                         disabled={isPending || idx === drops.length - 1}
-                        className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-[12px] px-0.5"
+                        className="text-[#666] hover:text-[#ccc] disabled:text-[#333] disabled:cursor-not-allowed transition-colors leading-none text-xs px-0.5"
                         title="Move down"
                       >
                         ▼
@@ -521,7 +521,7 @@ export default function DropClient({ initialDrops }: Props) {
                       )}
                       {drop.images && drop.images.length > 0 && (
                         <div className="absolute bottom-0.5 right-0.5 bg-void/80 px-0.5 rounded-sm">
-                          <span className="font-mono text-[8px] text-bone/70">
+                          <span className="text-xs text-bone/70">
                             +{drop.images.length}
                           </span>
                         </div>
@@ -534,17 +534,17 @@ export default function DropClient({ initialDrops }: Props) {
                       className="flex-1 text-left min-w-0"
                     >
                       <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <span className="text-[13px] font-mono text-[#e8e8e8] truncate">
+                        <span className="text-sm text-[#e8e8e8] truncate">
                           {drop.title_line1 || "(untitled)"}{" "}
                           {drop.title_line2}
                         </span>
                         {drop.active && (
-                          <span className="text-[9px] tracking-widest text-[#5dd49a] border border-[#1a3d2a] px-1.5 py-0.5 font-mono shrink-0">
+                          <span className="text-xs tracking-widest text-[#5dd49a] border border-[#1a3d2a] px-1.5 py-0.5 shrink-0">
                             LIVE
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-[#777] font-mono">
+                      <p className="text-xs text-[#777]">
                         {drop.pieces_left} left
                       </p>
                     </button>
@@ -563,7 +563,7 @@ export default function DropClient({ initialDrops }: Props) {
                           ? `${MAX_ACTIVE_DROPS} drops are already live`
                           : undefined
                       }
-                      className={`text-[11px] tracking-widest uppercase font-mono transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
+                      className={`text-xs tracking-widest uppercase transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${
                         drop.active
                           ? "text-[#5dd49a] hover:text-[#7be4b1]"
                           : "text-[#666] hover:text-[#5dd49a]"
@@ -577,7 +577,7 @@ export default function DropClient({ initialDrops }: Props) {
                         handleDelete(drop);
                       }}
                       disabled={isPending}
-                      className="text-[11px] tracking-widest uppercase font-mono text-[#666] hover:text-[#f07070] transition-colors"
+                      className="text-xs tracking-widest uppercase text-[#666] hover:text-[#f07070] transition-colors"
                     >
                       Delete
                     </button>
@@ -591,12 +591,12 @@ export default function DropClient({ initialDrops }: Props) {
         {/* 編集フォーム */}
         <div className="md:col-span-2">
           {!selected ? (
-            <p className="text-[13px] text-[#666] font-mono py-10 text-center">
+            <p className="text-sm text-[#666] py-10 text-center">
               Select a drop on the left or create a new one.
             </p>
           ) : (
             <>
-              <p className="text-[12px] tracking-[0.2em] text-[#888] uppercase font-mono mb-4">
+              <p className="text-xs tracking-[0.2em] text-[#888] uppercase mb-4">
                 Edit
               </p>
               <div className="space-y-4">
@@ -620,20 +620,20 @@ export default function DropClient({ initialDrops }: Props) {
                 />
 
                 <div>
-                  <label className="block text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">
+                  <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
                     Description
                   </label>
                   <textarea
                     value={form.description}
                     onChange={(e) => field("description", e.target.value)}
                     rows={3}
-                    className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none font-mono leading-relaxed placeholder:text-[#444]"
+                    className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050] resize-none leading-relaxed placeholder:text-[#444]"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">
+                    <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
                       Pieces Left
                     </label>
                     <div className="flex items-center gap-2">
@@ -645,7 +645,7 @@ export default function DropClient({ initialDrops }: Props) {
                             Math.max(0, Number(form.pieces_left) - 1)
                           )
                         }
-                        className="w-9 h-9 border border-[#282828] text-[#aaa] hover:text-white hover:border-[#505050] transition-colors font-mono flex items-center justify-center text-lg"
+                        className="w-9 h-9 border border-[#282828] text-[#aaa] hover:text-white hover:border-[#505050] transition-colors flex items-center justify-center text-lg"
                       >
                         −
                       </button>
@@ -656,14 +656,14 @@ export default function DropClient({ initialDrops }: Props) {
                           field("pieces_left", Number(e.target.value))
                         }
                         min={0}
-                        className="flex-1 bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[14px] px-3 py-2 focus:outline-none focus:border-[#505050] font-mono text-center"
+                        className="flex-1 bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2 focus:outline-none focus:border-[#505050] text-center"
                       />
                       <button
                         type="button"
                         onClick={() =>
                           field("pieces_left", Number(form.pieces_left) + 1)
                         }
-                        className="w-9 h-9 border border-[#282828] text-[#aaa] hover:text-white hover:border-[#505050] transition-colors font-mono flex items-center justify-center text-lg"
+                        className="w-9 h-9 border border-[#282828] text-[#aaa] hover:text-white hover:border-[#505050] transition-colors flex items-center justify-center text-lg"
                       >
                         +
                       </button>
@@ -677,7 +677,7 @@ export default function DropClient({ initialDrops }: Props) {
                 </div>
 
                 <div>
-                  <p className="text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">
+                  <p className="text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
                     Main Image
                     <span className="text-[#555] ml-2 normal-case tracking-normal">
                       (used as the cover & first gallery image)
@@ -723,10 +723,10 @@ export default function DropClient({ initialDrops }: Props) {
                     onChange={(e) => field("active", e.target.checked)}
                     className="w-4 h-4 accent-white"
                   />
-                  <span className="text-[13px] font-mono text-[#aaa]">
+                  <span className="text-sm text-[#aaa]">
                     Set as Active (Live) Drop
                     {!form.active && atLimit && !selected.active && (
-                      <span className="text-[11px] text-[#f0a070] ml-2">
+                      <span className="text-xs text-[#f0a070] ml-2">
                         — limit reached ({MAX_ACTIVE_DROPS}/{MAX_ACTIVE_DROPS})
                       </span>
                     )}
@@ -736,7 +736,7 @@ export default function DropClient({ initialDrops }: Props) {
                 <button
                   onClick={handleSave}
                   disabled={isPending}
-                  className="w-full border border-[#444] text-[13px] font-mono tracking-widest uppercase py-3 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full border border-[#444] text-sm tracking-widest uppercase py-3 text-[#ccc] hover:bg-[#1a1a1a] hover:text-[#f0f0f0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {isPending ? "Saving..." : "Save Drop"}
                 </button>
@@ -760,14 +760,14 @@ function F({
 }) {
   return (
     <div>
-      <label className="block text-[12px] tracking-[0.15em] text-[#999] uppercase font-mono mb-2">
+      <label className="block text-xs tracking-[0.15em] text-[#999] uppercase mb-2">
         {label}
       </label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#505050] font-mono"
+        className="w-full bg-[#0d0d0d] border border-[#282828] text-[#f0f0f0] text-sm px-3 py-2.5 focus:outline-none focus:border-[#505050]"
       />
     </div>
   );
